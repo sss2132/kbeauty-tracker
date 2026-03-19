@@ -37,13 +37,15 @@
 
 /* Rank change */
 .rc{display:block;font-size:10px;font-weight:700;margin-top:1px}
-.rc-up{color:#2ed573}.rc-down{color:#ff4757}.rc-same{color:#999}.rc-new{color:#3742fa}
+.rc-up{color:#ff4757}.rc-down{color:#3742fa}.rc-same{color:#999}.rc-new{color:#3742fa}
+.prev-rank{display:block;font-size:9px;color:#999;font-weight:600;margin-top:1px}
+.rc-change{display:block;font-size:9px;font-weight:700;margin-top:0px}
 
 /* Product Card */
 .plist{padding:8px 16px}
 .product-card{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:12px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .product-card[data-hidden="true"]{display:none}
-.product-rank{min-width:32px;height:42px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#666;background:#f0f0f0;flex-shrink:0}
+.product-rank{min-width:38px;height:auto;min-height:50px;padding:4px 2px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#666;background:#f0f0f0;flex-shrink:0}
 .rank-gold{background:linear-gradient(135deg,#f9ca24,#f0932b);color:#fff}
 .rank-silver{background:linear-gradient(135deg,#dfe6e9,#b2bec3);color:#fff}
 .rank-bronze{background:linear-gradient(135deg,#e17055,#d63031);color:#fff}
@@ -65,8 +67,8 @@
 .seller-grade{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px}
 .grade-now{background:#2ed573;color:#fff}.grade-watch{background:#3742fa;color:#fff}.grade-hold{background:#ffa502;color:#fff}
 .product-right{text-align:center;flex-shrink:0;min-width:58px}
-.rank-big{font-size:22px;font-weight:700;color:#e8547a}
-.score-small{font-size:12px;color:#999;margin-top:1px}
+.rank-big{font-size:22px;font-weight:700;color:#e8547a;display:none}
+.score-small{font-size:12px;color:#999;margin-top:1px;display:none}
 .btn-buy{display:block;margin-top:3px;padding:5px 12px;background:#e8547a;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
 
 /* Buy links dropdown */
@@ -191,7 +193,7 @@
 /* Mobile */
 @media(max-width:380px){
   .stats{grid-template-columns:repeat(2,1fr)}
-  .product-card{gap:6px;padding:10px}.product-emoji{width:30px;height:30px;font-size:18px}.rank-big{font-size:18px}
+  .product-card{gap:6px;padding:10px}.product-emoji{width:30px;height:30px;font-size:18px}
   .tab-btn{font-size:11px;padding:9px 1px}
   .product-name{font-size:13px}.product-brand{font-size:11px}.product-name-ko{font-size:10px}
   .sb{font-size:9px}.badge{font-size:8px}
@@ -247,7 +249,7 @@
     <span>&#129524; บอดี้แคร์</span>
   </div>
   <div class="ranking-view"><div class="plist"><div class="product-card" data-category="makeup">
-  <div class="product-rank rank-gold">1<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank rank-gold">1<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">TIRTIR</div>
@@ -270,7 +272,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank rank-silver">2<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank rank-silver">2<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Torriden</div>
@@ -293,7 +295,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank rank-bronze">3<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank rank-bronze">3<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">COSRX</div>
@@ -316,7 +318,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">4<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">4<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">ANUA</div>
@@ -339,7 +341,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">5<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">5<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Goodal</div>
@@ -362,7 +364,7 @@
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">6<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">6<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">rom&amp;nd</div>
@@ -385,7 +387,7 @@
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">7<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">7<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">CLIO</div>
@@ -408,7 +410,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">8<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">8<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Round Lab</div>
@@ -431,7 +433,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">9<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">9<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">LANEIGE</div>
@@ -454,7 +456,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">10<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">10<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Klairs</div>
@@ -477,7 +479,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">11<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">11<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">numbuzin</div>
@@ -500,7 +502,7 @@
   </div>
 </div>
 <div class="product-card" data-category="maskpack">
-  <div class="product-rank ">12<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">12<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#129526;</div>
   <div class="product-info">
     <div class="product-brand">Mediheal</div>
@@ -523,7 +525,7 @@
   </div>
 </div>
 <div class="product-card" data-category="suncare">
-  <div class="product-rank ">13<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">13<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#9728;&#65039;</div>
   <div class="product-info">
     <div class="product-brand">Round Lab</div>
@@ -546,7 +548,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">14<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">14<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Beauty of Joseon</div>
@@ -569,7 +571,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">15<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">15<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">TONYMOLY</div>
@@ -592,7 +594,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">16<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">16<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">SKINFOOD</div>
@@ -615,7 +617,7 @@
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">17<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">17<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Innisfree</div>
@@ -638,7 +640,7 @@
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">18<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">18<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">VDL</div>
@@ -661,7 +663,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">19<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">19<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">d'Alba</div>
@@ -684,7 +686,7 @@
   </div>
 </div>
 <div class="product-card" data-category="haircare">
-  <div class="product-rank ">20<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">20<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128135;</div>
   <div class="product-info">
     <div class="product-brand">Moremo</div>
@@ -707,7 +709,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">21<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">21<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">COSRX</div>
@@ -730,7 +732,7 @@
   </div>
 </div>
 <div class="product-card" data-category="suncare">
-  <div class="product-rank ">22<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">22<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#9728;&#65039;</div>
   <div class="product-info">
     <div class="product-brand">Beauty of Joseon</div>
@@ -753,7 +755,7 @@
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">23<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">23<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Etude</div>
@@ -776,7 +778,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">24<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">24<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">SOME BY MI</div>
@@ -799,7 +801,7 @@
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">25<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">25<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">rom&amp;nd</div>
@@ -822,7 +824,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">26<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">26<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">SKIN1004</div>
@@ -845,7 +847,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">27<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">27<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Banila Co</div>
@@ -868,7 +870,7 @@
   </div>
 </div>
 <div class="product-card" data-category="maskpack">
-  <div class="product-rank ">28<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">28<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#129526;</div>
   <div class="product-info">
     <div class="product-brand">Biodance</div>
@@ -891,7 +893,7 @@
   </div>
 </div>
 <div class="product-card" data-category="suncare">
-  <div class="product-rank ">29<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">29<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#9728;&#65039;</div>
   <div class="product-info">
     <div class="product-brand">Innisfree</div>
@@ -914,7 +916,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">30<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank">30<span class="prev-rank">지난주 -</span><span class="rc-change rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">heimish</div>
@@ -948,7 +950,18 @@
     <div class="product-name-ko">하트 퍼센트 도트 세럼 50ml</div>
     <div class="product-badges"><span class="badge badge-rising">RISING</span></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">66</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Klairs%20Dot%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Klairs%20Dot%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Klairs%20Dot%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Klairs%20Dot%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000038?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div>
 </div><div class="disc-section disc-gem">
   <div class="disc-title">&#128142; Hidden Gem</div>
@@ -962,7 +975,18 @@
     <div class="product-name-ko">리얼 콜라겐 딥 마스크 4매입</div>
     <div class="product-badges"><span class="badge badge-gem">HIDDEN GEM</span></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">40</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Biodance%20Collagen%20Mask&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Biodance%20Collagen%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Biodance%20Collagen%20Mask&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Biodance%20Collagen%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000009?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="suncare">
   <div class="disc-rank">#29 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#9728;&#65039;</div>
@@ -972,7 +996,18 @@
     <div class="product-name-ko">톤업 노세범 선스크린 SPF50+ 50ml</div>
     <div class="product-badges"><span class="badge badge-gem">HIDDEN GEM</span></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">40</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Innisfree%20No%20Sebum%20Sunscreen&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Innisfree%20No%20Sebum%20Sunscreen" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Innisfree%20No%20Sebum%20Sunscreen&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Innisfree%20No%20Sebum%20Sunscreen" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000008?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div>
 </div><div class="disc-section disc-new">
   <div class="disc-title">&#127381; สินค้าใหม่ประจำสัปดาห์</div>
@@ -986,7 +1021,18 @@
     <div class="product-name-ko">마스크핏 레드 쿠션 18g</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">87</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=TIRTIR%20Red%20Cushion&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=TIRTIR%20Red%20Cushion" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=TIRTIR%20Red%20Cushion&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=TIRTIR%20Red%20Cushion" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000018?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#2 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -996,7 +1042,18 @@
     <div class="product-name-ko">다이브인 저분자 히알루론산 세럼 50ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">83</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Torriden%20DIVE-IN%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Torriden%20DIVE-IN%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Torriden%20DIVE-IN%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Torriden%20DIVE-IN%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000001?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#3 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1006,7 +1063,18 @@
     <div class="product-name-ko">핌프 패치 마스터 24매</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">82</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=COSRX%20Pimple%20Patch&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=COSRX%20Pimple%20Patch" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=COSRX%20Pimple%20Patch&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=COSRX%20Pimple%20Patch" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000048?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#4 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1016,7 +1084,18 @@
     <div class="product-name-ko">어성초 77 수딩 토너패드 70매</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">81</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=ANUA%20Heartleaf%20Toner%20Pad&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=ANUA%20Heartleaf%20Toner%20Pad" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=ANUA%20Heartleaf%20Toner%20Pad&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=ANUA%20Heartleaf%20Toner%20Pad" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000007?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#5 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1026,7 +1105,18 @@
     <div class="product-name-ko">청귤 비타C 잡티케어 세럼 30ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">81</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Goodal%20Vitamin%20C%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Goodal%20Vitamin%20C%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Goodal%20Vitamin%20C%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Goodal%20Vitamin%20C%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000004?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="makeup">
   <div class="disc-rank">#6 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
@@ -1036,7 +1126,18 @@
     <div class="product-name-ko">쥬시 래스팅 틴트 25 베어 그레이프</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">76</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=romand%20Juicy%20Lasting%20Tint&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=romand%20Juicy%20Lasting%20Tint" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=romand%20Juicy%20Lasting%20Tint&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=romand%20Juicy%20Lasting%20Tint" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000051?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="makeup">
   <div class="disc-rank">#7 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
@@ -1046,7 +1147,18 @@
     <div class="product-name-ko">킬커버 파운웨어 쿠션 올뉴 15g</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">73</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=CLIO%20Kill%20Cover%20Cushion&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=CLIO%20Kill%20Cover%20Cushion" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=CLIO%20Kill%20Cover%20Cushion&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=CLIO%20Kill%20Cover%20Cushion" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000006?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#8 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1056,7 +1168,18 @@
     <div class="product-name-ko">1025 독도 토너 200ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">72</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Round%20Lab%20Dokdo%20Toner&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Round%20Lab%20Dokdo%20Toner" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Round%20Lab%20Dokdo%20Toner&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Round%20Lab%20Dokdo%20Toner" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000002?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#9 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1066,7 +1189,18 @@
     <div class="product-name-ko">립 슬리핑 마스크 베리 20g</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">69</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=LANEIGE%20Lip%20Sleeping%20Mask&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=LANEIGE%20Lip%20Sleeping%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=LANEIGE%20Lip%20Sleeping%20Mask&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=LANEIGE%20Lip%20Sleeping%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000033?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#11 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1076,7 +1210,18 @@
     <div class="product-name-ko">3번 비타민C 기미케어 세럼 30ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">64</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=numbuzin%20Vitamin%20C%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=numbuzin%20Vitamin%20C%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=numbuzin%20Vitamin%20C%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=numbuzin%20Vitamin%20C%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000010?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="maskpack">
   <div class="disc-rank">#12 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#129526;</div>
@@ -1086,7 +1231,18 @@
     <div class="product-name-ko">에센셜 마스크팩 N.M.F 아쿠아링 10매</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">62</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20NMF%20Mask&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Mediheal%20NMF%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Mediheal%20NMF%20Mask&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20NMF%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000013?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="suncare">
   <div class="disc-rank">#13 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#9728;&#65039;</div>
@@ -1096,7 +1252,18 @@
     <div class="product-name-ko">워터리 선크림 SPF50+ PA++++ 50ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">62</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Round%20Lab%20Sunscreen&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Round%20Lab%20Sunscreen" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Round%20Lab%20Sunscreen&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Round%20Lab%20Sunscreen" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000017?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#14 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1106,7 +1273,18 @@
     <div class="product-name-ko">글로우 세럼: 프로폴리스+나이아신아마이드 30ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">61</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Beauty%20of%20Joseon%20Glow%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Beauty%20of%20Joseon%20Glow%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Beauty%20of%20Joseon%20Glow%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Beauty%20of%20Joseon%20Glow%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000021?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#15 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1116,7 +1294,18 @@
     <div class="product-name-ko">레티놀 인텐스 리링클 에센스 40ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">61</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=TONYMOLY%20Retinol%20Essence&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=TONYMOLY%20Retinol%20Essence" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=TONYMOLY%20Retinol%20Essence&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=TONYMOLY%20Retinol%20Essence" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000042?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#16 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1126,7 +1315,18 @@
     <div class="product-name-ko">글루타치온 700 광채 에센스 50ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">61</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=SKINFOOD%20Glutathione%20Essence&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=SKINFOOD%20Glutathione%20Essence" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=SKINFOOD%20Glutathione%20Essence&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=SKINFOOD%20Glutathione%20Essence" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000035?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="makeup">
   <div class="disc-rank">#17 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
@@ -1136,7 +1336,18 @@
     <div class="product-name-ko">노세범 미네랄 파우더 5g</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">59</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Innisfree%20No%20Sebum%20Powder&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Innisfree%20No%20Sebum%20Powder" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Innisfree%20No%20Sebum%20Powder&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Innisfree%20No%20Sebum%20Powder" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000034?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="makeup">
   <div class="disc-rank">#18 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
@@ -1146,7 +1357,18 @@
     <div class="product-name-ko">커버스테인 퍼펙팅 파운데이션 30ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">57</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=VDL%20Foundation&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=VDL%20Foundation" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=VDL%20Foundation&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=VDL%20Foundation" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000014?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#19 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1156,7 +1378,18 @@
     <div class="product-name-ko">화이트 트러플 퍼스트 스프레이 세럼 100ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">53</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=dAlba%20White%20Truffle%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=dAlba%20White%20Truffle%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=dAlba%20White%20Truffle%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=dAlba%20White%20Truffle%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000012?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="haircare">
   <div class="disc-rank">#20 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128135;</div>
@@ -1166,7 +1399,18 @@
     <div class="product-name-ko">데미지 케어 프로틴 트리트먼트 200ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">53</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Moremo%20Hair%20Treatment&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Moremo%20Hair%20Treatment" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Moremo%20Hair%20Treatment&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Moremo%20Hair%20Treatment" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000024?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#21 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1176,7 +1420,18 @@
     <div class="product-name-ko">어드밴스드 스네일 96 뮤신 파워 에센스 100ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">52</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=COSRX%20Snail%20Mucin%20Essence&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=COSRX%20Snail%20Mucin%20Essence" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=COSRX%20Snail%20Mucin%20Essence&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=COSRX%20Snail%20Mucin%20Essence" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000003?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="suncare">
   <div class="disc-rank">#22 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#9728;&#65039;</div>
@@ -1186,7 +1441,18 @@
     <div class="product-name-ko">릴리프 선: 라이스+프로바이오틱스 SPF50+ 50ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">52</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Beauty%20of%20Joseon%20Sunscreen&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Beauty%20of%20Joseon%20Sunscreen" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Beauty%20of%20Joseon%20Sunscreen&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Beauty%20of%20Joseon%20Sunscreen" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000023?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="makeup">
   <div class="disc-rank">#23 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
@@ -1196,7 +1462,18 @@
     <div class="product-name-ko">퍼펙트 멀티 아이즈 팔레트 8.5g</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">51</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Etude%20Eye%20Palette&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Etude%20Eye%20Palette" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Etude%20Eye%20Palette&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Etude%20Eye%20Palette" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000039?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#24 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1206,7 +1483,18 @@
     <div class="product-name-ko">AHA BHA PHA 30일 미라클 토너 150ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">50</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=SOME%20BY%20MI%20Miracle%20Toner&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=SOME%20BY%20MI%20Miracle%20Toner" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=SOME%20BY%20MI%20Miracle%20Toner&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=SOME%20BY%20MI%20Miracle%20Toner" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000032?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="makeup">
   <div class="disc-rank">#25 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
@@ -1216,7 +1504,18 @@
     <div class="product-name-ko">베러 댄 피니시 에어리 블러셔 3.5g</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">50</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=romand%20Blusher&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=romand%20Blusher" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=romand%20Blusher&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=romand%20Blusher" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000022?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#26 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1226,7 +1525,18 @@
     <div class="product-name-ko">마데카소사이드 시카 클리어링 토너 210ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">49</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=SKIN1004%20Centella%20Toner&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=SKIN1004%20Centella%20Toner" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=SKIN1004%20Centella%20Toner&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=SKIN1004%20Centella%20Toner" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000031?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#27 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1236,7 +1546,18 @@
     <div class="product-name-ko">제로 클렌징밤 오리지널 100ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">45</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Banila%20Co%20Clean%20It%20Zero&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=Banila%20Co%20Clean%20It%20Zero" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=Banila%20Co%20Clean%20It%20Zero&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Banila%20Co%20Clean%20It%20Zero" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000025?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div><div class="disc-card" data-category="skincare">
   <div class="disc-rank">#30 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
@@ -1246,7 +1567,18 @@
     <div class="product-name-ko">올클린 밤 120ml</div>
     <div class="product-badges"></div>
   </div>
+  <div class="disc-right">
   <div class="disc-score">39</div>
+  <button class="disc-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+</div>
+  <div class="buy-links">
+    <a href="https://www.yesstyle.com/en/search.html?keyword=heimish%20All%20Clean%20Balm&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=heimish%20All%20Clean%20Balm" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=heimish%20All%20Clean%20Balm&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=heimish%20All%20Clean%20Balm" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://global.oliveyoung.com/product/A000000000037?ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
 </div>
 </div></div>
 </div>
