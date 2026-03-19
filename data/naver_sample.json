@@ -1,0 +1,392 @@
+[
+  {
+    "product_code": "A000000000007",
+    "keyword": "아누아 토너패드",
+    "search_volume": 12000,
+    "search_volume_last_week": 10500,
+    "change_rate": 14.3
+  },
+  {
+    "product_code": "A000000000051",
+    "keyword": "롬앤 쥬시 틴트",
+    "search_volume": 10000,
+    "search_volume_last_week": 9200,
+    "change_rate": 8.7
+  },
+  {
+    "product_code": "A000000000001",
+    "keyword": "토리든 세럼",
+    "search_volume": 18000,
+    "search_volume_last_week": 15500,
+    "change_rate": 16.1
+  },
+  {
+    "product_code": "A000000000004",
+    "keyword": "구달 비타C 세럼",
+    "search_volume": 16000,
+    "search_volume_last_week": 11000,
+    "change_rate": 45.5
+  },
+  {
+    "product_code": "A000000000013",
+    "keyword": "메디힐 마스크팩",
+    "search_volume": 5500,
+    "search_volume_last_week": 5800,
+    "change_rate": -5.2
+  },
+  {
+    "product_code": "A000000000018",
+    "keyword": "티르티르 쿠션",
+    "search_volume": 28000,
+    "search_volume_last_week": 12000,
+    "change_rate": 133.3
+  },
+  {
+    "product_code": "A000000000002",
+    "keyword": "라운드랩 독도 토너",
+    "search_volume": 11000,
+    "search_volume_last_week": 10200,
+    "change_rate": 7.8
+  },
+  {
+    "product_code": "A000000000009",
+    "keyword": "바이오던스 마스크",
+    "search_volume": 1100,
+    "search_volume_last_week": 1200,
+    "change_rate": -8.3
+  },
+  {
+    "product_code": "A000000000048",
+    "keyword": "코스알엑스 핌프 패치",
+    "search_volume": 25000,
+    "search_volume_last_week": 10000,
+    "change_rate": 150.0
+  },
+  {
+    "product_code": "A000000000010",
+    "keyword": "넘버즈인 비타민C",
+    "search_volume": 6200,
+    "search_volume_last_week": 5800,
+    "change_rate": 6.9
+  },
+  {
+    "product_code": "A000000000012",
+    "keyword": "달바 스프레이 세럼",
+    "search_volume": 4200,
+    "search_volume_last_week": 4500,
+    "change_rate": -6.7
+  },
+  {
+    "product_code": "A000000000008",
+    "keyword": "이니스프리 노세범 선크림",
+    "search_volume": 1500,
+    "search_volume_last_week": 1800,
+    "change_rate": -16.7
+  },
+  {
+    "product_code": "A000000000017",
+    "keyword": "라운드랩 선크림",
+    "search_volume": 9000,
+    "search_volume_last_week": 8400,
+    "change_rate": 7.1
+  },
+  {
+    "product_code": "A000000000020",
+    "keyword": "에뛰드 손정 크림",
+    "search_volume": 1300,
+    "search_volume_last_week": 1500,
+    "change_rate": -13.3
+  },
+  {
+    "product_code": "A000000000014",
+    "keyword": "VDL 파운데이션",
+    "search_volume": 6800,
+    "search_volume_last_week": 6500,
+    "change_rate": 4.6
+  },
+  {
+    "product_code": "A000000000006",
+    "keyword": "클리오 킬커버 쿠션",
+    "search_volume": 22000,
+    "search_volume_last_week": 19000,
+    "change_rate": 15.8
+  },
+  {
+    "product_code": "A000000000033",
+    "keyword": "라네즈 립 슬리핑 마스크",
+    "search_volume": 14000,
+    "search_volume_last_week": 11800,
+    "change_rate": 18.6
+  },
+  {
+    "product_code": "A000000000021",
+    "keyword": "조선미녀 글로우 세럼",
+    "search_volume": 6500,
+    "search_volume_last_week": 6000,
+    "change_rate": 8.3
+  },
+  {
+    "product_code": "A000000000016",
+    "keyword": "믹순 빈 에센스",
+    "search_volume": 2000,
+    "search_volume_last_week": 2200,
+    "change_rate": -9.1
+  },
+  {
+    "product_code": "A000000000034",
+    "keyword": "이니스프리 노세범 파우더",
+    "search_volume": 8500,
+    "search_volume_last_week": 8000,
+    "change_rate": 6.2
+  },
+  {
+    "product_code": "A000000000024",
+    "keyword": "모레모 트리트먼트",
+    "search_volume": 7500,
+    "search_volume_last_week": 7000,
+    "change_rate": 7.1
+  },
+  {
+    "product_code": "A000000000031",
+    "keyword": "스킨1004 센텔라 토너",
+    "search_volume": 5800,
+    "search_volume_last_week": 5400,
+    "change_rate": 7.4
+  },
+  {
+    "product_code": "A000000000003",
+    "keyword": "코스알엑스 스네일 에센스",
+    "search_volume": 2800,
+    "search_volume_last_week": 3200,
+    "change_rate": -12.5
+  },
+  {
+    "product_code": "A000000000025",
+    "keyword": "바닐라코 클렌징밤",
+    "search_volume": 3000,
+    "search_volume_last_week": 3200,
+    "change_rate": -6.2
+  },
+  {
+    "product_code": "A000000000023",
+    "keyword": "조선미녀 선크림",
+    "search_volume": 4500,
+    "search_volume_last_week": 4800,
+    "change_rate": -6.2
+  },
+  {
+    "product_code": "A000000000039",
+    "keyword": "에뛰드 아이 팔레트",
+    "search_volume": 9500,
+    "search_volume_last_week": 8200,
+    "change_rate": 15.9
+  },
+  {
+    "product_code": "A000000000036",
+    "keyword": "설화수 퍼스트 케어",
+    "search_volume": 3600,
+    "search_volume_last_week": 3800,
+    "change_rate": -5.3
+  },
+  {
+    "product_code": "A000000000037",
+    "keyword": "헤이미쉬 클렌징밤",
+    "search_volume": 3500,
+    "search_volume_last_week": 3200,
+    "change_rate": 9.4
+  },
+  {
+    "product_code": "A000000000038",
+    "keyword": "클레어스 도트 세럼",
+    "search_volume": 35000,
+    "search_volume_last_week": 14000,
+    "change_rate": 150.0
+  },
+  {
+    "product_code": "A000000000032",
+    "keyword": "썸바이미 미라클 토너",
+    "search_volume": 7000,
+    "search_volume_last_week": 6500,
+    "change_rate": 7.7
+  },
+  {
+    "product_code": "A000000000041",
+    "keyword": "일리윤 세라마이드 크림",
+    "search_volume": 2200,
+    "search_volume_last_week": 2400,
+    "change_rate": -8.3
+  },
+  {
+    "product_code": "A000000000026",
+    "keyword": "미장센 헤어오일",
+    "search_volume": 3200,
+    "search_volume_last_week": 3000,
+    "change_rate": 6.7
+  },
+  {
+    "product_code": "A000000000027",
+    "keyword": "해피바스 바디워시",
+    "search_volume": 1500,
+    "search_volume_last_week": 1400,
+    "change_rate": 7.1
+  },
+  {
+    "product_code": "A000000000028",
+    "keyword": "더마토리 마스크팩",
+    "search_volume": 2500,
+    "search_volume_last_week": 2300,
+    "change_rate": 8.7
+  },
+  {
+    "product_code": "A000000000040",
+    "keyword": "이니스프리 그린티 세럼",
+    "search_volume": 4800,
+    "search_volume_last_week": 5000,
+    "change_rate": -4.0
+  },
+  {
+    "product_code": "A000000000015",
+    "keyword": "라로슈포제 시카밤",
+    "search_volume": 5000,
+    "search_volume_last_week": 5200,
+    "change_rate": -3.8
+  },
+  {
+    "product_code": "A000000000005",
+    "keyword": "에스네이처 수분크림",
+    "search_volume": 1200,
+    "search_volume_last_week": 1400,
+    "change_rate": -14.3
+  },
+  {
+    "product_code": "A000000000019",
+    "keyword": "바이오던스 판테놀 마스크",
+    "search_volume": 8000,
+    "search_volume_last_week": 7200,
+    "change_rate": 11.1
+  },
+  {
+    "product_code": "A000000000029",
+    "keyword": "모레모 워터 트리트먼트",
+    "search_volume": 7200,
+    "search_volume_last_week": 6800,
+    "change_rate": 5.9
+  },
+  {
+    "product_code": "A000000000030",
+    "keyword": "일리윤 바디로션",
+    "search_volume": 1800,
+    "search_volume_last_week": 2000,
+    "change_rate": -10.0
+  },
+  {
+    "product_code": "A000000000042",
+    "keyword": "토니모리 레티놀",
+    "search_volume": 38000,
+    "search_volume_last_week": 9500,
+    "change_rate": 300.0
+  },
+  {
+    "product_code": "A000000000043",
+    "keyword": "에뛰드 더블래스팅",
+    "search_volume": 5200,
+    "search_volume_last_week": 4900,
+    "change_rate": 6.1
+  },
+  {
+    "product_code": "A000000000044",
+    "keyword": "코스알엑스 AC 크림",
+    "search_volume": 3800,
+    "search_volume_last_week": 3500,
+    "change_rate": 8.6
+  },
+  {
+    "product_code": "A000000000035",
+    "keyword": "스킨푸드 글루타치온",
+    "search_volume": 45000,
+    "search_volume_last_week": 8500,
+    "change_rate": 429.4
+  },
+  {
+    "product_code": "A000000000045",
+    "keyword": "OST 비타민C 세럼",
+    "search_volume": 2400,
+    "search_volume_last_week": 2200,
+    "change_rate": 9.1
+  },
+  {
+    "product_code": "A000000000046",
+    "keyword": "클레어스 토너",
+    "search_volume": 6000,
+    "search_volume_last_week": 5500,
+    "change_rate": 9.1
+  },
+  {
+    "product_code": "A000000000047",
+    "keyword": "닥터지 선크림",
+    "search_volume": 4000,
+    "search_volume_last_week": 3700,
+    "change_rate": 8.1
+  },
+  {
+    "product_code": "A000000000049",
+    "keyword": "믹순 머쉬룸 크림",
+    "search_volume": 1000,
+    "search_volume_last_week": 900,
+    "change_rate": 11.1
+  },
+  {
+    "product_code": "A000000000050",
+    "keyword": "라보에이치 헤어팩",
+    "search_volume": 900,
+    "search_volume_last_week": 850,
+    "change_rate": 5.9
+  },
+  {
+    "product_code": "A000000000022",
+    "keyword": "롬앤 블러셔",
+    "search_volume": 32000,
+    "search_volume_last_week": 15000,
+    "change_rate": 113.3
+  },
+  {
+    "product_code": "OUTSIDE_NV_001",
+    "keyword": "조선미녀 맑은쌀 선크림",
+    "search_keyword_en": "Beauty of Joseon Rice Sunscreen",
+    "search_volume": 38000,
+    "search_volume_last_week": 15000,
+    "change_rate": 153.3
+  },
+  {
+    "product_code": "OUTSIDE_NV_002",
+    "keyword": "스킨1004 센텔라 앰플",
+    "search_keyword_en": "SKIN1004 Centella Ampoule",
+    "search_volume": 22000,
+    "search_volume_last_week": 9500,
+    "change_rate": 131.6
+  },
+  {
+    "product_code": "OUTSIDE_NV_003",
+    "keyword": "아이소이 레티놀 크림",
+    "search_keyword_en": "isoi Retinol Cream",
+    "search_volume": 18000,
+    "search_volume_last_week": 8000,
+    "change_rate": 125.0
+  },
+  {
+    "product_code": "OUTSIDE_NV_004",
+    "keyword": "마녀공장 갈락토미 에센스",
+    "search_keyword_en": "Manyo Galactomy Essence",
+    "search_volume": 14500,
+    "search_volume_last_week": 7200,
+    "change_rate": 101.4
+  },
+  {
+    "product_code": "OUTSIDE_NV_005",
+    "keyword": "닥터자르트 시카페어 크림",
+    "search_keyword_en": "Dr.Jart Cicapair Cream",
+    "search_volume": 11000,
+    "search_volume_last_week": 6000,
+    "change_rate": 83.3
+  }
+]

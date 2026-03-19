@@ -1,0 +1,502 @@
+[
+  {
+    "product_code": "A000000000007",
+    "keyword": "ANUA Heartleaf Toner Pad",
+    "video_count": 42,
+    "total_views": 680000,
+    "video_count_last_week": 35,
+    "total_views_last_week": 550000,
+    "change_rate": 23.6
+  },
+  {
+    "product_code": "A000000000051",
+    "keyword": "romand Juicy Lasting Tint",
+    "video_count": 28,
+    "total_views": 600000,
+    "video_count_last_week": 22,
+    "total_views_last_week": 480000,
+    "change_rate": 25.0
+  },
+  {
+    "product_code": "A000000000001",
+    "keyword": "Torriden DIVE-IN Serum",
+    "video_count": 45,
+    "total_views": 850000,
+    "video_count_last_week": 38,
+    "total_views_last_week": 720000,
+    "change_rate": 18.1
+  },
+  {
+    "product_code": "A000000000004",
+    "keyword": "Goodal Vitamin C Serum",
+    "video_count": 32,
+    "total_views": 750000,
+    "video_count_last_week": 25,
+    "total_views_last_week": 520000,
+    "change_rate": 44.2
+  },
+  {
+    "product_code": "A000000000013",
+    "keyword": "Mediheal NMF Mask",
+    "video_count": 15,
+    "total_views": 130000,
+    "video_count_last_week": 12,
+    "total_views_last_week": 140000,
+    "change_rate": -7.1
+  },
+  {
+    "product_code": "A000000000018",
+    "keyword": "TIRTIR Red Cushion",
+    "video_count": 95,
+    "total_views": 1400000,
+    "video_count_last_week": 70,
+    "total_views_last_week": 800000,
+    "change_rate": 75.0
+  },
+  {
+    "product_code": "A000000000002",
+    "keyword": "Round Lab Dokdo Toner",
+    "video_count": 38,
+    "total_views": 380000,
+    "video_count_last_week": 30,
+    "total_views_last_week": 340000,
+    "change_rate": 11.8
+  },
+  {
+    "product_code": "A000000000009",
+    "keyword": "Biodance Collagen Mask",
+    "video_count": 8,
+    "total_views": 20000,
+    "video_count_last_week": 6,
+    "total_views_last_week": 18000,
+    "change_rate": 11.1
+  },
+  {
+    "product_code": "A000000000048",
+    "keyword": "COSRX Pimple Patch",
+    "video_count": 85,
+    "total_views": 1200000,
+    "video_count_last_week": 60,
+    "total_views_last_week": 550000,
+    "change_rate": 118.2
+  },
+  {
+    "product_code": "A000000000010",
+    "keyword": "numbuzin Vitamin C",
+    "video_count": 22,
+    "total_views": 420000,
+    "video_count_last_week": 18,
+    "total_views_last_week": 380000,
+    "change_rate": 10.5
+  },
+  {
+    "product_code": "A000000000012",
+    "keyword": "dAlba White Truffle Serum",
+    "video_count": 18,
+    "total_views": 95000,
+    "video_count_last_week": 15,
+    "total_views_last_week": 100000,
+    "change_rate": -5.0
+  },
+  {
+    "product_code": "A000000000008",
+    "keyword": "Innisfree Sunscreen",
+    "video_count": 10,
+    "total_views": 25000,
+    "video_count_last_week": 8,
+    "total_views_last_week": 28000,
+    "change_rate": -10.7
+  },
+  {
+    "product_code": "A000000000017",
+    "keyword": "Round Lab Sunscreen",
+    "video_count": 20,
+    "total_views": 320000,
+    "video_count_last_week": 16,
+    "total_views_last_week": 290000,
+    "change_rate": 10.3
+  },
+  {
+    "product_code": "A000000000020",
+    "keyword": "Etude SoonJung Cream",
+    "video_count": 7,
+    "total_views": 22000,
+    "video_count_last_week": 5,
+    "total_views_last_week": 25000,
+    "change_rate": -12.0
+  },
+  {
+    "product_code": "A000000000014",
+    "keyword": "VDL Foundation",
+    "video_count": 15,
+    "total_views": 230000,
+    "video_count_last_week": 12,
+    "total_views_last_week": 210000,
+    "change_rate": 9.5
+  },
+  {
+    "product_code": "A000000000006",
+    "keyword": "CLIO Kill Cover Cushion",
+    "video_count": 65,
+    "total_views": 1100000,
+    "video_count_last_week": 50,
+    "total_views_last_week": 880000,
+    "change_rate": 25.0
+  },
+  {
+    "product_code": "A000000000033",
+    "keyword": "LANEIGE Lip Sleeping Mask",
+    "video_count": 60,
+    "total_views": 950000,
+    "video_count_last_week": 48,
+    "total_views_last_week": 800000,
+    "change_rate": 18.8
+  },
+  {
+    "product_code": "A000000000021",
+    "keyword": "Beauty of Joseon Glow Serum",
+    "video_count": 40,
+    "total_views": 550000,
+    "video_count_last_week": 32,
+    "total_views_last_week": 480000,
+    "change_rate": 14.6
+  },
+  {
+    "product_code": "A000000000016",
+    "keyword": "mixsoon Bean Essence",
+    "video_count": 12,
+    "total_views": 35000,
+    "video_count_last_week": 10,
+    "total_views_last_week": 38000,
+    "change_rate": -7.9
+  },
+  {
+    "product_code": "A000000000034",
+    "keyword": "Innisfree No Sebum Powder",
+    "video_count": 40,
+    "total_views": 400000,
+    "video_count_last_week": 35,
+    "total_views_last_week": 370000,
+    "change_rate": 8.1
+  },
+  {
+    "product_code": "A000000000024",
+    "keyword": "Moremo Hair Treatment",
+    "video_count": 22,
+    "total_views": 280000,
+    "video_count_last_week": 18,
+    "total_views_last_week": 250000,
+    "change_rate": 12.0
+  },
+  {
+    "product_code": "A000000000031",
+    "keyword": "SKIN1004 Centella Toner",
+    "video_count": 15,
+    "total_views": 200000,
+    "video_count_last_week": 12,
+    "total_views_last_week": 185000,
+    "change_rate": 8.1
+  },
+  {
+    "product_code": "A000000000003",
+    "keyword": "COSRX Snail Mucin",
+    "video_count": 120,
+    "total_views": 800000,
+    "video_count_last_week": 95,
+    "total_views_last_week": 850000,
+    "change_rate": -5.9
+  },
+  {
+    "product_code": "A000000000025",
+    "keyword": "Banila Co Clean It Zero",
+    "video_count": 30,
+    "total_views": 180000,
+    "video_count_last_week": 25,
+    "total_views_last_week": 190000,
+    "change_rate": -5.3
+  },
+  {
+    "product_code": "A000000000023",
+    "keyword": "Beauty of Joseon Sunscreen",
+    "video_count": 50,
+    "total_views": 500000,
+    "video_count_last_week": 42,
+    "total_views_last_week": 520000,
+    "change_rate": -3.8
+  },
+  {
+    "product_code": "A000000000039",
+    "keyword": "Etude Eye Palette",
+    "video_count": 25,
+    "total_views": 350000,
+    "video_count_last_week": 20,
+    "total_views_last_week": 310000,
+    "change_rate": 12.9
+  },
+  {
+    "product_code": "A000000000036",
+    "keyword": "Sulwhasoo First Care",
+    "video_count": 20,
+    "total_views": 60000,
+    "video_count_last_week": 18,
+    "total_views_last_week": 65000,
+    "change_rate": -7.7
+  },
+  {
+    "product_code": "A000000000037",
+    "keyword": "heimish All Clean Balm",
+    "video_count": 18,
+    "total_views": 150000,
+    "video_count_last_week": 15,
+    "total_views_last_week": 140000,
+    "change_rate": 7.1
+  },
+  {
+    "product_code": "A000000000038",
+    "keyword": "Klairs Serum",
+    "video_count": 55,
+    "total_views": 900000,
+    "video_count_last_week": 40,
+    "total_views_last_week": 480000,
+    "change_rate": 87.5
+  },
+  {
+    "product_code": "A000000000032",
+    "keyword": "SOME BY MI Miracle Toner",
+    "video_count": 35,
+    "total_views": 450000,
+    "video_count_last_week": 28,
+    "total_views_last_week": 400000,
+    "change_rate": 12.5
+  },
+  {
+    "product_code": "A000000000041",
+    "keyword": "Illiyoon Ceramide Cream",
+    "video_count": 18,
+    "total_views": 40000,
+    "video_count_last_week": 15,
+    "total_views_last_week": 42000,
+    "change_rate": -4.8
+  },
+  {
+    "product_code": "A000000000026",
+    "keyword": "mise en scene Hair Oil",
+    "video_count": 10,
+    "total_views": 65000,
+    "video_count_last_week": 8,
+    "total_views_last_week": 60000,
+    "change_rate": 8.3
+  },
+  {
+    "product_code": "A000000000027",
+    "keyword": "Happy Bath Body Wash",
+    "video_count": 5,
+    "total_views": 30000,
+    "video_count_last_week": 4,
+    "total_views_last_week": 25000,
+    "change_rate": 20.0
+  },
+  {
+    "product_code": "A000000000028",
+    "keyword": "Dermatory Mask",
+    "video_count": 8,
+    "total_views": 45000,
+    "video_count_last_week": 6,
+    "total_views_last_week": 42000,
+    "change_rate": 7.1
+  },
+  {
+    "product_code": "A000000000040",
+    "keyword": "Innisfree Green Tea Serum",
+    "video_count": 22,
+    "total_views": 120000,
+    "video_count_last_week": 18,
+    "total_views_last_week": 125000,
+    "change_rate": -4.0
+  },
+  {
+    "product_code": "A000000000015",
+    "keyword": "La Roche Posay Cicaplast",
+    "video_count": 25,
+    "total_views": 250000,
+    "video_count_last_week": 20,
+    "total_views_last_week": 230000,
+    "change_rate": 8.7
+  },
+  {
+    "product_code": "A000000000005",
+    "keyword": "esNature Squalane Cream",
+    "video_count": 6,
+    "total_views": 20000,
+    "video_count_last_week": 5,
+    "total_views_last_week": 22000,
+    "change_rate": -9.1
+  },
+  {
+    "product_code": "A000000000019",
+    "keyword": "Biodance Panthenol Mask",
+    "video_count": 30,
+    "total_views": 110000,
+    "video_count_last_week": 25,
+    "total_views_last_week": 95000,
+    "change_rate": 15.8
+  },
+  {
+    "product_code": "A000000000029",
+    "keyword": "Moremo Water Treatment",
+    "video_count": 25,
+    "total_views": 170000,
+    "video_count_last_week": 20,
+    "total_views_last_week": 155000,
+    "change_rate": 9.7
+  },
+  {
+    "product_code": "A000000000030",
+    "keyword": "Illiyoon Body Lotion",
+    "video_count": 12,
+    "total_views": 25000,
+    "video_count_last_week": 10,
+    "total_views_last_week": 28000,
+    "change_rate": -10.7
+  },
+  {
+    "product_code": "A000000000042",
+    "keyword": "TONYMOLY Retinol",
+    "video_count": 42,
+    "total_views": 1900000,
+    "video_count_last_week": 15,
+    "total_views_last_week": 350000,
+    "change_rate": 442.9
+  },
+  {
+    "product_code": "A000000000043",
+    "keyword": "Etude Double Lasting",
+    "video_count": 15,
+    "total_views": 100000,
+    "video_count_last_week": 12,
+    "total_views_last_week": 95000,
+    "change_rate": 5.3
+  },
+  {
+    "product_code": "A000000000044",
+    "keyword": "COSRX AC Collection",
+    "video_count": 12,
+    "total_views": 85000,
+    "video_count_last_week": 10,
+    "total_views_last_week": 80000,
+    "change_rate": 6.2
+  },
+  {
+    "product_code": "A000000000035",
+    "keyword": "SKINFOOD Glutathione",
+    "video_count": 48,
+    "total_views": 1500000,
+    "video_count_last_week": 18,
+    "total_views_last_week": 280000,
+    "change_rate": 435.7
+  },
+  {
+    "product_code": "A000000000045",
+    "keyword": "OST Vitamin C Serum",
+    "video_count": 10,
+    "total_views": 50000,
+    "video_count_last_week": 8,
+    "total_views_last_week": 48000,
+    "change_rate": 4.2
+  },
+  {
+    "product_code": "A000000000046",
+    "keyword": "Klairs Supple Toner",
+    "video_count": 20,
+    "total_views": 190000,
+    "video_count_last_week": 16,
+    "total_views_last_week": 175000,
+    "change_rate": 8.6
+  },
+  {
+    "product_code": "A000000000047",
+    "keyword": "Dr.G Sunscreen",
+    "video_count": 14,
+    "total_views": 75000,
+    "video_count_last_week": 11,
+    "total_views_last_week": 70000,
+    "change_rate": 7.1
+  },
+  {
+    "product_code": "A000000000049",
+    "keyword": "mixsoon Mushroom Cream",
+    "video_count": 35,
+    "total_views": 18000,
+    "video_count_last_week": 28,
+    "total_views_last_week": 15000,
+    "change_rate": 20.0
+  },
+  {
+    "product_code": "A000000000050",
+    "keyword": "Lador Hair Pack",
+    "video_count": 8,
+    "total_views": 22000,
+    "video_count_last_week": 6,
+    "total_views_last_week": 20000,
+    "change_rate": 10.0
+  },
+  {
+    "product_code": "A000000000022",
+    "keyword": "Romand Blusher",
+    "video_count": 70,
+    "total_views": 1700000,
+    "video_count_last_week": 50,
+    "total_views_last_week": 850000,
+    "change_rate": 100.0
+  },
+  {
+    "product_code": "OUTSIDE_YT_001",
+    "keyword": "Peripera Ink Tint",
+    "search_keyword_en": "Peripera Ink Tint",
+    "video_count": 65,
+    "total_views": 4500000,
+    "video_count_last_week": 40,
+    "total_views_last_week": 1500000,
+    "change_rate": 200.0
+  },
+  {
+    "product_code": "OUTSIDE_YT_002",
+    "keyword": "Medicube Age-R Booster",
+    "search_keyword_en": "Medicube Age-R Booster",
+    "video_count": 48,
+    "total_views": 3200000,
+    "video_count_last_week": 30,
+    "total_views_last_week": 1200000,
+    "change_rate": 166.7
+  },
+  {
+    "product_code": "OUTSIDE_YT_003",
+    "keyword": "Abib Heartleaf Calming Pad",
+    "search_keyword_en": "Abib Heartleaf Pad",
+    "video_count": 38,
+    "total_views": 2100000,
+    "video_count_last_week": 25,
+    "total_views_last_week": 800000,
+    "change_rate": 162.5
+  },
+  {
+    "product_code": "OUTSIDE_YT_004",
+    "keyword": "VT Cica Cream review",
+    "search_keyword_en": "VT Cica Cream",
+    "video_count": 30,
+    "total_views": 1800000,
+    "video_count_last_week": 22,
+    "total_views_last_week": 750000,
+    "change_rate": 140.0
+  },
+  {
+    "product_code": "OUTSIDE_YT_005",
+    "keyword": "Hanyul Artemisia Essence",
+    "search_keyword_en": "Hanyul Artemisia Essence",
+    "video_count": 22,
+    "total_views": 900000,
+    "video_count_last_week": 15,
+    "total_views_last_week": 400000,
+    "change_rate": 125.0
+  }
+]
