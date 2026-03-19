@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-#kbeauty-app{font-family:'Noto Sans Thai','Noto Sans KR',system-ui,sans-serif;background:#f8f9fa;color:#2d3436;max-width:520px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:160px}
+#kbeauty-app{font-family:'Noto Sans Thai','Noto Sans KR',system-ui,sans-serif;background:#f8f9fa;color:#2d3436;max-width:520px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:20px}
 
 /* Warning banner */
 .warn-banner{background:#fff3cd;border-bottom:2px solid #ffc107;padding:10px 36px 10px 14px;font-size:12px;color:#856404;line-height:1.5;position:relative}
@@ -144,7 +144,7 @@
 /* Share */
 
 /* Footer */
-.footer{position:absolute;bottom:0;left:0;right:0;background:#2d3436;color:#aaa;padding:14px 16px;font-size:11px;text-align:center;line-height:1.7}
+.footer{background:#2d3436;color:#aaa;padding:14px 16px;font-size:11px;text-align:center;line-height:1.7;max-width:520px;margin:0 auto}
 
 .cat-legend{display:flex;gap:10px;padding:4px 16px 8px;overflow-x:auto;font-size:11px;color:#666}
 .cat-legend span{white-space:nowrap}
@@ -191,7 +191,7 @@
 
 <div class="hdr">
   <h1>K-Beauty Trend Tracker</h1>
-  <div class="sub">เทรนด์ความงามเกาหลี อัปเดตทุกสัปดาห์ | 2026-W12</div>
+  <div class="sub">เทรนด์ความงามเกาหลี | อัปเดต: 20 มี.ค. 2026</div>
   <div class="tagline">จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา</div>
 </div>
 
@@ -208,7 +208,7 @@
   <div class="stats">
     <div class="st"><div class="st-v">30</div><div class="st-l">TOP 30</div></div>
     <div class="st"><div class="st-v">50</div><div class="st-l">วิเคราะห์</div></div>
-    <div class="st"><div class="st-v">3</div><div class="st-l">สินค้าที่ต้องระวัง</div></div>
+    <div class="st"><div class="st-v">3</div><div class="st-l">รอติดตาม</div></div>
     <div class="st"><div class="st-v">3</div><div class="st-l">Hidden Gem</div></div>
   </div>
   <div class="fbar">
@@ -519,7 +519,7 @@
     <div class="product-brand">TONYMOLY</div>
     <div class="product-name">TONYMOLY เอสเซนส์ Retinol Intense Rewrinkle 40ml</div>
     <div class="product-name-ko">레티놀 인텐스 리링클 에센스 40ml</div>
-    <div class="product-badges"><span class="badge badge-buzz">สินค้าที่ต้องระวัง</span><span class="seller-grade grade-hold">รอดู</span></div>
+    <div class="product-badges"><span class="badge badge-buzz">&#9203; รอติดตาม</span><span class="seller-grade grade-hold">รอดู</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
@@ -539,7 +539,7 @@
     <div class="product-brand">SKINFOOD</div>
     <div class="product-name">SKINFOOD เอสเซนส์ Glutathione 700 ผิวกระจ่างใส 50ml</div>
     <div class="product-name-ko">글루타치온 700 광채 에센스 50ml</div>
-    <div class="product-badges"><span class="badge badge-buzz">สินค้าที่ต้องระวัง</span><span class="seller-grade grade-hold">รอดู</span></div>
+    <div class="product-badges"><span class="badge badge-buzz">&#9203; รอติดตาม</span><span class="seller-grade grade-hold">รอดู</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
@@ -719,7 +719,7 @@
     <div class="product-brand">rom&amp;nd</div>
     <div class="product-name">rom&amp;nd บลัชออน Better Than Finish Airy 3.5g</div>
     <div class="product-name-ko">베러 댄 피니시 에어리 블러셔 3.5g</div>
-    <div class="product-badges"><span class="badge badge-buzz">สินค้าที่ต้องระวัง</span><span class="seller-grade grade-hold">รอดู</span></div>
+    <div class="product-badges"><span class="badge badge-buzz">&#9203; รอติดตาม</span><span class="seller-grade grade-hold">รอดู</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
@@ -1514,15 +1514,14 @@
 
 <!-- Tab 3: Seller -->
 <div class="panel" id="p-seller">
-  <div class="ss ss-buzz"><h3>&#9888;&#65039; สินค้าที่ต้องระวัง (3 รายการ)</h3>
-  <p class="ss-desc">สินค้าที่เป็นกระแสแต่ยอดขายจริงยังไม่มาก -- ระวังสต็อกเกิน</p>
+  <div class="ss ss-buzz"><h3>&#9203; รอติดตาม (3 รายการ)</h3>
+  <p class="ss-desc">สินค้าที่ยังต้องรอดูข้อมูลเพิ่มเติม ดูรายละเอียดใน Pro</p>
   <p class="ss-teaser">&#128274; ดูรายชื่อทั้งหมดได้ที่แท็บ <a href="#" onclick="document.querySelectorAll('.tab-btn')[3].click();return false" style="color:#e8547a;font-weight:700">รายงาน Pro</a></p>
 </div><div class="ss ss-gem"><h3>&#128142; Hidden Gem - โอกาส (3)</h3>
   <p class="ss-desc">สินค้าที่ขายดีแต่ยังไม่ค่อยมีคู่แข่ง</p><div class="src-item">
   <span class="src-rank">#28</span>
   <div class="src-info"><div class="src-name">Biodance Real Collagen Deep Mask 4pcs</div><div class="src-note">OY TOP15 / hidden gem</div></div>
-  <div class="src-right"><span class="src-score">40</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="https://shopee.co.th/search?keyword=Biodance%20Collagen%20Mask&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -1534,8 +1533,7 @@
 </div><div class="src-item">
   <span class="src-rank">#29</span>
   <div class="src-info"><div class="src-name">Innisfree Tone Up No Sebum Sunscreen SPF50+ 50ml</div><div class="src-note">OY TOP15 / hidden gem</div></div>
-  <div class="src-right"><span class="src-score">40</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="https://shopee.co.th/search?keyword=Innisfree%20No%20Sebum%20Sunscreen&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -1547,8 +1545,7 @@
 </div><div class="src-item">
   <span class="src-rank">#31</span>
   <div class="src-info"><div class="src-name">Etude SoonJung 2x Barrier Intensive Cream 60ml</div><div class="src-note">OY TOP15 / hidden gem</div></div>
-  <div class="src-right"><span class="src-score">37</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="https://shopee.co.th/search?keyword=Etude%20SoonJung%20Cream&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -1593,8 +1590,7 @@
 </div></div><div class="ss"><h3>&#127942; แนะนำซื้อขาย TOP 5</h3><div class="src-item">
   <span class="src-rank">#1</span>
   <div class="src-info"><div class="src-name">TIRTIR Mask Fit Red Cushion 18g</div><div class="src-note">OY TOP5 / search rising</div></div>
-  <div class="src-right"><span class="src-score">87</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="https://shopee.co.th/search?keyword=TIRTIR%20Red%20Cushion&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -1606,8 +1602,7 @@
 </div><div class="src-item">
   <span class="src-rank">#2</span>
   <div class="src-info"><div class="src-name">Torriden DIVE-IN Low Molecular Hyaluronic Acid Serum 50ml</div><div class="src-note">OY TOP5</div></div>
-  <div class="src-right"><span class="src-score">83</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="https://shopee.co.th/search?keyword=Torriden%20DIVE-IN%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -1619,8 +1614,7 @@
 </div><div class="src-item">
   <span class="src-rank">#3</span>
   <div class="src-info"><div class="src-name">COSRX Pimple Master Patch 24pcs</div><div class="src-note">OY TOP15</div></div>
-  <div class="src-right"><span class="src-score">82</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="https://shopee.co.th/search?keyword=COSRX%20Pimple%20Patch&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -1632,8 +1626,7 @@
 </div><div class="src-item">
   <span class="src-rank">#4</span>
   <div class="src-info"><div class="src-name">ANUA Heartleaf 77% Soothing Toner Pad 70pcs</div><div class="src-note">OY TOP5</div></div>
-  <div class="src-right"><span class="src-score">81</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="https://shopee.co.th/search?keyword=ANUA%20Heartleaf%20Toner%20Pad&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -1645,8 +1638,7 @@
 </div><div class="src-item">
   <span class="src-rank">#5</span>
   <div class="src-info"><div class="src-name">Goodal Green Tangerine Vita C Dark Spot Serum 30ml</div><div class="src-note">OY TOP5</div></div>
-  <div class="src-right"><span class="src-score">81</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="https://shopee.co.th/search?keyword=Goodal%20Vitamin%20C%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -1669,7 +1661,7 @@
     <tr><td>TOP 10 อันดับ</td><td>&#10004;</td><td>&#10004;</td></tr>
     <tr><td>คะแนนรายแหล่ง (OY/NS/YT)</td><td>&#10060;</td><td>&#10004;</td></tr>
     <tr><td>TOP 30 รายละเอียด</td><td>&#10060;</td><td>&#10004;</td></tr>
-    <tr><td>สินค้าที่ต้องระวัง ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
+    <tr><td>รอติดตาม ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
     <tr><td>Hidden Gem ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
     <tr><td>Outside OY โอกาส</td><td>&#10060;</td><td>&#10004;</td></tr>
     <tr><td>คู่มือสำหรับเซลเลอร์</td><td>&#10060;</td><td>&#10004;</td></tr>
@@ -1690,16 +1682,13 @@
     <div class="email-thanks" id="pro-thanks">ขอบคุณ! เราจะส่งรายงานให้คุณเร็วๆ นี้ &#127881;</div>
   </div>
   <div class="ss ss-buzz" style="margin-top:16px">
-    <h3>&#9888;&#65039; สินค้าที่ต้องระวัง (3 รายการ)</h3>
+    <h3>&#9203; รอติดตาม (3 รายการ)</h3>
     <p class="ss-desc">สินค้าที่เป็นกระแสแต่ยอดขายจริงยังไม่มาก</p>
     <div class="blur-wrap">
       <div class="blur-list"><div class="si si-buzz"><div class="si-name">TONYMOLY Retinol Intense Rewrinkle Essence 40ml</div>
-  <div class="si-scores">OY: 20 vs NS: 91 vs YT: 100</div>
-  <div class="si-reason">ดังในโซเชียลแต่ยอดขายจริงต่ำ -- ระวังสต็อกเกิน</div></div><div class="si si-buzz"><div class="si-name">SKINFOOD Glutathione 700 Glow Essence 50ml</div>
-  <div class="si-scores">OY: 14 vs NS: 100 vs YT: 98</div>
-  <div class="si-reason">ดังในโซเชียลแต่ยอดขายจริงต่ำ -- ระวังสต็อกเกิน</div></div><div class="si si-buzz"><div class="si-name">rom&amp;nd Better Than Finish Airy Blusher 3.5g</div>
-  <div class="si-scores">OY: 2 vs NS: 82 vs YT: 100</div>
-  <div class="si-reason">ดังในโซเชียลแต่ยอดขายจริงต่ำ -- ระวังสต็อกเกิน</div></div></div>
+  <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">SKINFOOD Glutathione 700 Glow Essence 50ml</div>
+  <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">rom&amp;nd Better Than Finish Airy Blusher 3.5g</div>
+  <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div></div>
       <a href="#" class="blur-cta" onclick="this.parentElement.querySelector('.blur-list').classList.remove('blur-list');this.remove();return false">&#128275; ปลดล็อกดูรายชื่อ</a>
     </div>
   </div>
@@ -1721,8 +1710,8 @@
     <p style="color:#999;font-size:12px;margin-top:8px">สัดส่วนและเกณฑ์คะแนนเป็นสูตรเฉพาะของ K-Beauty Trend Tracker</p>
   </div>
   <div class="msec">
-    <h3>&#128680; สินค้าที่ต้องระวัง คืออะไร?</h3>
-    <p>สินค้าที่คนค้นหาและรีวิวมากในโซเชียล แต่ยอดขายจริงยังไม่สูง -- อาจเป็นแค่กระแสชั่วคราว ควรระวังในการสต็อก</p>
+    <h3>&#9203; รอติดตาม คืออะไร?</h3>
+    <p>สินค้าที่ยังต้องรอดูข้อมูลเพิ่มเติม -- กระแสโซเชียลสูงแต่ยอดขายจริงยังไม่ชัดเจน</p>
     <h3 style="margin-top:12px">&#128142; Hidden Gem คืออะไร?</h3>
     <p>สินค้าที่ขายดีเงียบๆ แต่ยังไม่มีคนรีวิวหรือค้นหามาก -- โอกาสทองสำหรับเซลเลอร์เข้าตลาดก่อนคู่แข่ง</p>
     <h3 style="margin-top:12px">&#128640; RISING คืออะไร?</h3>
@@ -1743,12 +1732,12 @@
 </div>
 
 
+</div>
+
 <div class="footer">
   ข้อมูลเพื่อการอ้างอิงเท่านั้น ไม่ใช่คำแนะนำการลงทุนหรือการซื้อขาย<br>
   แหล่งข้อมูล: Olive Young Korea, Naver Shopping, YouTube | อัปเดตสัปดาห์ละครั้ง<br>
   ลิงก์บางส่วนเป็นลิงก์พันธมิตร — รายได้จากการซื้อผ่านลิงก์ช่วยสนับสนุนการดำเนินงานของเว็บไซต์นี้
-</div>
-
 </div>
 
 <script>

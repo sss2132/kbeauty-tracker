@@ -9,6 +9,17 @@ import glob
 import json
 import os
 import urllib.parse
+from datetime import datetime
+
+TH_MONTHS = {
+    1: "ม.ค.", 2: "ก.พ.", 3: "มี.ค.", 4: "เม.ย.",
+    5: "พ.ค.", 6: "มิ.ย.", 7: "ก.ค.", 8: "ส.ค.",
+    9: "ก.ย.", 10: "ต.ค.", 11: "พ.ย.", 12: "ธ.ค."
+}
+
+def get_thai_date():
+    now = datetime.now()
+    return f"อัปเดต: {now.day} {TH_MONTHS[now.month]} {now.year}"
 
 DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -63,7 +74,7 @@ def build_warning_banner(data_status):
     msgs = []
     if not yt_ok and nv_ok:
         msgs.append("&#9888;&#65039; สัปดาห์นี้ไม่มีข้อมูล YouTube -- คะแนนคำนวณจาก Olive Young + Naver เท่านั้น")
-        msgs.append("สินค้าที่ต้องระวัง อาจตรวจจับได้ไม่สมบูรณ์ในสัปดาห์นี้")
+        msgs.append("&#9203; รอติดตาม อาจตรวจจับได้ไม่สมบูรณ์ในสัปดาห์นี้")
     elif not nv_ok and yt_ok:
         msgs.append("&#9888;&#65039; สัปดาห์นี้ไม่มีข้อมูล Naver Shopping -- คะแนนคำนวณจาก Olive Young + YouTube เท่านั้น")
     elif not nv_ok and not yt_ok:
@@ -103,7 +114,7 @@ def build_product_cards(products):
                 badges += f'<span class="rising-detail">OY #{oy_rank} &#8594; #{rank}</span>'
         for f in p.get("flags", []):
             if f == "buzz_trap":
-                badges += '<span class="badge badge-buzz">สินค้าที่ต้องระวัง</span>'
+                badges += '<span class="badge badge-buzz">&#9203; รอติดตาม</span>'
             elif f == "hidden_gem":
                 badges += '<span class="badge badge-gem">HIDDEN GEM</span>'
         g = p.get("seller_grade", "")
@@ -274,11 +285,11 @@ def build_keywords_html(data):
 
 def build_seller_html(data):
     html = ""
-    # สินค้าที่ต้องระวัง - teaser only (full list in Pro tab)
+    # &#9203; รอติดตาม - teaser only (full list in Pro tab)
     bts = data.get("buzz_traps", [])
     if bts:
-        html += f'''<div class="ss ss-buzz"><h3>&#9888;&#65039; สินค้าที่ต้องระวัง ({len(bts)} รายการ)</h3>
-  <p class="ss-desc">สินค้าที่เป็นกระแสแต่ยอดขายจริงยังไม่มาก -- ระวังสต็อกเกิน</p>
+        html += f'''<div class="ss ss-buzz"><h3>&#9203; รอติดตาม ({len(bts)} รายการ)</h3>
+  <p class="ss-desc">สินค้าที่ยังต้องรอดูข้อมูลเพิ่มเติม ดูรายละเอียดใน Pro</p>
   <p class="ss-teaser">&#128274; ดูรายชื่อทั้งหมดได้ที่แท็บ <a href="#" onclick="document.querySelectorAll('.tab-btn')[3].click();return false" style="color:#e8547a;font-weight:700">รายงาน Pro</a></p>
 </div>'''
 
@@ -288,7 +299,6 @@ def build_seller_html(data):
         items = ""
         for hg in hgs:
             items += f'''<div class="si si-gem"><div class="si-name">{esc(hg["brand"])} {esc(hg["name_ko"])}</div>
-  <div class="si-scores">OY: {hg["scores"]["oliveyoung"]} vs NS: {hg["scores"].get("naver_search", 0)} vs YT: {hg["scores"].get("youtube", 0)}</div>
   <div class="si-reason">ขายดีเงียบๆ ยังไม่มีคนรีวิวมาก -- โอกาสเข้าตลาดก่อนคู่แข่ง</div></div>'''
         html += f'''<div class="ss ss-gem"><h3>&#128142; Hidden Gem - โอกาส ({len(hgs)})</h3>
   <p class="ss-desc">สินค้าที่ขายดีแต่ยังไม่ค่อยมีคู่แข่ง</p>{items}</div>'''
@@ -323,7 +333,6 @@ def build_seller_html(data):
             brand_en = esc(dp.get("brand_en", dp["brand"]))
             items += f'''<div class="si si-dropped">
   <div class="si-name">{brand_en} {esc(dp["name_ko"])}</div>
-  <div class="si-scores">เดิมอันดับ #{dp["rank"]} | OY: {dp["scores"]["oliveyoung"]} NS: {dp["scores"].get("naver_search", 0)} YT: {dp["scores"].get("youtube", 0)}</div>
 </div>'''
         html += f'''<div class="ss ss-dropped"><h3>&#128308; สินค้าที่หลุดจาก TOP 30 สัปดาห์นี้ ({len(dropped)})</h3>
   <p class="ss-desc">สินค้าที่อยู่ใน TOP 30 สัปดาห์ก่อนแต่หลุดออกแล้ว</p>{items}</div>'''
@@ -345,8 +354,7 @@ def build_seller_html(data):
                 items += f'''<div class="src-item">
   <span class="src-rank">#{i}</span>
   <div class="src-info"><div class="src-name">{nm}</div><div class="src-note">{note}</div></div>
-  <div class="src-right"><span class="src-score">{p["scores"]["total"]}</span>
-    <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -364,7 +372,7 @@ def generate_html(data):
     products = data["products"]
     stats = data["stats"]
     updated = data["updated"]
-    week = data["week"]
+    date_th = get_thai_date()
     w = data.get("active_weights", data.get("source_weights", {"oliveyoung": 0.45, "naver_search": 0.30, "youtube": 0.25}))
     oy_pct = int(w.get("oliveyoung", 0) * 100)
     ns_pct = int(w.get("naver_search", 0) * 100)
@@ -381,18 +389,17 @@ def generate_html(data):
     keywords_html = build_keywords_html(data)
     seller_html = build_seller_html(data)
 
-    # Blurred สินค้าที่ต้องระวัง list for Pro tab
+    # Blurred &#9203; รอติดตาม list for Pro tab
     bts = data.get("buzz_traps", [])
     buzz_pro_html = ""
     if bts:
         bt_items = ""
         for bt in bts:
             bt_items += f'''<div class="si si-buzz"><div class="si-name">{esc(bt["brand"])} {esc(bt["name_ko"])}</div>
-  <div class="si-scores">OY: {bt["scores"]["oliveyoung"]} vs NS: {bt["scores"].get("naver_search", 0)} vs YT: {bt["scores"].get("youtube", 0)}</div>
-  <div class="si-reason">ดังในโซเชียลแต่ยอดขายจริงต่ำ -- ระวังสต็อกเกิน</div></div>'''
+  <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div>'''
         buzz_pro_html = f'''<div class="ss ss-buzz" style="margin-top:16px">
-    <h3>&#9888;&#65039; สินค้าที่ต้องระวัง ({len(bts)} รายการ)</h3>
-    <p class="ss-desc">สินค้าที่เป็นกระแสแต่ยอดขายจริงยังไม่มาก</p>
+    <h3>&#9203; รอติดตาม ({len(bts)} รายการ)</h3>
+    <p class="ss-desc">สินค้าที่ยังต้องรอดูข้อมูลเพิ่มเติม</p>
     <div class="blur-wrap">
       <div class="blur-list">{bt_items}</div>
       <a href="#" class="blur-cta" onclick="this.parentElement.querySelector('.blur-list').classList.remove('blur-list');this.remove();return false">&#128275; ปลดล็อกดูรายชื่อ</a>
@@ -633,7 +640,7 @@ def generate_html(data):
 
 <div class="hdr">
   <h1>K-Beauty Trend Tracker</h1>
-  <div class="sub">เทรนด์ความงามเกาหลี อัปเดตทุกสัปดาห์ | {week}</div>
+  <div class="sub">เทรนด์ความงามเกาหลี | {date_th}</div>
   <div class="tagline">จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา</div>
 </div>
 
@@ -650,7 +657,7 @@ def generate_html(data):
   <div class="stats">
     <div class="st"><div class="st-v">{stats["total_products"]}</div><div class="st-l">TOP 30</div></div>
     <div class="st"><div class="st-v">{stats["total_analyzed"]}</div><div class="st-l">วิเคราะห์</div></div>
-    <div class="st"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">สินค้าที่ต้องระวัง</div></div>
+    <div class="st"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">&#9203; รอติดตาม</div></div>
     <div class="st"><div class="st-v">{stats["hidden_gem_count"]}</div><div class="st-l">Hidden Gem</div></div>
   </div>
   <div class="fbar">
@@ -699,7 +706,7 @@ def generate_html(data):
     <tr><td>TOP 10 อันดับ</td><td>&#10004;</td><td>&#10004;</td></tr>
     <tr><td>คะแนนรายแหล่ง (OY/NS/YT)</td><td>&#10060;</td><td>&#10004;</td></tr>
     <tr><td>TOP 30 รายละเอียด</td><td>&#10060;</td><td>&#10004;</td></tr>
-    <tr><td>สินค้าที่ต้องระวัง ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
+    <tr><td>&#9203; รอติดตาม ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
     <tr><td>Hidden Gem ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
     <tr><td>Outside OY โอกาส</td><td>&#10060;</td><td>&#10004;</td></tr>
     <tr><td>คู่มือสำหรับเซลเลอร์</td><td>&#10060;</td><td>&#10004;</td></tr>
@@ -738,7 +745,7 @@ def generate_html(data):
     <p style="color:#999;font-size:12px;margin-top:8px">สัดส่วนและเกณฑ์คะแนนเป็นสูตรเฉพาะของ K-Beauty Trend Tracker</p>
   </div>
   <div class="msec">
-    <h3>&#128680; สินค้าที่ต้องระวัง คืออะไร?</h3>
+    <h3>&#128680; &#9203; รอติดตาม คืออะไร?</h3>
     <p>สินค้าที่คนค้นหาและรีวิวมากในโซเชียล แต่ยอดขายจริงยังไม่สูง -- อาจเป็นแค่กระแสชั่วคราว ควรระวังในการสต็อก</p>
     <h3 style="margin-top:12px">&#128142; Hidden Gem คืออะไร?</h3>
     <p>สินค้าที่ขายดีเงียบๆ แต่ยังไม่มีคนรีวิวหรือค้นหามาก -- โอกาสทองสำหรับเซลเลอร์เข้าตลาดก่อนคู่แข่ง</p>
@@ -849,7 +856,7 @@ def generate_html(data):
     document.getElementById('sim-total').textContent=t;
     var social=Math.max(ns,yt);
     var s='';
-    if(social>70&&oy<40)s='<span style="color:#ffa502">&#9888;&#65039; สินค้าที่ต้องระวัง</span>';
+    if(social>70&&oy<40)s='<span style="color:#ffa502">&#9203; รอติดตาม</span>';
     else if(oy>70&&ns<30&&yt<30)s='<span style="color:#2ed573">&#128142; Hidden Gem</span>';
     else if(t>=85)s='<span style="color:#ff4757">&#128293; HOT</span>';
     else if(t>=60)s='<span style="color:#3742fa">&#128064; น่าจับตา</span>';
