@@ -12,7 +12,7 @@ YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
 # 제휴 파라미터 (승인 후 실제 값으로 교체)
 SHOPEE_TH_AFFILIATE_ID = "kbeautyth"
 YESSTYLE_AFFILIATE_ID = "kbeautyth"
-OLIVEYOUNG_AFFILIATE_ID = "kbeautyth"
+# OLIVEYOUNG_AFFILIATE_ID = "kbeautyth"  # 올리브영 글로벌 제휴 비활성화
 
 
 def make_affiliate_url(search_keyword, product_code=None, platform="shopee"):
@@ -26,5 +26,5 @@ def make_affiliate_url(search_keyword, product_code=None, platform="shopee"):
         return f"https://www.lazada.co.th/catalog/?q={encoded}"
     elif platform == "amazon":
         return f"https://www.amazon.com/s?k={encoded}"
-    elif platform == "oliveyoung":
-        return f"https://global.oliveyoung.com/product/{product_code}?ref={OLIVEYOUNG_AFFILIATE_ID}"
+    # elif platform == "oliveyoung":
+    #     return f"https://global.oliveyoung.com/product/{product_code}?ref={OLIVEYOUNG_AFFILIATE_ID}"

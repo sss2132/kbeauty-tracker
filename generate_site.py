@@ -63,7 +63,7 @@ def build_warning_banner(data_status):
     msgs = []
     if not yt_ok and nv_ok:
         msgs.append("&#9888;&#65039; สัปดาห์นี้ไม่มีข้อมูล YouTube -- คะแนนคำนวณจาก Olive Young + Naver เท่านั้น")
-        msgs.append("Buzz Trap อาจตรวจจับได้ไม่สมบูรณ์ในสัปดาห์นี้")
+        msgs.append("สินค้าที่ต้องระวัง อาจตรวจจับได้ไม่สมบูรณ์ในสัปดาห์นี้")
     elif not nv_ok and yt_ok:
         msgs.append("&#9888;&#65039; สัปดาห์นี้ไม่มีข้อมูล Naver Shopping -- คะแนนคำนวณจาก Olive Young + YouTube เท่านั้น")
     elif not nv_ok and not yt_ok:
@@ -103,7 +103,7 @@ def build_product_cards(products):
                 badges += f'<span class="rising-detail">OY #{oy_rank} &#8594; #{rank}</span>'
         for f in p.get("flags", []):
             if f == "buzz_trap":
-                badges += '<span class="badge badge-buzz">BUZZ TRAP</span>'
+                badges += '<span class="badge badge-buzz">สินค้าที่ต้องระวัง</span>'
             elif f == "hidden_gem":
                 badges += '<span class="badge badge-gem">HIDDEN GEM</span>'
         g = p.get("seller_grade", "")
@@ -116,7 +116,6 @@ def build_product_cards(products):
         lazada = esc(p.get("lazada_url", "#"))
         yesstyle = esc(p.get("yesstyle_url", "#"))
         amazon = esc(p.get("amazon_url", "#"))
-        oyurl = esc(p.get("oliveyoung_global_url", p.get("oliveyoung_url", "#")))
 
         cards.append(f'''<div class="product-card" data-category="{cat}">
   <div class="product-rank {rc}">{rank}{rc_html}</div>
@@ -128,16 +127,13 @@ def build_product_cards(products):
     <div class="product-badges">{badges}</div>
   </div>
   <div class="product-right">
-    <div class="rank-big">#{rank}</div>
-    <div class="score-small">{total}</div>
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="{yesstyle}" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
     <a href="{lazada}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="{oyurl}" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <a href="{yesstyle}" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>''')
@@ -211,7 +207,6 @@ def build_discover_html(products):
     <div class="product-name-ko">{name_ko}</div>
     <div class="product-badges">{badges}</div>
   </div>
-  <div class="disc-score">{total}</div>
 </div>'''
         html += f'''<div class="disc-section disc-{sec_type}">
   <div class="disc-title">{title}</div>
@@ -267,7 +262,7 @@ def build_keywords_html(data):
   <span class="kw-rate">+{o["change_rate"]:.0f}%</span>
 </div>'''
         html += f'''<div class="kw-section outside-section" style="margin-top:20px">
-  <h3>&#128161; สัญญาณนอก Olive Young</h3>
+  <h3>&#128293; มาแรงนอก Olive Young</h3>
   <p class="kw-sub">คีย์เวิร์ดที่กำลังมาแรงแต่ยังไม่อยู่ใน Olive Young Best Seller</p>
   {items}
 </div>'''
@@ -279,7 +274,7 @@ def build_keywords_html(data):
 
 def build_seller_html(data):
     html = ""
-    # Buzz Trap - teaser only (full list in Pro tab)
+    # สินค้าที่ต้องระวัง - teaser only (full list in Pro tab)
     bts = data.get("buzz_traps", [])
     if bts:
         html += f'''<div class="ss ss-buzz"><h3>&#9888;&#65039; สินค้าที่ต้องระวัง ({len(bts)} รายการ)</h3>
@@ -347,19 +342,17 @@ def build_seller_html(data):
             lazada = esc(p.get("lazada_url", "#"))
             yesstyle = esc(p.get("yesstyle_url", "#"))
             amazon = esc(p.get("amazon_url", "#"))
-            oyurl = esc(p.get("oliveyoung_global_url", p.get("oliveyoung_url", "#")))
-            items += f'''<div class="src-item">
+                items += f'''<div class="src-item">
   <span class="src-rank">#{i}</span>
   <div class="src-info"><div class="src-name">{nm}</div><div class="src-note">{note}</div></div>
   <div class="src-right"><span class="src-score">{p["scores"]["total"]}</span>
     <button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="{yesstyle}" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
     <a href="{lazada}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="{oyurl}" target="_blank" rel="noopener"><span class="bl-icon">&#127472;&#127479;</span><span class="bl-name">Olive Young Global</span><span class="bl-desc">ส่งตรงจากเกาหลี</span></a>
+    <a href="{yesstyle}" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>'''
@@ -388,7 +381,7 @@ def generate_html(data):
     keywords_html = build_keywords_html(data)
     seller_html = build_seller_html(data)
 
-    # Blurred Buzz Trap list for Pro tab
+    # Blurred สินค้าที่ต้องระวัง list for Pro tab
     bts = data.get("buzz_traps", [])
     buzz_pro_html = ""
     if bts:
@@ -657,7 +650,7 @@ def generate_html(data):
   <div class="stats">
     <div class="st"><div class="st-v">{stats["total_products"]}</div><div class="st-l">TOP 30</div></div>
     <div class="st"><div class="st-v">{stats["total_analyzed"]}</div><div class="st-l">วิเคราะห์</div></div>
-    <div class="st"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">Buzz Trap</div></div>
+    <div class="st"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">สินค้าที่ต้องระวัง</div></div>
     <div class="st"><div class="st-v">{stats["hidden_gem_count"]}</div><div class="st-l">Hidden Gem</div></div>
   </div>
   <div class="fbar">
@@ -706,7 +699,7 @@ def generate_html(data):
     <tr><td>TOP 10 อันดับ</td><td>&#10004;</td><td>&#10004;</td></tr>
     <tr><td>คะแนนรายแหล่ง (OY/NS/YT)</td><td>&#10060;</td><td>&#10004;</td></tr>
     <tr><td>TOP 30 รายละเอียด</td><td>&#10060;</td><td>&#10004;</td></tr>
-    <tr><td>Buzz Trap ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
+    <tr><td>สินค้าที่ต้องระวัง ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
     <tr><td>Hidden Gem ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
     <tr><td>Outside OY โอกาส</td><td>&#10060;</td><td>&#10004;</td></tr>
     <tr><td>คู่มือสำหรับเซลเลอร์</td><td>&#10060;</td><td>&#10004;</td></tr>
@@ -745,7 +738,7 @@ def generate_html(data):
     <p style="color:#999;font-size:12px;margin-top:8px">สัดส่วนและเกณฑ์คะแนนเป็นสูตรเฉพาะของ K-Beauty Trend Tracker</p>
   </div>
   <div class="msec">
-    <h3>&#128680; Buzz Trap คืออะไร?</h3>
+    <h3>&#128680; สินค้าที่ต้องระวัง คืออะไร?</h3>
     <p>สินค้าที่คนค้นหาและรีวิวมากในโซเชียล แต่ยอดขายจริงยังไม่สูง -- อาจเป็นแค่กระแสชั่วคราว ควรระวังในการสต็อก</p>
     <h3 style="margin-top:12px">&#128142; Hidden Gem คืออะไร?</h3>
     <p>สินค้าที่ขายดีเงียบๆ แต่ยังไม่มีคนรีวิวหรือค้นหามาก -- โอกาสทองสำหรับเซลเลอร์เข้าตลาดก่อนคู่แข่ง</p>
@@ -856,7 +849,7 @@ def generate_html(data):
     document.getElementById('sim-total').textContent=t;
     var social=Math.max(ns,yt);
     var s='';
-    if(social>70&&oy<40)s='<span style="color:#ffa502">&#9888;&#65039; Buzz Trap</span>';
+    if(social>70&&oy<40)s='<span style="color:#ffa502">&#9888;&#65039; สินค้าที่ต้องระวัง</span>';
     else if(oy>70&&ns<30&&yt<30)s='<span style="color:#2ed573">&#128142; Hidden Gem</span>';
     else if(t>=85)s='<span style="color:#ff4757">&#128293; HOT</span>';
     else if(t>=60)s='<span style="color:#3742fa">&#128064; น่าจับตา</span>';
