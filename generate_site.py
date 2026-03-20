@@ -666,8 +666,8 @@ def generate_html(data):
     <button class="fbtn" data-cat="bodycare">บอดี้แคร์</button>
   </div>
   <div class="view-toggle">
-    <button class="vt-btn" data-view="ranking">&#128202; อันดับ</button>
     <button class="vt-btn vt-active" data-view="discover">&#128293; น่าจับตา</button>
+    <button class="vt-btn" data-view="ranking">&#128202; อันดับ</button>
   </div>
   <div class="cat-legend">
     <span>&#128167; สกินแคร์</span>
