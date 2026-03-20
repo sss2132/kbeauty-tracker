@@ -9,6 +9,9 @@ NAVER_CLIENT_ID = os.environ.get("NAVER_CLIENT_ID")
 NAVER_CLIENT_SECRET = os.environ.get("NAVER_CLIENT_SECRET")
 YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
 
+# 오톡(오늘의 특가) 프로모션 패널티 계수
+PROMOTION_PENALTY = 0.5
+
 # 제휴 파라미터 (승인 후 실제 값으로 교체)
 SHOPEE_TH_AFFILIATE_ID = "kbeautyth"
 YESSTYLE_AFFILIATE_ID = "kbeautyth"

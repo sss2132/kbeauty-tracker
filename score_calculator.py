@@ -1,19 +1,26 @@
 """
-K-Beauty Trend Tracker - 종합 트렌드 점수 계산기 v4
+K-Beauty Trend Tracker - 종합 트렌드 점수 계산기 v5
 3소스 체계: OY 45% + NS 30% + YT 25%
 로그 스케일 정규화 + 상위 보너스.
 Buzz Trap / Hidden Gem / RISING 감지.
+
+v5 변경:
+- 고정 3일 구간 평균 순위
+- 오톡(오늘의 특가) 프로모션 패널티
+- RISING: 현재 구간 vs 직전 구간 종합 순위 비교
+- 연속 유지 보너스 (2구간+ TOP 30)
 """
 
 import glob
 import json
 import math
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from config import make_affiliate_url
+from config import make_affiliate_url, PROMOTION_PENALTY
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+DAILY_DIR = os.path.join(DATA_DIR, "daily")
 
 DEFAULT_WEIGHTS = {
     "oliveyoung": 0.45,
@@ -21,10 +28,8 @@ DEFAULT_WEIGHTS = {
     "youtube": 0.25,
 }
 
-# -- naver_rank 비활성화 (OY와 상관계수 0.848, 거의 동일 지표) --
-# "naver_rank": 0.25,  # 상관관계 분석 결과 제거 (2026-03-19)
-
 TOP_N = 30
+PERIOD_DAYS = 3
 
 
 def calc_oliveyoung_score(rank, review_count):
@@ -39,12 +44,7 @@ def calc_oliveyoung_score(rank, review_count):
 
 
 def log_normalize_with_bonus(values):
-    """로그 정규화 + 상위 보너스.
-    Step 1: log(v+1) 변환 (0은 0 유지)
-    Step 2: min-max -> 0~85 범위
-    Step 3: 상위 5개에 보너스 (15, 10, 7, 4, 2)
-    Step 4: cap at 100
-    """
+    """로그 정규화 + 상위 보너스."""
     if not values:
         return []
     log_values = [math.log(v + 1) if v > 0 else 0 for v in values]
@@ -55,27 +55,18 @@ def log_normalize_with_bonus(values):
     normalized = [(v - min_val) / (max_val - min_val) * 85 for v in log_values]
 
     sorted_indices = sorted(range(len(values)), key=lambda i: values[i], reverse=True)
-    bonuses = {sorted_indices[0]: 15, sorted_indices[1]: 10, sorted_indices[2]: 7,
-               sorted_indices[3]: 4, sorted_indices[4]: 2}
+    bonuses = {}
+    for idx, bonus in zip(sorted_indices[:5], [15, 10, 7, 4, 2]):
+        bonuses[idx] = bonus
 
     return [min(100, round(normalized[i] + bonuses.get(i, 0))) for i in range(len(values))]
 
 
 def calc_youtube_bonus(video_count):
-    """영상 30개 이상이면 +10 보너스."""
     return 10 if video_count >= 30 else 0
 
 
-# -- naver_rank 비활성화 --
-# def calc_naver_rank_score(naver_shopping_rank):
-#     """네이버 쇼핑 인기도순 순위 -> 점수. 1위=100, 100위=0, 없으면=0."""
-#     if naver_shopping_rank is None:
-#         return 0
-#     return max(0, 100 - naver_shopping_rank)
-
-
 def compute_active_weights(data_status):
-    """사용 가능한 소스에 따라 가중치 재분배."""
     available = {k: v for k, v in DEFAULT_WEIGHTS.items()
                  if data_status.get(k, {}).get("available", False)}
     if not available:
@@ -148,8 +139,98 @@ def load_json(pattern_or_name):
     return [], False
 
 
+# ── 3일 구간 관련 함수 ──
+
+def get_daily_dates():
+    """data/daily/ 폴더에서 oliveyoung 파일이 있는 날짜 목록 반환 (정렬됨)."""
+    if not os.path.isdir(DAILY_DIR):
+        return []
+    dates = []
+    for folder in sorted(os.listdir(DAILY_DIR)):
+        folder_path = os.path.join(DAILY_DIR, folder)
+        if not os.path.isdir(folder_path):
+            continue
+        oy_files = glob.glob(os.path.join(folder_path, "oliveyoung_*.json"))
+        if oy_files:
+            try:
+                dates.append(datetime.strptime(folder, "%Y-%m-%d").date())
+            except ValueError:
+                continue
+    return sorted(dates)
+
+
+def compute_periods(dates):
+    """고정 3일 구간 계산. 첫 날짜 기준으로 겹치지 않는 구간."""
+    if not dates:
+        return []
+    start = dates[0]
+    periods = []
+    current_start = start
+    while current_start <= dates[-1]:
+        current_end = current_start + timedelta(days=PERIOD_DAYS - 1)
+        period_dates = [d for d in dates if current_start <= d <= current_end]
+        if len(period_dates) == PERIOD_DAYS:
+            periods.append({
+                "start": current_start,
+                "end": current_end,
+                "dates": period_dates,
+            })
+        current_start = current_end + timedelta(days=1)
+    return periods
+
+
+def load_daily_oliveyoung(date_obj):
+    """특정 날짜의 oliveyoung JSON 로드."""
+    folder = date_obj.strftime("%Y-%m-%d")
+    folder_path = os.path.join(DAILY_DIR, folder)
+    files = glob.glob(os.path.join(folder_path, "oliveyoung_*.json"))
+    if not files:
+        return []
+    with open(files[0], "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_daily_data(date_obj, source_prefix):
+    """특정 날짜의 데이터 JSON 로드."""
+    folder = date_obj.strftime("%Y-%m-%d")
+    folder_path = os.path.join(DAILY_DIR, folder)
+    files = glob.glob(os.path.join(folder_path, f"{source_prefix}_*.json"))
+    if not files:
+        return []
+    with open(files[0], "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def compute_period_oy_scores(period):
+    """3일 구간의 올리브영 평균 점수 계산 (프로모션 패널티 적용)."""
+    product_scores = {}  # product_code -> list of scores
+    product_info = {}    # product_code -> latest product info
+
+    for date_obj in period["dates"]:
+        oy_data = load_daily_oliveyoung(date_obj)
+        for item in oy_data:
+            code = item["product_code"]
+            score = calc_oliveyoung_score(item["rank"], item.get("review_count", 0))
+
+            # 오톡 패널티
+            if item.get("is_promotion", False):
+                score = score * PROMOTION_PENALTY
+
+            if code not in product_scores:
+                product_scores[code] = []
+            product_scores[code].append(score)
+            product_info[code] = item  # 최신 정보 유지
+
+    # 3일 평균
+    avg_scores = {}
+    for code, scores in product_scores.items():
+        avg_scores[code] = round(sum(scores) / len(scores))
+
+    return avg_scores, product_info
+
+
 def load_previous_ranking(current_date_str):
-    """이전 주 weekly_ranking 파일 탐색."""
+    """이전 주기 weekly_ranking 파일 탐색."""
     files = sorted(glob.glob(os.path.join(DATA_DIR, "weekly_ranking_*.json")))
     files = [f for f in files if current_date_str not in os.path.basename(f)]
     if not files:
@@ -159,7 +240,7 @@ def load_previous_ranking(current_date_str):
 
 
 def compute_rank_changes(products_top, prev_data):
-    """이전 주 데이터와 비교하여 rank_change 계산."""
+    """이전 회차 데이터와 비교하여 rank_change 계산."""
     if not prev_data:
         for p in products_top:
             p["rank_change"] = "NEW"
@@ -184,7 +265,6 @@ def compute_rank_changes(products_top, prev_data):
             p["rank_change"] = "NEW"
             new_count += 1
 
-    # 이탈 제품
     current_codes = {p["product_code"] for p in products_top}
     dropped = []
     for p in prev_data.get("products", []):
@@ -201,23 +281,88 @@ def compute_rank_changes(products_top, prev_data):
     return dropped, new_count
 
 
-def main():
+def compute_consecutive_periods(product_code, periods, all_period_rankings):
+    """현재 구간까지 연속 TOP 30 구간 수 계산."""
+    count = 0
+    for period_ranking in reversed(all_period_rankings):
+        top_codes = {p["product_code"] for p in period_ranking[:TOP_N]}
+        if product_code in top_codes:
+            count += 1
+        else:
+            break
+    return count
+
+
+def compute_consistency_bonus(consecutive_periods):
+    """연속 유지 보너스 계산."""
+    if consecutive_periods >= 4:
+        return 8
+    elif consecutive_periods >= 3:
+        return 5
+    elif consecutive_periods >= 2:
+        return 3
+    return 0
+
+
+def main(use_period=True):
     today = datetime.now()
     date_str = today.strftime("%Y%m%d")
-    week_str = today.strftime("%G-W%V")
 
-    # Load data + track availability
-    oy_data, oy_real = load_json("oliveyoung_*.json")
-    if not oy_data:
-        path = os.path.join(DATA_DIR, "oliveyoung_sample.json")
-        if os.path.exists(path):
-            with open(path, "r", encoding="utf-8") as f:
-                oy_data = json.load(f)
-            oy_real = False
+    # ── 3일 구간 확인 ──
+    daily_dates = get_daily_dates()
+    periods = compute_periods(daily_dates)
+    current_period = None
+    previous_period = None
+    all_period_rankings = []  # 각 구간별 정렬된 제품 리스트
 
-    nv_data, nv_real = load_json("naver_*.json")
-    # nr_data, nr_real = load_json("naver_rank_*.json")  # 비활성화: OY와 상관 0.848
-    yt_data, yt_real = load_json("youtube_*.json")
+    if use_period and periods:
+        current_period = periods[-1]
+        if len(periods) >= 2:
+            previous_period = periods[-2]
+        print(f"[calc] 구간 {len(periods)}개 감지, 현재 구간: {current_period['start']} ~ {current_period['end']}")
+    elif use_period and daily_dates:
+        # 3일치 안 모임
+        latest_period_start = daily_dates[0]
+        needed_end = latest_period_start + timedelta(days=PERIOD_DAYS - 1)
+        collected = len(daily_dates)
+        print(f"[calc] 데이터 수집 완료. 아직 {collected}일치. 사이트 갱신 안 함.")
+        print(f"[calc] 다음 갱신: {PERIOD_DAYS}일치 모이면 ({needed_end} 이후)")
+        return None
+
+    # ── 데이터 로드 ──
+    if current_period:
+        # 3일 구간 평균 모드
+        oy_avg_scores, oy_info = compute_period_oy_scores(current_period)
+        # 최신 날짜의 원본 데이터를 기반으로
+        oy_data = load_daily_oliveyoung(current_period["dates"][-1])
+        oy_real = True
+
+        # 네이버/유튜브는 최신 날짜 사용
+        latest_date = current_period["dates"][-1]
+        nv_data = load_daily_data(latest_date, "naver")
+        yt_data = load_daily_data(latest_date, "youtube")
+        nv_real = bool(nv_data)
+        yt_real = bool(yt_data)
+
+        # daily에 네이버/유튜브 없으면 기존 폴더 fallback
+        if not nv_data:
+            nv_data, nv_real = load_json("naver_*.json")
+        if not yt_data:
+            yt_data, yt_real = load_json("youtube_*.json")
+    else:
+        # 기존 방식 fallback (daily 폴더 없을 때)
+        oy_data, oy_real = load_json("oliveyoung_*.json")
+        if not oy_data:
+            path = os.path.join(DATA_DIR, "oliveyoung_sample.json")
+            if os.path.exists(path):
+                with open(path, "r", encoding="utf-8") as f:
+                    oy_data = json.load(f)
+                oy_real = False
+
+        nv_data, nv_real = load_json("naver_*.json")
+        yt_data, yt_real = load_json("youtube_*.json")
+        oy_avg_scores = None
+        oy_info = None
 
     # Load translations
     trans_path = os.path.join(DATA_DIR, "translations.json")
@@ -226,7 +371,7 @@ def main():
         with open(trans_path, "r", encoding="utf-8") as f:
             translations = json.load(f)
 
-    # Build data_status (3소스만)
+    # Build data_status
     data_status = {
         "oliveyoung": {
             "available": bool(oy_data),
@@ -269,7 +414,6 @@ def main():
         yt_views.append(yt.get("total_views", 0))
         yt_vcounts.append(yt.get("video_count", 0))
 
-    # Log normalize + top bonus
     nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(oy_data)
     yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(oy_data)
 
@@ -283,10 +427,17 @@ def main():
         nv = nv_map.get(code, {})
         yt = yt_map.get(code, {})
 
-        oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
+        # 올리브영 점수: 구간 평균 or 단일
+        if oy_avg_scores and code in oy_avg_scores:
+            oy_score = oy_avg_scores[code]
+        else:
+            oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
+            # 단일 날짜에서도 프로모션 패널티 적용
+            if oy.get("is_promotion", False):
+                oy_score = round(oy_score * PROMOTION_PENALTY)
+
         nv_score = nv_norm[i] if nv_data else 0
 
-        # 제품별 유튜브 데이터 충분 여부 (영상 3개 미만이면 제외)
         yt_product_available = yt.get("youtube_available", True) if yt_data else False
         if yt_data and yt_product_available:
             yt_base = yt_norm[i]
@@ -299,7 +450,6 @@ def main():
             scores = {"oliveyoung": oy_score, "naver_search": nv_score, "youtube": yt_score}
             product_weights = active_weights
         else:
-            # 유튜브 제외: OY 60% + NS 40% (비율 유지 재분배)
             scores = {"oliveyoung": oy_score, "naver_search": nv_score, "youtube": 0}
             oy_ns_total = DEFAULT_WEIGHTS["oliveyoung"] + DEFAULT_WEIGHTS["naver_search"]
             product_weights = {
@@ -311,7 +461,6 @@ def main():
         total = calc_total_score(scores, product_weights)
         scores["total"] = total
 
-        # Change rates (보조 지표 - 점수에 영향 없음)
         nv_change = nv.get("change_rate", None)
         yt_change = yt.get("change_rate", yt.get("view_change_rate", None))
 
@@ -346,6 +495,8 @@ def main():
             "oliveyoung_global_url": make_affiliate_url("", product_code=code, platform="oliveyoung"),
             "seller_note": note,
             "youtube_available": yt_score is not None,
+            "is_promotion": oy.get("is_promotion", False),
+            "consecutive_periods": 0,
         }
         all_products.append(product)
         translation_lines.append(f'{code}|{oy.get("brand_en", "")}|{oy["name"]}')
@@ -358,26 +509,83 @@ def main():
     # Sort by total score
     all_products.sort(key=lambda p: p["scores"]["total"], reverse=True)
 
-    # Assign ranks and signals
+    # Assign ranks
     for i, p in enumerate(all_products, 1):
         p["rank"] = i
+
+    # ── 연속 유지 보너스 ──
+    # 이전 구간 랭킹 로드 (이전 weekly_ranking 파일들)
+    prev_rankings_files = sorted(glob.glob(os.path.join(DATA_DIR, "weekly_ranking_*.json")))
+    prev_rankings_files = [f for f in prev_rankings_files if date_str not in os.path.basename(f)]
+
+    if len(periods) >= 2:
+        # 이전 구간들의 제품 목록으로 연속 TOP 30 체크
+        prev_top_codes_list = []
+        for f in prev_rankings_files:
+            with open(f, "r", encoding="utf-8") as fh:
+                prev_data_item = json.load(fh)
+                prev_top_codes_list.append(
+                    {p["product_code"] for p in prev_data_item.get("products", [])}
+                )
+        # 현재 구간 TOP 30
+        current_top_codes = {p["product_code"] for p in all_products[:TOP_N]}
+
+        for p in all_products:
+            code = p["product_code"]
+            consecutive = 0
+            if code in current_top_codes:
+                consecutive = 1
+                for prev_codes in reversed(prev_top_codes_list):
+                    if code in prev_codes:
+                        consecutive += 1
+                    else:
+                        break
+            p["consecutive_periods"] = consecutive
+
+            bonus = compute_consistency_bonus(consecutive)
+            if bonus > 0:
+                p["scores"]["total"] = min(100, p["scores"]["total"] + bonus)
+
+        # 보너스 적용 후 재정렬
+        all_products.sort(key=lambda p: p["scores"]["total"], reverse=True)
+        for i, p in enumerate(all_products, 1):
+            p["rank"] = i
+
+    # ── RISING 판정 (v5: 현재 구간 vs 직전 구간 종합 순위 비교) ──
+    prev_data = load_previous_ranking(date_str)
+    prev_rank_map = {}
+    if prev_data:
+        for p in prev_data.get("products", []):
+            prev_rank_map[p["product_code"]] = p["rank"]
+
+    for p in all_products:
         t = p["scores"]["total"]
-        oy_rank = p["oliveyoung_rank"]
+        code = p["product_code"]
+
         if "buzz_trap" in p["flags"]:
-            p["signal"] = ""  # BUZZ TRAP이면 RISING 안 붙임
-        elif oy_rank > 30 and i <= TOP_N:
-            p["signal"] = "rising"
-        elif t >= 85:
-            p["signal"] = "hot"
-        elif p["scores"].get("naver_search", 0) >= 75:
-            p["signal"] = "rising"
+            p["signal"] = ""
+        elif prev_rank_map and code in prev_rank_map:
+            rank_diff = prev_rank_map[code] - p["rank"]
+            if rank_diff >= 10:
+                p["signal"] = "rising"
+            elif t >= 85:
+                p["signal"] = "hot"
+            else:
+                p["signal"] = ""
+        elif prev_rank_map and code not in prev_rank_map:
+            # 신규 진입 - RISING 아님 (NEW로 표시됨)
+            if t >= 85:
+                p["signal"] = "hot"
+        else:
+            # 직전 구간 없음 (첫 구간) - RISING 판정 안 함
+            if t >= 85:
+                p["signal"] = "hot"
 
     # Split TOP 30 / extended
     products_top = all_products[:TOP_N]
     products_ext = all_products[TOP_N:]
 
     # Time-series comparison
-    prev_data = load_previous_ranking(date_str)
     dropped_products, new_count = compute_rank_changes(products_top, prev_data)
 
     # Buzz Trap / Hidden Gem
@@ -389,7 +597,7 @@ def main():
                                "reason": "social buzz high but OY sales rank low"})
         if "hidden_gem" in p["flags"]:
             hidden_gems.append({"rank": p["rank"], "brand": p["brand"], "name_ko": p["name_ko"], "scores": p["scores"],
-                                "reason": "selling well on OY but low social visibility"})
+                                "reason": "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล"})
 
     naver_rising.sort(key=lambda x: x["change_rate"], reverse=True)
     youtube_rising.sort(key=lambda x: x["change_rate"], reverse=True)
@@ -417,9 +625,20 @@ def main():
     outside_naver.sort(key=lambda x: x["change_rate"], reverse=True)
     outside_youtube.sort(key=lambda x: x["change_rate"], reverse=True)
 
+    # 구간 정보
+    period_info = None
+    if current_period:
+        period_info = {
+            "period_number": len(periods),
+            "start": current_period["start"].isoformat(),
+            "end": current_period["end"].isoformat(),
+            "days": PERIOD_DAYS,
+        }
+
     output = {
-        "week": week_str,
+        "week": today.strftime("%G-W%V"),
         "updated": today.strftime("%Y-%m-%d"),
+        "period_info": period_info,
         "data_status": data_status,
         "active_weights": active_weights,
         "source_weights": DEFAULT_WEIGHTS,
@@ -450,14 +669,18 @@ def main():
 
     # Print summary
     print(f"[calc] saved: {out_path}")
+    if period_info:
+        print(f"[calc] 구간 #{period_info['period_number']}: {period_info['start']} ~ {period_info['end']}")
     print(f"\n=== TOP 5 ===")
     for p in products_top[:5]:
         s = p["scores"]
         sig = f" [{p['signal'].upper()}]" if p["signal"] else ""
         flags_s = " ".join(f"[{f.upper()}]" for f in p["flags"])
         rc = p["rank_change"]
+        cp = p.get("consecutive_periods", 0)
+        cp_str = f" (연속{cp}구간)" if cp >= 2 else ""
         print(f"  #{p['rank']} ({rc}) (OY#{p['oliveyoung_rank']}) {p['brand']} - {p['name_ko'][:28]}")
-        print(f"     OY:{s['oliveyoung']} NS:{s['naver_search']} YT:{s['youtube']} => {s['total']}{sig} {flags_s}")
+        print(f"     OY:{s['oliveyoung']} NS:{s['naver_search']} YT:{s['youtube']} => {s['total']}{sig} {flags_s}{cp_str}")
 
     if buzz_traps:
         print(f"\n=== BUZZ TRAP ({len(buzz_traps)}) ===")

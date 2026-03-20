@@ -73,12 +73,12 @@ def build_warning_banner(data_status):
 
     msgs = []
     if not yt_ok and nv_ok:
-        msgs.append("&#9888;&#65039; สัปดาห์นี้ไม่มีข้อมูล YouTube -- คะแนนคำนวณจาก Olive Young + Naver เท่านั้น")
-        msgs.append("&#9203; รอติดตาม อาจตรวจจับได้ไม่สมบูรณ์ในสัปดาห์นี้")
+        msgs.append("&#9888;&#65039; ครั้งนี้ไม่มีข้อมูล YouTube -- คะแนนคำนวณจาก Olive Young + Naver เท่านั้น")
+        msgs.append("&#9203; รอติดตาม อาจตรวจจับได้ไม่สมบูรณ์ในครั้งนี้")
     elif not nv_ok and yt_ok:
-        msgs.append("&#9888;&#65039; สัปดาห์นี้ไม่มีข้อมูล Naver Shopping -- คะแนนคำนวณจาก Olive Young + YouTube เท่านั้น")
+        msgs.append("&#9888;&#65039; ครั้งนี้ไม่มีข้อมูล Naver Shopping -- คะแนนคำนวณจาก Olive Young + YouTube เท่านั้น")
     elif not nv_ok and not yt_ok:
-        msgs.append("&#9888;&#65039; สัปดาห์นี้ใช้เฉพาะข้อมูล Olive Young -- ข้อมูลอาจไม่ครบถ้วน")
+        msgs.append("&#9888;&#65039; ครั้งนี้ใช้เฉพาะข้อมูล Olive Young -- ข้อมูลอาจไม่ครบถ้วน")
 
     lines = "<br>".join(msgs)
     return f'''<div class="warn-banner" id="warn-banner">
@@ -107,16 +107,14 @@ def build_product_cards(products):
 
         badges = ""
         if p.get("signal") == "hot":
-            badges += '<span class="badge badge-hot">HOT</span>'
+            badges += '<span class="badge badge-hot" title="สินค้าขายดีและเป็นกระแสบนโซเชียล">HOT</span><span class="badge-desc">สินค้าขายดีและเป็นกระแสบนโซเชียล</span>'
         elif p.get("signal") == "rising":
-            badges += '<span class="badge badge-rising">RISING</span>'
-            if oy_rank > 30:
-                badges += f'<span class="rising-detail">OY #{oy_rank} &#8594; #{rank}</span>'
+            badges += '<span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span>'
         for f in p.get("flags", []):
             if f == "buzz_trap":
-                badges += '<span class="badge badge-buzz">&#9203; รอติดตาม</span>'
+                badges += '<span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span>'
             elif f == "hidden_gem":
-                badges += '<span class="badge badge-gem">HIDDEN GEM</span>'
+                badges += '<span class="badge badge-gem" title="สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล">HIDDEN GEM</span><span class="badge-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</span>'
         g = p.get("seller_grade", "")
         if g:
             gc = {"source_now": "grade-now", "watch": "grade-watch", "hold": "grade-hold"}.get(g, "")
@@ -161,21 +159,21 @@ def build_discover_html(products):
     for p in rising:
         used.add(p["rank"])
     if rising:
-        sections.append(("rising", "&#128640; สินค้ามาแรง", "สินค้าที่กระแสโซเชียลดันขึ้นมาอย่างรวดเร็ว", rising))
+        sections.append(("rising", "&#128640; สินค้ามาแรง", "สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน", rising))
 
     # 2) Hidden Gem
     gems = [p for p in products if "hidden_gem" in p.get("flags", []) and p["rank"] not in used]
     for p in gems:
         used.add(p["rank"])
     if gems:
-        sections.append(("gem", "&#128142; Hidden Gem", "ขายดีเงียบๆ ยังไม่มีคนรีวิวมาก -- โอกาสทอง!", gems))
+        sections.append(("gem", "&#128142; Hidden Gem", "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล", gems))
 
     # 3) 신규진입 (NEW)
     newbies = [p for p in products if p.get("rank_change") == "NEW" and p["rank"] not in used]
     for p in newbies:
         used.add(p["rank"])
     if newbies:
-        sections.append(("new", "&#127381; สินค้าใหม่ประจำสัปดาห์", "เพิ่งเข้า TOP 30 เป็นครั้งแรก!", newbies))
+        sections.append(("new", "&#127381; สินค้าใหม่ประจำครั้งนี้", "เพิ่งเข้า TOP 30 เป็นครั้งแรก!", newbies))
 
     # 4) 부동의 상위권 (Stable top 5)
     stable = [p for p in products if p["rank"] <= 5 and p["rank"] not in used]
@@ -183,7 +181,7 @@ def build_discover_html(products):
         sections.append(("stable", "&#128081; อันดับต้นๆ ที่มั่นคง", "สินค้ายอดนิยมที่ครองอันดับต้นอย่างต่อเนื่อง", stable))
 
     if not sections:
-        return '<div class="disc-empty">ไม่มีข้อมูลน่าจับตาในสัปดาห์นี้</div>'
+        return '<div class="disc-empty">ไม่มีข้อมูลน่าจับตาในครั้งนี้</div>'
 
     html = ""
     for sec_type, title, desc, items in sections:
@@ -201,13 +199,10 @@ def build_discover_html(products):
 
             badges = ""
             if p.get("signal") == "rising":
-                oy_rank = p.get("oliveyoung_rank", 0)
-                badges += '<span class="badge badge-rising">RISING</span>'
-                if oy_rank > 30:
-                    badges += f'<span class="rising-detail">OY #{oy_rank} &#8594; #{rank}</span>'
+                badges += '<span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span>'
             for f in p.get("flags", []):
                 if f == "hidden_gem":
-                    badges += '<span class="badge badge-gem">HIDDEN GEM</span>'
+                    badges += '<span class="badge badge-gem" title="สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล">HIDDEN GEM</span><span class="badge-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</span>'
 
             cards += f'''<div class="disc-card" data-category="{cat}">
   <div class="disc-rank">#{rank} {rc_html}</div>
@@ -299,9 +294,9 @@ def build_seller_html(data):
         items = ""
         for hg in hgs:
             items += f'''<div class="si si-gem"><div class="si-name">{esc(hg["brand"])} {esc(hg["name_ko"])}</div>
-  <div class="si-reason">ขายดีเงียบๆ ยังไม่มีคนรีวิวมาก -- โอกาสเข้าตลาดก่อนคู่แข่ง</div></div>'''
+  <div class="si-reason">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล -- โอกาสเข้าตลาดก่อนคู่แข่ง</div></div>'''
         html += f'''<div class="ss ss-gem"><h3>&#128142; Hidden Gem - โอกาส ({len(hgs)})</h3>
-  <p class="ss-desc">สินค้าที่ขายดีแต่ยังไม่ค่อยมีคู่แข่ง</p>{items}</div>'''
+  <p class="ss-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</p>{items}</div>'''
 
     # Outside Olive Young
     outside = data.get("outside_oliveyoung", {})
@@ -334,8 +329,8 @@ def build_seller_html(data):
             items += f'''<div class="si si-dropped">
   <div class="si-name">{brand_en} {esc(dp["name_ko"])}</div>
 </div>'''
-        html += f'''<div class="ss ss-dropped"><h3>&#128308; สินค้าที่หลุดจาก TOP 30 สัปดาห์นี้ ({len(dropped)})</h3>
-  <p class="ss-desc">สินค้าที่อยู่ใน TOP 30 สัปดาห์ก่อนแต่หลุดออกแล้ว</p>{items}</div>'''
+        html += f'''<div class="ss ss-dropped"><h3>&#128308; สินค้าที่หลุดจาก TOP 30 ครั้งนี้ ({len(dropped)})</h3>
+  <p class="ss-desc">สินค้าที่อยู่ใน TOP 30 ครั้งก่อนแต่หลุดออกแล้ว</p>{items}</div>'''
 
     # TOP 5 sourcing
     top5 = sorted(
@@ -351,7 +346,7 @@ def build_seller_html(data):
             lazada = esc(p.get("lazada_url", "#"))
             yesstyle = esc(p.get("yesstyle_url", "#"))
             amazon = esc(p.get("amazon_url", "#"))
-                items += f'''<div class="src-item">
+            items += f'''<div class="src-item">
   <span class="src-rank">#{i}</span>
   <div class="src-info"><div class="src-name">{nm}</div><div class="src-note">{note}</div></div>
   <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
@@ -407,7 +402,7 @@ def generate_html(data):
   </div>'''
 
     share_url = "https://kbeauty-th.github.io"
-    share_text = "&#127472;&#127479; อันดับเทรนด์ K-Beauty ประจำสัปดาห์ จากข้อมูลจริง #KBeautyTH"
+    share_text = "&#127472;&#127479; อันดับเทรนด์ K-Beauty อัปเดตล่าสุด จากข้อมูลจริง #KBeautyTH"
 
     # Weight bar segments (unused in current UI but kept for reference)
     wbar_parts = ""
@@ -439,7 +434,7 @@ def generate_html(data):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>K-Beauty Trend Tracker Thailand</title>
-<meta name="description" content="ติดตามเทรนด์เครื่องสำอางเกาหลียอดนิยม อัปเดตทุกสัปดาห์ พร้อมคะแนนจาก Olive Young, Naver Shopping และ YouTube">
+<meta name="description" content="ติดตามเทรนด์เครื่องสำอางเกาหลียอดนิยม อัปเดตทุก 3 วัน พร้อมคะแนนจาก Olive Young, Naver Shopping และ YouTube">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
@@ -454,6 +449,7 @@ def generate_html(data):
 /* Header */
 .hdr{{background:linear-gradient(135deg,#e8547a,#ff6b9d);color:#fff;padding:16px 20px;text-align:center}}
 .hdr h1{{font-size:18px;font-weight:700}}.hdr .sub{{font-size:12px;opacity:.85;margin-top:2px}}.hdr .tagline{{font-size:11px;opacity:.7;margin-top:4px;letter-spacing:.3px}}
+.update-cycle{{font-size:10px;opacity:.6;margin-top:4px;text-align:center}}.update-date{{font-size:10px;opacity:.6;margin-top:2px;text-align:center}}
 
 /* Tabs */
 .tab-bar{{display:flex;background:#fff;border-bottom:2px solid #eee;position:sticky;top:0;z-index:100}}
@@ -497,6 +493,8 @@ def generate_html(data):
 .badge-hot{{background:#ff4757;color:#fff}}.badge-rising{{background:#8854d0;color:#fff}}
 .badge-buzz{{background:#ffa502;color:#fff}}.badge-gem{{background:#2ed573;color:#fff}}
 .rising-detail{{font-size:10px;color:#8854d0;font-weight:600}}
+.badge-desc{{font-size:0.75rem;color:#999;display:block;margin-top:1px}}
+@media(max-width:480px){{.badge-desc{{display:none}}}}
 .seller-grade{{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px}}
 .grade-now{{background:#2ed573;color:#fff}}.grade-watch{{background:#3742fa;color:#fff}}.grade-hold{{background:#ffa502;color:#fff}}
 .product-right{{text-align:center;flex-shrink:0;min-width:58px}}
@@ -642,6 +640,8 @@ def generate_html(data):
   <h1>K-Beauty Trend Tracker</h1>
   <div class="sub">เทรนด์ความงามเกาหลี | {date_th}</div>
   <div class="tagline">จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา</div>
+  <div class="update-cycle">อัปเดตทุก 3 วัน | ข้อมูลจาก 3 วัน เพื่อความแม่นยำของอันดับ</div>
+  <div class="update-date">อัปเดตล่าสุด: {date_th}</div>
 </div>
 
 <div class="tab-bar">
@@ -670,8 +670,8 @@ def generate_html(data):
     <button class="fbtn" data-cat="bodycare">บอดี้แคร์</button>
   </div>
   <div class="view-toggle">
-    <button class="vt-btn vt-active" data-view="ranking">&#128202; อันดับ</button>
-    <button class="vt-btn" data-view="discover">&#128293; น่าจับตา</button>
+    <button class="vt-btn" data-view="ranking">&#128202; อันดับ</button>
+    <button class="vt-btn vt-active" data-view="discover">&#128293; น่าจับตา</button>
   </div>
   <div class="cat-legend">
     <span>&#128167; สกินแคร์</span>
@@ -681,8 +681,8 @@ def generate_html(data):
     <span>&#128135; แฮร์แคร์</span>
     <span>&#129524; บอดี้แคร์</span>
   </div>
-  <div class="ranking-view"><div class="plist">{product_cards}</div></div>
-  <div class="discover-view" style="display:none">{discover_html}</div>
+  <div class="ranking-view" style="display:none"><div class="plist">{product_cards}</div></div>
+  <div class="discover-view">{discover_html}</div>
 </div>
 
 <!-- Tab 2: Keywords -->
@@ -698,7 +698,7 @@ def generate_html(data):
 <!-- Tab 4: Pro Report -->
 <div class="panel" id="p-pro">
   <div class="pro-hdr">
-    <h2>รายงานเทรนด์ K-Beauty รายสัปดาห์</h2>
+    <h2>รายงานเทรนด์ K-Beauty</h2>
     <p>สำหรับเซลเลอร์และอินฟลูเอนเซอร์</p>
   </div>
   <table class="pro-table">
@@ -711,7 +711,7 @@ def generate_html(data):
     <tr><td>Outside OY โอกาส</td><td>&#10060;</td><td>&#10004;</td></tr>
     <tr><td>คู่มือสำหรับเซลเลอร์</td><td>&#10060;</td><td>&#10004;</td></tr>
     <tr><td>วิเคราะห์ Shopee TH</td><td>&#10060;</td><td>&#10004;</td></tr>
-    <tr><td>รายงานทางอีเมลรายสัปดาห์</td><td>&#10060;</td><td>&#10004;</td></tr>
+    <tr><td>รายงานทางอีเมลทุก 3 วัน</td><td>&#10060;</td><td>&#10004;</td></tr>
   </table>
   <div class="pro-price">
     <div class="price">เร็วๆ นี้</div>
@@ -729,7 +729,7 @@ def generate_html(data):
   {buzz_pro_html}
   <div class="pro-trust">
     ข้อมูลจาก Olive Young Korea, Naver Shopping, YouTube<br>
-    อัปเดตทุกสัปดาห์โดยทีมผู้เชี่ยวชาญ K-Beauty
+    อัปเดตทุก 3 วัน โดยทีมผู้เชี่ยวชาญ K-Beauty
   </div>
 </div>
 
@@ -748,9 +748,9 @@ def generate_html(data):
     <h3>&#128680; &#9203; รอติดตาม คืออะไร?</h3>
     <p>สินค้าที่คนค้นหาและรีวิวมากในโซเชียล แต่ยอดขายจริงยังไม่สูง -- อาจเป็นแค่กระแสชั่วคราว ควรระวังในการสต็อก</p>
     <h3 style="margin-top:12px">&#128142; Hidden Gem คืออะไร?</h3>
-    <p>สินค้าที่ขายดีเงียบๆ แต่ยังไม่มีคนรีวิวหรือค้นหามาก -- โอกาสทองสำหรับเซลเลอร์เข้าตลาดก่อนคู่แข่ง</p>
+    <p>สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล -- โอกาสทองสำหรับเซลเลอร์เข้าตลาดก่อนคู่แข่ง</p>
     <h3 style="margin-top:12px">&#128640; RISING คืออะไร?</h3>
-    <p>สินค้าที่ยังไม่อยู่ในอันดับต้นๆ ของ Olive Young แต่กระแสโซเชียลดันให้เข้า TOP 30 ได้ -- สินค้ากำลังจะมาแรง!</p>
+    <p>สินค้าที่อันดับรวมสูงขึ้นมากจากครั้งก่อน (10 อันดับขึ้นไป) -- สินค้ากำลังจะมาแรง!</p>
   </div>
   <div class="msec">
     <h3>&#128300; ทดลองคำนวณคะแนน</h3>
@@ -766,7 +766,7 @@ def generate_html(data):
 
 <!-- Newsletter Banner -->
 <div class="nl-banner" id="nl-banner">
-  <h4>&#128233; รับเทรนด์ K-Beauty ทุกสัปดาห์</h4>
+  <h4>&#128233; รับเทรนด์ K-Beauty ทุกครั้งที่อัปเดต</h4>
   <div class="email-row">
     <input type="email" id="nl-email" placeholder="you@email.com">
     <button onclick="handleNlEmail()">สมัคร</button>
@@ -788,7 +788,7 @@ def generate_html(data):
 
 <div class="footer">
   ข้อมูลเพื่อการอ้างอิงเท่านั้น ไม่ใช่คำแนะนำการลงทุนหรือการซื้อขาย<br>
-  แหล่งข้อมูล: Olive Young Korea, Naver Shopping, YouTube | อัปเดตสัปดาห์ละครั้ง<br>
+  แหล่งข้อมูล: Olive Young Korea, Naver Shopping, YouTube | อัปเดตทุก 3 วัน<br>
   ลิงก์บางส่วนเป็นลิงก์พันธมิตร — รายได้จากการซื้อผ่านลิงก์ช่วยสนับสนุนการดำเนินงานของเว็บไซต์นี้
 </div>
 
