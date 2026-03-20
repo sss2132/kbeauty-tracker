@@ -158,30 +158,23 @@ def build_discover_html(products):
     rising = [p for p in products if p.get("signal") == "rising" and "buzz_trap" not in p.get("flags", [])]
     for p in rising:
         used.add(p["rank"])
-    if rising:
-        sections.append(("rising", "&#128640; สินค้ามาแรง", "สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน", rising))
+    sections.append(("rising", "&#128640; สินค้ามาแรง", "สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน", rising))
 
     # 2) Hidden Gem
     gems = [p for p in products if "hidden_gem" in p.get("flags", []) and p["rank"] not in used]
     for p in gems:
         used.add(p["rank"])
-    if gems:
-        sections.append(("gem", "&#128142; Hidden Gem", "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล", gems))
+    sections.append(("gem", "&#128142; Hidden Gem", "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล", gems))
 
     # 3) 신규진입 (NEW)
     newbies = [p for p in products if p.get("rank_change") == "NEW" and p["rank"] not in used]
     for p in newbies:
         used.add(p["rank"])
-    if newbies:
-        sections.append(("new", "&#127381; สินค้าใหม่ประจำครั้งนี้", "เพิ่งเข้า TOP 30 เป็นครั้งแรก!", newbies))
+    sections.append(("new", "&#127381; สินค้าใหม่ประจำครั้งนี้", "เพิ่งเข้า TOP 30 เป็นครั้งแรก!", newbies))
 
     # 4) 부동의 상위권 (Stable top 5)
     stable = [p for p in products if p["rank"] <= 5 and p["rank"] not in used]
-    if stable:
-        sections.append(("stable", "&#128081; อันดับต้นๆ ที่มั่นคง", "สินค้ายอดนิยมที่ครองอันดับต้นอย่างต่อเนื่อง", stable))
-
-    if not sections:
-        return '<div class="disc-empty">ไม่มีข้อมูลน่าจับตาในครั้งนี้</div>'
+    sections.append(("stable", "&#128081; อันดับต้นๆ ที่มั่นคง", "สินค้ายอดนิยมที่ครองอันดับต้นอย่างต่อเนื่อง", stable))
 
     html = ""
     for sec_type, title, desc, items in sections:
@@ -214,6 +207,8 @@ def build_discover_html(products):
     <div class="product-badges">{badges}</div>
   </div>
 </div>'''
+        if not cards:
+            cards = '<div class="disc-empty-sec">ยังไม่มีในครั้งนี้</div>'
         html += f'''<div class="disc-section disc-{sec_type}">
   <div class="disc-title">{title}</div>
   <div class="disc-desc">{desc}</div>
@@ -621,6 +616,7 @@ def generate_html(data):
 .disc-info{{flex:1;min-width:0}}
 .disc-score{{font-size:18px;font-weight:700;color:#e8547a;flex-shrink:0;min-width:36px;text-align:center}}
 .disc-empty{{text-align:center;color:#999;padding:40px 0;font-size:14px}}
+.disc-empty-sec{{text-align:center;color:#aaa;padding:16px 0;font-size:13px}}
 /* Mobile */
 @media(max-width:380px){{
   .stats{{grid-template-columns:repeat(2,1fr)}}
