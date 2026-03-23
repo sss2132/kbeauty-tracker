@@ -6,7 +6,7 @@ Buzz Trap / Hidden Gem / RISING 감지.
 
 v5 변경:
 - 고정 3일 구간 평균 순위
-- 오톡(오늘의 특가) 프로모션 패널티
+- 오특(오늘의 특가) 프로모션 패널티
 - RISING: 현재 구간 vs 직전 구간 종합 순위 비교
 - 연속 유지 보너스 (2구간+ TOP 30)
 """
@@ -82,7 +82,7 @@ def calc_total_score(scores, weights):
     return round(total)
 
 
-def detect_flags(scores):
+def detect_flags(scores, video_count_3month=0, consecutive_periods=0):
     flags = []
     oy = scores.get("oliveyoung", 0)
     ns = scores.get("naver_search", 0)
@@ -91,7 +91,12 @@ def detect_flags(scores):
     if social > 70 and oy < 40:
         flags.append("buzz_trap")
     if oy > 70 and ns < 30 and yt < 30:
-        flags.append("hidden_gem")
+        # steady_seller vs hidden_gem 구분
+        is_steady = (video_count_3month >= 30) or (consecutive_periods >= 10)
+        if is_steady:
+            flags.append("steady_seller")
+        else:
+            flags.append("hidden_gem")
     return flags
 
 
@@ -111,6 +116,8 @@ def seller_note(scores, flags):
         parts.append("BUZZ TRAP")
     if "hidden_gem" in flags:
         parts.append("hidden gem")
+    if "steady_seller" in flags:
+        parts.append("steady seller")
     return " / ".join(parts)
 
 
@@ -119,6 +126,8 @@ def seller_grade(total, flags):
         return "hold"
     if total >= 80 and "hidden_gem" in flags:
         return "source_now"
+    if "steady_seller" in flags:
+        return "proven"
     if 60 <= total <= 79:
         return "watch"
     return ""
@@ -212,7 +221,7 @@ def compute_period_oy_scores(period):
             code = item["product_code"]
             score = calc_oliveyoung_score(item["rank"], item.get("review_count", 0))
 
-            # 오톡 패널티
+            # 오특 패널티
             if item.get("is_promotion", False):
                 score = score * PROMOTION_PENALTY
 
@@ -337,18 +346,19 @@ def main(use_period=True):
         oy_data = load_daily_oliveyoung(current_period["dates"][-1])
         oy_real = True
 
-        # 네이버/유튜브는 최신 날짜 사용
+        # 네이버/유튜브는 최신 날짜 사용 (daily/에서만 — data/ 루트 fallback 금지)
         latest_date = current_period["dates"][-1]
         nv_data = load_daily_data(latest_date, "naver")
         yt_data = load_daily_data(latest_date, "youtube")
         nv_real = bool(nv_data)
         yt_real = bool(yt_data)
 
-        # daily에 네이버/유튜브 없으면 기존 폴더 fallback
         if not nv_data:
-            nv_data, nv_real = load_json("naver_*.json")
+            print(f"[calc] 네이버 데이터 없음 (daily/{latest_date}) — 네이버 점수 0 처리")
+            nv_data = []
         if not yt_data:
-            yt_data, yt_real = load_json("youtube_*.json")
+            print(f"[calc] 유튜브 데이터 없음 (daily/{latest_date}) — 유튜브 점수 0 처리")
+            yt_data = []
     else:
         # 기존 방식 fallback (daily 폴더 없을 때)
         oy_data, oy_real = load_json("oliveyoung_*.json")
@@ -464,7 +474,10 @@ def main(use_period=True):
         nv_change = nv.get("change_rate", None)
         yt_change = yt.get("change_rate", yt.get("view_change_rate", None))
 
-        flags = detect_flags(scores)
+        yt_6m = yt.get("video_count_3month", 0)
+        if yt_6m == -1:
+            yt_6m = 0  # API 에러면 판정 보류 (hidden_gem 유지)
+        flags = detect_flags(scores, video_count_3month=yt_6m)
         grade = seller_grade(total, flags)
         note = seller_note(scores, flags)
         sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
@@ -474,7 +487,7 @@ def main(use_period=True):
             "oliveyoung_rank": oy["rank"],
             "brand": oy["brand"],
             "brand_en": oy.get("brand_en", ""),
-            "name_ko": oy["name"],
+            "name_ko": oy.get("search_keyword", oy["name"]),
             "name_en": oy.get("name_en", ""),
             "search_keyword": oy.get("search_keyword", ""),
             "name_th": translations.get(code, {}).get("name_th", ""),
@@ -502,7 +515,8 @@ def main(use_period=True):
         translation_lines.append(f'{code}|{oy.get("brand_en", "")}|{oy["name"]}')
 
         if nv.get("change_rate", 0) >= 20:
-            naver_rising.append({"keyword": nv.get("keyword", ""), "change_rate": nv.get("change_rate", 0)})
+            yt_kw = yt.get("keyword", "")
+            naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv.get("change_rate", 0)})
         if yt.get("change_rate", yt.get("view_change_rate", 0)) >= 30:
             youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt.get("change_rate", yt.get("view_change_rate", 0)), "video_count": yt.get("video_count", 0)})
 
@@ -546,6 +560,15 @@ def main(use_period=True):
             if bonus > 0:
                 p["scores"]["total"] = min(100, p["scores"]["total"] + bonus)
 
+            # consecutive_periods 확정 후 flags 재판정
+            yt_6m = yt_map.get(code, {}).get("video_count_3month", 0)
+            if yt_6m == -1:
+                yt_6m = 0
+            p["flags"] = detect_flags(p["scores"], video_count_3month=yt_6m,
+                                      consecutive_periods=consecutive)
+            p["seller_grade"] = seller_grade(p["scores"]["total"], p["flags"])
+            p["seller_note"] = seller_note(p["scores"], p["flags"])
+
         # 보너스 적용 후 재정렬
         all_products.sort(key=lambda p: p["scores"]["total"], reverse=True)
         for i, p in enumerate(all_products, 1):
@@ -588,9 +611,10 @@ def main(use_period=True):
     # Time-series comparison
     dropped_products, new_count = compute_rank_changes(products_top, prev_data)
 
-    # Buzz Trap / Hidden Gem
+    # Buzz Trap / Hidden Gem / Steady Seller
     buzz_traps = []
     hidden_gems = []
+    steady_sellers = []
     for p in all_products:
         if "buzz_trap" in p["flags"]:
             buzz_traps.append({"rank": p["rank"], "brand": p["brand"], "name_ko": p["name_ko"], "scores": p["scores"],
@@ -598,6 +622,9 @@ def main(use_period=True):
         if "hidden_gem" in p["flags"]:
             hidden_gems.append({"rank": p["rank"], "brand": p["brand"], "name_ko": p["name_ko"], "scores": p["scores"],
                                 "reason": "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล"})
+        if "steady_seller" in p["flags"]:
+            steady_sellers.append({"rank": p["rank"], "brand": p["brand"], "name_ko": p["name_ko"], "scores": p["scores"],
+                                   "reason": "proven product with consistent sales and existing reviews"})
 
     naver_rising.sort(key=lambda x: x["change_rate"], reverse=True)
     youtube_rising.sort(key=lambda x: x["change_rate"], reverse=True)
@@ -647,6 +674,7 @@ def main(use_period=True):
         "dropped_products": dropped_products,
         "buzz_traps": buzz_traps,
         "hidden_gems": hidden_gems,
+        "steady_sellers": steady_sellers,
         "keywords": {"naver_rising": naver_rising[:10], "youtube_rising": youtube_rising[:10]},
         "outside_oliveyoung": {"naver": outside_naver, "youtube": outside_youtube},
         "stats": {
@@ -655,6 +683,7 @@ def main(use_period=True):
             "new_entries": new_count,
             "buzz_trap_count": len(buzz_traps),
             "hidden_gem_count": len(hidden_gems),
+            "steady_seller_count": len(steady_sellers),
             "dropped_count": len(dropped_products),
         },
     }
@@ -692,6 +721,11 @@ def main(use_period=True):
         for hg in hidden_gems:
             print(f"  #{hg['rank']} {hg['brand']} {hg['name_ko'][:25]}")
 
+    if steady_sellers:
+        print(f"\n=== STEADY SELLER ({len(steady_sellers)}) ===")
+        for ss in steady_sellers:
+            print(f"  #{ss['rank']} {ss['brand']} {ss['name_ko'][:25]}")
+
     if dropped_products:
         print(f"\n=== DROPPED ({len(dropped_products)}) ===")
         for dp in dropped_products[:5]:
@@ -699,7 +733,7 @@ def main(use_period=True):
 
     print(f"\n=== STATS ===")
     st = output["stats"]
-    print(f"  analyzed:{st['total_analyzed']} displayed:{st['total_products']} new:{st['new_entries']} dropped:{st['dropped_count']} buzz:{st['buzz_trap_count']} gem:{st['hidden_gem_count']}")
+    print(f"  analyzed:{st['total_analyzed']} displayed:{st['total_products']} new:{st['new_entries']} dropped:{st['dropped_count']} buzz:{st['buzz_trap_count']} gem:{st['hidden_gem_count']} steady:{st['steady_seller_count']}")
 
     for src, info in data_status.items():
         status = "OK" if info["available"] else "MISSING"

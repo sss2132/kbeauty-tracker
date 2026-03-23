@@ -115,10 +115,12 @@ def build_product_cards(products):
                 badges += '<span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span>'
             elif f == "hidden_gem":
                 badges += '<span class="badge badge-gem" title="สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล">HIDDEN GEM</span><span class="badge-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</span>'
+            elif f == "steady_seller":
+                badges += '<span class="badge badge-steady" title="สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย">STEADY SELLER</span><span class="badge-desc">สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย</span>'
         g = p.get("seller_grade", "")
         if g:
-            gc = {"source_now": "grade-now", "watch": "grade-watch", "hold": "grade-hold"}.get(g, "")
-            label = {"source_now": "ซื้อเลย", "watch": "จับตา", "hold": "รอดู"}.get(g, g)
+            gc = {"source_now": "grade-now", "watch": "grade-watch", "hold": "grade-hold", "proven": "grade-proven"}.get(g, "")
+            label = {"source_now": "ซื้อเลย", "watch": "จับตา", "hold": "รอดู", "proven": "การันตี"}.get(g, g)
             badges += f'<span class="seller-grade {gc}">{esc(label)}</span>'
 
         shopee = esc(p.get("shopee_url", "#"))
@@ -155,7 +157,7 @@ def build_discover_html(products):
     sections = []
 
     # 1) 급상승 (RISING signal)
-    rising = [p for p in products if p.get("signal") == "rising" and "buzz_trap" not in p.get("flags", [])]
+    rising = [p for p in products if p.get("signal") == "rising" and "buzz_trap" not in p.get("flags", []) and p["rank"] <= 20]
     for p in rising:
         used.add(p["rank"])
     sections.append(("rising", "&#128640; สินค้ามาแรง", "สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน", rising))
@@ -166,15 +168,18 @@ def build_discover_html(products):
         used.add(p["rank"])
     sections.append(("gem", "&#128142; Hidden Gem", "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล", gems))
 
+    # 2.5) Steady Seller
+    steadies = [p for p in products if "steady_seller" in p.get("flags", []) and p["rank"] not in used]
+    for p in steadies:
+        used.add(p["rank"])
+    sections.append(("steady", "&#127942; Steady Seller", "สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย เชื่อถือได้", steadies))
+
     # 3) 신규진입 (NEW)
-    newbies = [p for p in products if p.get("rank_change") == "NEW" and p["rank"] not in used]
+    newbies = [p for p in products if p.get("rank_change") == "NEW" and p["rank"] <= 20 and p["rank"] not in used]
     for p in newbies:
         used.add(p["rank"])
     sections.append(("new", "&#127381; สินค้าใหม่ประจำครั้งนี้", "เพิ่งเข้า TOP 30 เป็นครั้งแรก!", newbies))
 
-    # 4) 부동의 상위권 (Stable top 5)
-    stable = [p for p in products if p["rank"] <= 5 and p["rank"] not in used]
-    sections.append(("stable", "&#128081; อันดับต้นๆ ที่มั่นคง", "สินค้ายอดนิยมที่ครองอันดับต้นอย่างต่อเนื่อง", stable))
 
     html = ""
     for sec_type, title, desc, items in sections:
@@ -196,6 +201,8 @@ def build_discover_html(products):
             for f in p.get("flags", []):
                 if f == "hidden_gem":
                     badges += '<span class="badge badge-gem" title="สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล">HIDDEN GEM</span><span class="badge-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</span>'
+                elif f == "steady_seller":
+                    badges += '<span class="badge badge-steady" title="สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย">STEADY SELLER</span><span class="badge-desc">สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย</span>'
 
             cards += f'''<div class="disc-card" data-category="{cat}">
   <div class="disc-rank">#{rank} {rc_html}</div>
@@ -228,8 +235,9 @@ def build_keywords_html(data):
         items = ""
         for i, kw in enumerate(nv_rising[:10], 1):
             w = min(100, (kw["change_rate"] / mx) * 100) if mx > 0 else 0
+            display_kw = kw.get("keyword_en") or kw["keyword"]
             items += f'''<div class="kw-item">
-  <span class="kw-rank">#{i}</span><span class="kw-text">{esc(kw["keyword"])}</span>
+  <span class="kw-rank">#{i}</span><span class="kw-text">{esc(display_kw)}</span>
   <div class="kw-bar-wrap"><div class="kw-bar" style="width:{w:.0f}%"></div></div>
   <span class="kw-rate">+{kw["change_rate"]:.0f}%</span>
 </div>'''
@@ -288,7 +296,8 @@ def build_seller_html(data):
     if hgs:
         items = ""
         for hg in hgs:
-            items += f'''<div class="si si-gem"><div class="si-name">{esc(hg["brand"])} {esc(hg["name_ko"])}</div>
+            display_name = hg.get("name_en") or hg.get("name_ko", "")
+            items += f'''<div class="si si-gem"><div class="si-name">{esc(hg.get("brand_en", hg["brand"]))} {esc(display_name)}</div>
   <div class="si-reason">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล -- โอกาสเข้าตลาดก่อนคู่แข่ง</div></div>'''
         html += f'''<div class="ss ss-gem"><h3>&#128142; Hidden Gem - โอกาส ({len(hgs)})</h3>
   <p class="ss-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</p>{items}</div>'''
@@ -306,9 +315,10 @@ def build_seller_html(data):
             combined.append({"keyword": o["keyword"], "en": o.get("search_keyword_en", o["keyword"]), "rate": o["change_rate"], "src": "YouTube"})
         combined.sort(key=lambda x: x["rate"], reverse=True)
         for c in combined[:8]:
+            display_kw = c["en"] if c["en"] != c["keyword"] else c["keyword"]
             shopee_url = f"https://shopee.co.th/search?keyword={urllib.parse.quote(c['en'])}"
             items += f'''<div class="si si-outside">
-  <div class="si-name">{esc(c["keyword"])} <span class="si-src">{c["src"]}</span></div>
+  <div class="si-name">{esc(display_kw)} <span class="si-src">{c["src"]}</span></div>
   <div class="si-rate">+{c["rate"]:.0f}%</div>
   <a href="{esc(shopee_url)}" target="_blank" rel="noopener" class="si-shopee-link">Shopee &#128269;</a>
 </div>'''
@@ -321,8 +331,9 @@ def build_seller_html(data):
         items = ""
         for dp in dropped:
             brand_en = esc(dp.get("brand_en", dp["brand"]))
+            display_name = dp.get("name_en") or dp.get("name_ko", "")
             items += f'''<div class="si si-dropped">
-  <div class="si-name">{brand_en} {esc(dp["name_ko"])}</div>
+  <div class="si-name">{brand_en} {esc(display_name)}</div>
 </div>'''
         html += f'''<div class="ss ss-dropped"><h3>&#128308; สินค้าที่หลุดจาก TOP 30 ครั้งนี้ ({len(dropped)})</h3>
   <p class="ss-desc">สินค้าที่อยู่ใน TOP 30 ครั้งก่อนแต่หลุดออกแล้ว</p>{items}</div>'''
@@ -335,7 +346,7 @@ def build_seller_html(data):
     if top5:
         items = ""
         for i, p in enumerate(top5, 1):
-            nm = esc(f"{p.get('brand_en', p['brand'])} {p['name_ko']}")
+            nm = esc(f"{p.get('brand_en', p['brand'])} {p.get('name_en', '') or p['name_ko']}")
             note = esc(p.get("seller_note", ""))
             shopee = esc(p.get("shopee_url", "#"))
             lazada = esc(p.get("lazada_url", "#"))
@@ -385,7 +396,8 @@ def generate_html(data):
     if bts:
         bt_items = ""
         for bt in bts:
-            bt_items += f'''<div class="si si-buzz"><div class="si-name">{esc(bt["brand"])} {esc(bt["name_ko"])}</div>
+            bt_display = bt.get("name_en") or bt.get("name_ko", "")
+            bt_items += f'''<div class="si si-buzz"><div class="si-name">{esc(bt.get("brand_en", bt["brand"]))} {esc(bt_display)}</div>
   <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div>'''
         buzz_pro_html = f'''<div class="ss ss-buzz" style="margin-top:16px">
     <h3>&#9203; รอติดตาม ({len(bts)} รายการ)</h3>
@@ -401,22 +413,6 @@ def generate_html(data):
 
     # Weight bar segments (unused in current UI but kept for reference)
     wbar_parts = ""
-
-    # Simulator sliders - only show available sources
-    sim_sliders = f'''<div class="sg">
-      <div class="sg-label"><span>&#128722; Olive Young</span><span id="sv-oy">50</span></div>
-      <input type="range" class="sslider" id="s-oy" min="0" max="100" value="50">
-    </div>'''
-    if ns_pct > 0:
-        sim_sliders += f'''<div class="sg">
-      <div class="sg-label"><span>&#128269; Naver Search</span><span id="sv-ns">50</span></div>
-      <input type="range" class="sslider sl-ns" id="s-ns" min="0" max="100" value="50">
-    </div>'''
-    if yt_pct > 0:
-        sim_sliders += f'''<div class="sg">
-      <div class="sg-label"><span>YouTube Score</span><span id="sv-yt">50</span></div>
-      <input type="range" class="sslider sl-yt" id="s-yt" min="0" max="100" value="50">
-    </div>'''
 
     # Source descriptions (unused in current UI)
     src_descs = ""
@@ -486,12 +482,12 @@ def generate_html(data):
 .product-badges{{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;align-items:center}}
 .badge{{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.3px}}
 .badge-hot{{background:#ff4757;color:#fff}}.badge-rising{{background:#8854d0;color:#fff}}
-.badge-buzz{{background:#ffa502;color:#fff}}.badge-gem{{background:#2ed573;color:#fff}}
+.badge-buzz{{background:#ffa502;color:#fff}}.badge-gem{{background:#2ed573;color:#fff}}.badge-steady{{background:#3742fa;color:#fff}}
 .rising-detail{{font-size:10px;color:#8854d0;font-weight:600}}
 .badge-desc{{font-size:0.75rem;color:#999;display:block;margin-top:1px}}
 @media(max-width:480px){{.badge-desc{{display:none}}}}
 .seller-grade{{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px}}
-.grade-now{{background:#2ed573;color:#fff}}.grade-watch{{background:#3742fa;color:#fff}}.grade-hold{{background:#ffa502;color:#fff}}
+.grade-now{{background:#2ed573;color:#fff}}.grade-watch{{background:#3742fa;color:#fff}}.grade-hold{{background:#ffa502;color:#fff}}.grade-proven{{background:#5352ed;color:#fff}}
 .product-right{{text-align:center;flex-shrink:0;min-width:58px}}
 .rank-big{{font-size:22px;font-weight:700;color:#e8547a}}
 .score-small{{font-size:12px;color:#999;margin-top:1px}}
@@ -655,6 +651,7 @@ def generate_html(data):
     <div class="st"><div class="st-v">{stats["total_analyzed"]}</div><div class="st-l">วิเคราะห์</div></div>
     <div class="st"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">&#9203; รอติดตาม</div></div>
     <div class="st"><div class="st-v">{stats["hidden_gem_count"]}</div><div class="st-l">Hidden Gem</div></div>
+    <div class="st"><div class="st-v">{stats.get("steady_seller_count", 0)}</div><div class="st-l">Steady Seller</div></div>
   </div>
   <div class="fbar">
     <button class="fbtn active" data-cat="all">ทั้งหมด</button>
@@ -745,18 +742,10 @@ def generate_html(data):
     <p>สินค้าที่คนค้นหาและรีวิวมากในโซเชียล แต่ยอดขายจริงยังไม่สูง -- อาจเป็นแค่กระแสชั่วคราว ควรระวังในการสต็อก</p>
     <h3 style="margin-top:12px">&#128142; Hidden Gem คืออะไร?</h3>
     <p>สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล -- โอกาสทองสำหรับเซลเลอร์เข้าตลาดก่อนคู่แข่ง</p>
+    <h3 style="margin-top:12px">&#127942; Steady Seller คืออะไร?</h3>
+    <p>สินค้าที่ขายดีต่อเนื่องและมีรีวิวมากมายในช่วง 3 เดือนที่ผ่านมา -- สินค้าที่ได้รับการพิสูจน์แล้วว่าขายดีจริง เหมาะสำหรับสต็อกระยะยาว</p>
     <h3 style="margin-top:12px">&#128640; RISING คืออะไร?</h3>
     <p>สินค้าที่อันดับรวมสูงขึ้นมากจากครั้งก่อน (10 อันดับขึ้นไป) -- สินค้ากำลังจะมาแรง!</p>
-  </div>
-  <div class="msec">
-    <h3>&#128300; ทดลองคำนวณคะแนน</h3>
-    <p style="font-size:12px;color:#999;margin-bottom:10px">ทดลองปรับคะแนนเพื่อดูผลลัพธ์ (ค่าจำลอง ไม่ใช่สูตรจริง)</p>
-    {sim_sliders}
-    <div class="sim-res">
-      <div>คะแนนรวม (จำลอง)</div>
-      <div class="sim-total" id="sim-total">50</div>
-      <div class="sim-signal" id="sim-signal"></div>
-    </div>
   </div>
 </div>
 
@@ -837,36 +826,6 @@ def generate_html(data):
     applyCatFilter();
   }})}});
 
-  /* Simulator */
-  var sOy=document.getElementById('s-oy');
-  var sNs=document.getElementById('s-ns');
-  var sYt=document.getElementById('s-yt');
-  function upSim(){{
-    var oy=sOy?+sOy.value:50;
-    var ns=sNs?+sNs.value:0;
-    var yt=sYt?+sYt.value:0;
-    if(sOy)document.getElementById('sv-oy').textContent=oy;
-    if(sNs)document.getElementById('sv-ns').textContent=ns;
-    if(sYt)document.getElementById('sv-yt').textContent=yt;
-    var t=Math.round(oy*{oy_w}+ns*{ns_w}+yt*{yt_w});
-    document.getElementById('sim-total').textContent=t;
-    var social=Math.max(ns,yt);
-    var s='';
-    if(social>70&&oy<40)s='<span style="color:#ffa502">&#9203; รอติดตาม</span>';
-    else if(oy>70&&ns<30&&yt<30)s='<span style="color:#2ed573">&#128142; Hidden Gem</span>';
-    else if(t>=85)s='<span style="color:#ff4757">&#128293; HOT</span>';
-    else if(t>=60)s='<span style="color:#3742fa">&#128064; น่าจับตา</span>';
-    else s='<span style="color:#999">--</span>';
-    var g='';
-    if(social>70&&oy<40)g='<br><span style="color:#ffa502">เซลเลอร์: รอดูก่อน</span>';
-    else if(t>=80&&oy>70&&ns<30&&yt<30)g='<br><span style="color:#2ed573">เซลเลอร์: ซื้อเลย!</span>';
-    else if(t>=60)g='<br><span style="color:#3742fa">เซลเลอร์: จับตาดู</span>';
-    document.getElementById('sim-signal').innerHTML=s+g;
-  }}
-  if(sOy)sOy.addEventListener('input',upSim);
-  if(sNs)sNs.addEventListener('input',upSim);
-  if(sYt)sYt.addEventListener('input',upSim);
-  upSim();
 }})();
 
 function saveEmail(email){{

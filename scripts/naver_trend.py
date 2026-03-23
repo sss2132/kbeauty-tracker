@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import NAVER_CLIENT_ID, NAVER_CLIENT_SECRET
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
-API_URL = "https://openapi.naver.com/v1/datalab/shopping/category/keyword/ratio"
+API_URL = "https://openapi.naver.com/v1/datalab/shopping/category/keywords"
 
 # 네이버 쇼핑 카테고리 코드 (화장품/미용)
 CATEGORY_CODE = "50000002"
@@ -32,16 +32,19 @@ KEYWORD_MAP = {
 
 
 def make_keyword(product):
-    """제품 정보에서 네이버 검색 키워드 생성"""
+    """제품 정보에서 네이버 검색 키워드 생성 - 핵심 단어만 추출"""
     brand = product["brand"]
     name = product["name"]
-    # 이름에서 용량(ml, g, 매) 제거 후 핵심 단어 추출
     import re
-    short = re.sub(r"\d+\s*(ml|g|매입|매)\b", "", name).strip()
-    # 너무 길면 앞 2단어만
+    # 용량, 기획, 특수문자 등 제거
+    short = re.sub(r"\d+\s*(ml|g|매입|매|개입|개|ea)\b", "", name, flags=re.IGNORECASE).strip()
+    short = re.sub(r"\d+\+\d+/?", "", short).strip()  # 10+1/ 등
+    short = re.sub(r"\(.*?\)", "", short).strip()  # 괄호 내용
+    short = re.sub(r"[/+]$", "", short).strip()  # 후행 / +
+    # 핵심 2단어만 (브랜드 + 2단어 = 충분한 검색 정밀도)
     words = short.split()
-    if len(words) > 3:
-        short = " ".join(words[:3])
+    if len(words) > 2:
+        short = " ".join(words[:2])
     return f"{brand} {short}".strip()
 
 
@@ -90,13 +93,33 @@ def calc_change_rate(data):
     return this_week, last_week, rate
 
 
+def _load_keyword_map(today):
+    """Claude가 생성한 키워드 파일이 있으면 로드."""
+    kw_path = os.path.join(DATA_DIR, f"_keywords_{today}.json")
+    if not os.path.exists(kw_path):
+        return {}
+    with open(kw_path, "r", encoding="utf-8") as f:
+        kw_list = json.load(f)
+    return {k["product_code"]: k for k in kw_list}
+
+
 def run_with_api(products):
     """실제 API로 네이버 데이터 수집"""
     print(f"[네이버] API 모드 -{len(products)}개 제품 조회 시작")
+    today = datetime.now().strftime("%Y%m%d")
+    keyword_map = _load_keyword_map(today)
+    # 키워드 파일이 있으면 해당 제품만 처리 (Claude가 비화장품 제외 + 50개 선별)
+    if keyword_map:
+        products = [p for p in products if p["product_code"] in keyword_map]
+        print(f"[네이버] Claude 키워드 기준 {len(products)}개 처리")
     results = []
 
     for i, product in enumerate(products):
-        keyword = make_keyword(product)
+        pc = product["product_code"]
+        if pc in keyword_map:
+            keyword = keyword_map[pc]["naver_keyword"]
+        else:
+            keyword = make_keyword(product)
         print(f"  [{i+1}/{len(products)}] {keyword}...", end=" ")
 
         try:
@@ -143,7 +166,7 @@ def main():
     # 올리브영 데이터 로드 (최신 dated 파일 우선, 없으면 sample)
     import glob as _glob
     oy_files = sorted(_glob.glob(os.path.join(DATA_DIR, "oliveyoung_*.json")))
-    oy_files = [f for f in oy_files if "sample" not in os.path.basename(f)]
+    oy_files = [f for f in oy_files if "sample" not in os.path.basename(f) and "keywords" not in os.path.basename(f)]
     if oy_files:
         oy_path = oy_files[-1]
     else:

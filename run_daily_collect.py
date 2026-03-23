@@ -1,275 +1,1083 @@
 """
-K-Beauty Trend Tracker - 매일 데이터 수집 스크립트
-사용법: python run_daily_collect.py
+K-Beauty Trend Tracker - Orchestrator + Verification Agent
 
-1. 올리브영 스크린샷 캡처
-2. 사용자 확인 대기
-3. 스크린샷에서 제품 추출 → oliveyoung JSON
-4. 네이버 API → naver JSON
-5. 유튜브 API → youtube JSON
-6. data/daily/YYYY-MM-DD/ 폴더에 저장
-7. 3일치 데이터 확인 → 갱신 여부 결정
+사용법:
+  python run_daily_collect.py              # 전체 파이프라인 (Step 1~5)
+  python run_daily_collect.py step1        # Step 1만: 캡처 + 추출 안내
+  python run_daily_collect.py step2        # Step 2만: 올리브영 검증
+  python run_daily_collect.py step3        # Step 3만: API 수집
+  python run_daily_collect.py step4        # Step 4만: API 검증
+  python run_daily_collect.py step5        # Step 5만: daily 저장 + 갱신
+
+=== 구조 ===
+
+Orchestrator (이 스크립트):
+  전체 흐름 통제. Step 1~5를 순서대로 실행.
+  검증 단계에서 claude -p 로 별도 프로세스를 띄워 검증 Agent 호출.
+
+Verification Agent (claude -p subprocess):
+  새 프로세스 = 수집 과정 기억 없음 = unbiased 검증.
+  스크린샷/JSON 파일만 보고 대조.
+  JSON 스키마로 구조화된 응답 반환: {"passed": bool, "issues": [...]}
 """
 
 import glob
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
+
+
+def safe_print(text):
+    """cp949 등 터미널 인코딩에서 깨지는 문자를 ? 로 대체하여 출력."""
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        print(text.encode(sys.stdout.encoding or "utf-8", errors="replace").decode(
+            sys.stdout.encoding or "utf-8", errors="replace"
+        ))
+
+
+# ================================================================
+#  경로 설정
+# ================================================================
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 DAILY_DIR = os.path.join(DATA_DIR, "daily")
 SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
+SCREENSHOT_DIR = os.path.join(PROJECT_ROOT, "Oliveyoung collection")
 PERIOD_DAYS = 3
+CLAUDE_EXE = os.path.join(os.path.expanduser("~"), ".local", "bin", "claude.exe")
 
 
-def log(step, msg, ok=True):
-    status = "OK" if ok else "SKIP"
-    print(f"[{step}] {status} - {msg}")
+# ================================================================
+#  Verification Agent
+# ================================================================
+
+VERIFICATION_SCHEMA = json.dumps({
+    "type": "object",
+    "properties": {
+        "passed": {"type": "boolean"},
+        "issues": {
+            "type": "array",
+            "items": {"type": "string"}
+        }
+    },
+    "required": ["passed", "issues"]
+}, ensure_ascii=False)
+
+KEYWORD_SCHEMA = json.dumps({
+    "type": "object",
+    "properties": {
+        "keywords": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "product_code": {"type": "string"},
+                    "naver_keyword": {"type": "string"},
+                    "youtube_keyword": {"type": "string"}
+                },
+                "required": ["product_code", "naver_keyword", "youtube_keyword"]
+            }
+        }
+    },
+    "required": ["keywords"]
+}, ensure_ascii=False)
 
 
-def step_capture():
-    """1. 올리브영 스크린샷 캡처."""
-    script = os.path.join(SCRIPTS_DIR, "capture_oliveyoung.py")
-    if not os.path.exists(script):
-        log("1. CAPTURE", "capture_oliveyoung.py 없음", ok=False)
-        return False
+def compute_file_hash(filepath):
+    """파일의 SHA256 해시 계산 — 검증 결과와 데이터 파일 연결용."""
+    import hashlib
+    h = hashlib.sha256()
+    with open(filepath, "rb") as f:
+        h.update(f.read())
+    return h.hexdigest()
+
+
+def run_keyword_agent(oy_path, timeout=600):
+    """claude -p로 최적 검색 키워드 생성. 실패 시 None 반환."""
+    today_str = datetime.now().strftime("%Y%m%d")
+    gn_path = os.path.join(DATA_DIR, f"_global_names_{today_str}.json")
+    if os.path.exists(gn_path):
+        global_names_ref = os.path.abspath(gn_path)
+    else:
+        global_names_ref = "(파일 없음 — 한국어 제품명을 영어로 번역해서 사용)"
+
+    prompt = f"""너는 K-Beauty 제품 검색 키워드 전문가야.
+올리브영 제품 데이터를 읽고, 각 제품의 최적 검색 키워드를 생성해.
+
+파일: {os.path.abspath(oy_path)}
+
+## 핵심 원칙: 제품명 변조 금지
+- 원본 name 필드에 있는 제품 핵심 이름을 절대 바꾸지 마
+- 키워드 생성은 "앞뒤 프로모션/용량/패키징 텍스트를 제거"하는 것이지, "제품명을 요약하거나 재작성"하는 게 아님
+- 제거 대상: 앞쪽 [대괄호 프로모션], 용량(ml, g, 매), 수량(+1, 더블, 2입), 기획/한정/리필, 증정 정보
+- 유지 대상: 브랜드명 + 제품 라인명 + 제품 고유명 (이것들은 원본 그대로 유지)
+- 잘못된 예: "메디힐 마데카소사이드 흔적 리페어 세럼" → "메디힐 마데카소사이드 세럼" (X, "흔적 리페어" 삭제됨)
+- 잘못된 예: "메디힐 더마 패드" → "메디힐 토닝패드" (X, 제품명 자체를 바꿈)
+
+## 네이버 키워드 규칙 (naver_keyword)
+- 한국 소비자가 네이버에서 실제로 검색할 법한 키워드
+- 브랜드명(한국어) + 제품 라인명 (2~3단어). 너무 구체적이면 네이버 API에서 검색량 0이 됨
+- 같은 라인의 다른 패키징(용량, 세트, 기획)은 같은 키워드 공유 OK
+- 예: "메디힐 에센셜 마스크팩 10+1/10매 기획 7종 골라담기" → "메디힐 마스크팩"
+- 예: "토리든 다이브인 저분자 히알루론산 세럼 50ml 한정 리필 기획" → "토리든 다이브인 세럼"
+- 예: "아누아 피디알엔 히알루론산 캡슐 100 세럼 30ml 더블 기획" → "아누아 세럼"
+- 예: "바이오힐보 프로바이오덤 콜라겐 에센스 선크림 50ml+50ml" → "바이오힐보 선크림"
+- 예: "클리오 킬커버 파운웨어 쿠션 기획" → "클리오 킬커버 쿠션"
+
+## 유튜브 키워드 규칙 (youtube_keyword)
+- 영문 키워드로 검색 (한국 유튜버는 제목에 한국어 풀네임을 잘 안 씀. 영문명이 제목/설명에 더 많이 포함됨)
+- 올리브영 글로벌 몰 공식 영문명 파일이 있으면 반드시 참조: {global_names_ref}
+  - 파일의 products 객체에서 product_code로 검색, global_name 필드가 공식 영문명
+  - 공식 영문명에서 용량/기획/세트 정보를 제거하고 핵심 제품명만 사용
+  - 파일에 없는 제품은 한국어 제품명을 영어로 번역
+- 예: "메디힐 더마 패드" → 공식: "MEDIHEAL Toner Pad" → 키워드: "Mediheal Toner Pad"
+- 예: "클리오 킬커버 파운웨어 쿠션" → 공식: "CLIO Kill Cover Founwear Cushion" → 키워드: "CLIO Kill Cover Founwear Cushion"
+
+## 비화장품 제외 규칙
+- 건강기능식품(비타민, 단백질쉐이크, 콜라겐 영양제 등), 과자/스낵(베이글칩 등), 의료기기는 제외
+- 콜라겐 "패치"나 콜라겐 "세럼"은 화장품이므로 포함
+- 판단 기준: 피부에 바르거나 붙이는 제품 = 화장품, 먹는 제품 = 비화장품
+
+화장품인 제품만(최대 50개) product_code, naver_keyword, youtube_keyword를 생성해.
+비화장품은 keywords 배열에서 완전히 제외해."""
+
+    cmd = [
+        CLAUDE_EXE, "-p",
+        "--output-format", "json",
+        "--json-schema", KEYWORD_SCHEMA,
+        "--allowed-tools", "Read,WebFetch",
+        "--no-session-persistence",
+        prompt,
+    ]
+
+    safe_print("[KEYWORD] 키워드 생성 Agent 호출 중 (글로벌 몰 영문명 대조 포함)...")
+
     try:
         result = subprocess.run(
-            [sys.executable, script],
-            capture_output=True, text=True, timeout=300,
-            encoding="utf-8", errors="replace"
+            cmd, capture_output=True, text=True, timeout=timeout,
+            encoding="utf-8", errors="replace", cwd=PROJECT_ROOT,
         )
-        if result.returncode == 0:
-            log("1. CAPTURE", "올리브영 캡처 완료")
-            for line in result.stdout.split("\n"):
-                if line.strip():
-                    print(f"       {line.strip()}")
-            return True
-        else:
-            log("1. CAPTURE", f"실패: {result.stderr[:200]}", ok=False)
-            return False
-    except subprocess.TimeoutExpired:
-        log("1. CAPTURE", "타임아웃 (300초)", ok=False)
-        return False
-    except Exception as e:
-        log("1. CAPTURE", f"오류: {e}", ok=False)
-        return False
+    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+        safe_print(f"[KEYWORD] Agent 실패: {e}")
+        return None
 
+    if result.returncode != 0:
+        safe_print("[KEYWORD] Agent 실행 실패")
+        return None
 
-def step_wait_confirmation():
-    """2. 사용자 확인 대기."""
-    print("\n" + "=" * 50)
-    print("  캡처 완료. 확인 후 계속 진행하려면 Enter")
-    print("  (취소하려면 Ctrl+C)")
-    print("=" * 50)
+    raw = result.stdout.strip()
     try:
-        input()
+        outer = json.loads(raw)
+        if "structured_output" in outer and isinstance(outer["structured_output"], dict):
+            return outer["structured_output"]
+        elif "result" in outer and isinstance(outer["result"], str):
+            return json.loads(outer["result"])
+        elif "keywords" in outer:
+            return outer
+    except (json.JSONDecodeError, TypeError):
+        pass
+
+    safe_print("[KEYWORD] Agent 응답 파싱 실패 - 기본 키워드 사용")
+    return None
+
+
+def run_verification_agent(prompt, timeout=1800):
+    """
+    Claude Code CLI를 별도 프로세스로 띄워 검증 실행.
+
+    새 프로세스 = 이전 수집/추출 대화 기억 없음 = unbiased 검증.
+    --json-schema로 구조화 응답, --allowed-tools로 Read/Glob만 허용.
+
+    Returns:
+        dict: {"passed": bool, "issues": ["문제1", "문제2", ...]}
+              파싱 실패 시 {"passed": False, "issues": ["파싱 실패: ..."]}
+    """
+    cmd = [
+        CLAUDE_EXE,
+        "-p",
+        "--output-format", "json",
+        "--json-schema", VERIFICATION_SCHEMA,
+        "--allowed-tools", "Read,Glob",
+        "--no-session-persistence",
+        prompt,
+    ]
+
+    safe_print(f"\n[VERIFY] 검증 Agent 호출 중...")
+
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            encoding="utf-8",
+            errors="replace",
+            cwd=PROJECT_ROOT,
+        )
+    except subprocess.TimeoutExpired:
+        return {"passed": False, "issues": [f"검증 Agent 타임아웃 ({timeout}초)"]}
+    except FileNotFoundError:
+        return {"passed": False, "issues": [
+            "claude CLI를 찾을 수 없음. Claude Code가 설치되어 있는지 확인하세요."
+        ]}
+
+    if result.returncode != 0:
+        stderr_short = (result.stderr or "")[:500]
+        return {"passed": False, "issues": [f"검증 Agent 실행 실패: {stderr_short}"]}
+
+    # JSON 응답 파싱
+    # --output-format json 사용 시 응답 구조:
+    # {"type":"result", "structured_output": {"passed": bool, "issues": [...]}, ...}
+    raw = result.stdout.strip()
+    try:
+        outer = json.loads(raw)
+
+        # structured_output 필드에 JSON 스키마 응답이 들어옴
+        if "structured_output" in outer and isinstance(outer["structured_output"], dict):
+            inner = outer["structured_output"]
+        elif "result" in outer and isinstance(outer["result"], str) and outer["result"]:
+            inner = json.loads(outer["result"])
+        elif "passed" in outer:
+            inner = outer
+        else:
+            return {"passed": False, "issues": [f"응답에 structured_output 없음: {raw[:300]}"]}
+
+        passed = inner.get("passed", False)
+        issues = inner.get("issues", [])
+        if not isinstance(issues, list):
+            issues = [str(issues)]
+        return {"passed": passed, "issues": issues}
+    except (json.JSONDecodeError, TypeError, KeyError) as e:
+        return {"passed": False, "issues": [
+            f"검증 Agent 응답 파싱 실패: {str(e)}",
+            f"원문 (앞 500자): {raw[:500]}"
+        ]}
+
+
+def handle_verification_result(result, step_name):
+    """검증 결과 처리. 통과/실패에 따라 진행 여부 결정."""
+    if result["passed"]:
+        safe_print(f"[VERIFY] {step_name} 검증 통과")
+        if result["issues"]:
+            safe_print(f"  (참고 사항 {len(result['issues'])}건)")
+            for issue in result["issues"]:
+                safe_print(f"    - {issue}")
+        return True
+
+    safe_print(f"[VERIFY] {step_name} 검증 실패 - {len(result['issues'])}건 발견:")
+    for i, issue in enumerate(result["issues"], 1):
+        safe_print(f"  {i}. {issue}")
+
+    try:
+        user_input = input("\n무시하고 진행하려면 Enter, 중단하려면 q: ")
+        if user_input.strip().lower() == "q":
+            safe_print("중단됨.")
+            return False
+        safe_print("경고 무시하고 진행합니다.")
         return True
     except (KeyboardInterrupt, EOFError):
-        print("\n취소됨.")
+        safe_print("\n중단됨.")
         return False
 
 
-def step_extract_products(today_str):
-    """3. 스크린샷에서 제품 추출 → oliveyoung JSON.
-    Note: 실제 OCR/추출은 별도 도구 필요. 여기서는 기존 데이터 복사 또는 수동 입력 안내."""
-    oy_files = sorted(glob.glob(os.path.join(DATA_DIR, "oliveyoung_*.json")))
-    oy_files = [f for f in oy_files if "sample" not in os.path.basename(f)]
+# ================================================================
+#  Step 1: 올리브영 캡처 + 추출 안내
+# ================================================================
 
-    if oy_files:
-        latest = oy_files[-1]
-        log("3. EXTRACT", f"기존 올리브영 데이터 사용: {os.path.basename(latest)}")
-        return latest
+def run_step1():
+    """올리브영 랭킹 페이지 캡처 + 제품 추출 안내."""
+    today_str = datetime.now().strftime("%Y%m%d")
+    safe_print(f"\n{'=' * 50}")
+    safe_print(f"  Step 1: 올리브영 캡처 + 추출")
+    safe_print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    safe_print(f"{'=' * 50}\n")
+
+    # 캡처 실행
+    script = os.path.join(SCRIPTS_DIR, "capture_oliveyoung.py")
+    if not os.path.exists(script):
+        safe_print("[CAPTURE] SKIP - capture_oliveyoung.py 없음")
     else:
-        sample = os.path.join(DATA_DIR, "oliveyoung_sample.json")
-        if os.path.exists(sample):
-            log("3. EXTRACT", "올리브영 샘플 데이터 사용 (실제 추출 필요)", ok=False)
-            return sample
-        log("3. EXTRACT", "올리브영 데이터 없음", ok=False)
-        return None
+        try:
+            result = subprocess.run(
+                [sys.executable, script],
+                capture_output=True, text=True, timeout=300,
+                encoding="utf-8", errors="replace"
+            )
+            if result.returncode == 0:
+                safe_print("[CAPTURE] OK")
+                for line in result.stdout.split("\n"):
+                    if line.strip():
+                        safe_print(f"  {line.strip()}")
+            else:
+                safe_print(f"[CAPTURE] FAIL - {result.stderr[:300]}")
+                return False
+        except subprocess.TimeoutExpired:
+            safe_print("[CAPTURE] FAIL - 타임아웃 (300초)")
+            return False
+
+    screenshots = sorted(
+        glob.glob(os.path.join(SCREENSHOT_DIR, f"oliveyoung_{today_str}_*.png"))
+    )
+    ss_count = len(screenshots)
+    safe_print(f"\n스크린샷 {ss_count}장 저장됨")
+
+    # 추출 안내
+    safe_print(f"\n{'=' * 50}")
+    safe_print("  다음: 제품 추출")
+    safe_print(f"{'=' * 50}")
+    safe_print("""
+Claude Code가 스크린샷 또는 DOM에서 제품 추출합니다.
+추출 결과: data/oliveyoung_{today}.json
+
+=== search_keyword 규칙 ===
+- 브랜드 영문명 + 제품 라인명만 (용량/기획/한정 제외)
+- 같은 브랜드 다른 제품은 반드시 구분
+
+=== 오특(오늘의 특가) 식별 ===
+- 초록색 순위 숫자 있음 = 일반 제품
+- "오늘의 특가" 빨간 배너, 순위 숫자 없음 = 오특 (is_oteuk: true)
+- 오특 rank는 앞뒤 순위에서 유추
+
+추출 완료 후: python run_daily_collect.py step2
+""".strip())
+
+    return True
 
 
-def step_naver():
-    """4. 네이버 API 호출."""
-    script = os.path.join(SCRIPTS_DIR, "naver_trend.py")
-    if not os.path.exists(script):
-        log("4. NAVER", "naver_trend.py 없음", ok=False)
+# ================================================================
+#  Step 2: 올리브영 검증 (Verification Agent)
+# ================================================================
+
+def build_oy_verification_prompt(today_str):
+    """올리브영 데이터 검증 프롬프트 생성."""
+    oy_path = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
+    if not os.path.exists(oy_path):
         return None
-    try:
-        result = subprocess.run(
-            [sys.executable, script],
-            capture_output=True, text=True, timeout=120,
-            encoding="utf-8", errors="replace"
-        )
-        if result.returncode == 0:
-            log("4. NAVER", "네이버 데이터 수집 완료")
-            nv_files = sorted(glob.glob(os.path.join(DATA_DIR, "naver_*.json")))
-            nv_files = [f for f in nv_files if "sample" not in os.path.basename(f) and "rank" not in os.path.basename(f)]
-            return nv_files[-1] if nv_files else None
+
+    screenshots = sorted(
+        glob.glob(os.path.join(SCREENSHOT_DIR, f"oliveyoung_{today_str}_*.png"))
+    )
+    ss_count = len(screenshots)
+
+    # 스크린샷 경로를 절대경로로
+    ss_paths = "\n".join(screenshots) if screenshots else "(스크린샷 없음)"
+
+    return f"""너는 K-Beauty Trend Tracker의 데이터 검증자야.
+다른 agent가 올리브영 베스트 랭킹 페이지에서 추출한 데이터를 처음 보는 상태에서 검증해.
+
+## 프로젝트 배경
+- 올리브영 베스트 랭킹 TOP 60 제품을 매일 수집
+- 스크린샷 5장 (4열x3행 = 12제품/장, 총 60제품)
+- "오특(오늘의 특가)": 랭킹 사이에 삽입되는 프로모션 슬롯
+  - 일반 제품: 초록색 원 안에 순위 숫자(01, 02, ...)가 있음
+  - 오특 제품: 순위 숫자 대신 "오늘의 특가" 빨간 배너가 있음
+  - 오특도 JSON에 포함, is_oteuk: true로 표기
+
+## 검증 대상
+스크린샷 파일 ({ss_count}장):
+{ss_paths}
+
+JSON 파일:
+{os.path.abspath(oy_path)}
+
+## 검증 항목
+1. 스크린샷의 각 제품 순위 번호가 JSON rank와 일치하는지 (전수 검사 불필요, 1장당 3-4개 샘플링)
+2. 제품명이 정확한지 (유사 제품 혼동 없는지: 선스틱 vs 선세럼, 크림 vs 로션)
+3. 오특 제품이 is_oteuk: true로 올바르게 태그되었는지
+   - 스크린샷에서 초록색 순위 숫자가 없는 슬롯 = 오특
+   - 반대로 is_oteuk: true인데 순위 숫자가 보이면 오류
+4. 스크린샷에 있는데 JSON에 빠진 제품이 없는지
+5. search_keyword 품질 (제품별로 하나하나 대조):
+   - 원칙: search_keyword에는 "브랜드 + 제품 고유 이름 + 제품 타입"만 남아야 함
+   - 제품의 정체성이 아닌 것은 모두 제거되어야 함: 수량, 컬러 수, 구매 옵션, 패키징 정보 등
+   - 각 제품의 원본 name과 search_keyword를 대조해서, name에서 무엇이 제거되었고 무엇이 남았는지 판단
+   - 남아있으면 안 되는 것이 남아있으면 issues에 포함
+   - 같은 브랜드의 "다른 제품"이 같은 keyword로 묶이면 안 됨
+   - 단, 같은 제품의 패키징 변형(용량, 세트, 기획)은 같은 keyword가 맞음
+6. 제품명 변조 여부 (가장 중요):
+   - JSON의 name 필드가 스크린샷의 실제 제품명과 일치하는지 엄격히 대조
+   - 스크린샷에 보이는 제품명의 핵심 부분(브랜드+라인명+제품고유명)이 JSON에 정확히 반영되었는지
+   - 제품명이 요약/축소/변경되었으면 반드시 issues에 포함하고 스크린샷 원본 텍스트를 명시
+
+## 출력 형식
+반드시 아래 JSON 형식으로만 응답해:
+- 모두 정상이면: {{"passed": true, "issues": []}}
+- 문제 있으면: {{"passed": false, "issues": ["문제1 설명", "문제2 설명", ...]}}
+
+issues에는 구체적으로 어떤 rank의 어떤 제품에 무슨 문제가 있는지 적어.
+사소한 표기 차이(띄어쓰기, 약어)는 무시하고, 실질적 오류만 보고해."""
+
+
+def run_step2(today_str=None):
+    """올리브영 데이터 검증 - Verification Agent 호출."""
+    if today_str is None:
+        today_str = datetime.now().strftime("%Y%m%d")
+
+    safe_print(f"\n{'=' * 50}")
+    safe_print(f"  Step 2: 올리브영 데이터 검증")
+    safe_print(f"{'=' * 50}")
+
+    oy_path = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
+    if not os.path.exists(oy_path):
+        safe_print(f"[ERROR] {oy_path} 없음. Step 1 + 추출 먼저 실행 필요.")
+        return False
+
+    # 기본 통계
+    with open(oy_path, "r", encoding="utf-8") as f:
+        products = json.load(f)
+    total = len(products)
+    promo = sum(1 for p in products if p.get("is_oteuk"))
+    safe_print(f"  제품 {total}개, 오특 {promo}개")
+
+    prompt = build_oy_verification_prompt(today_str)
+    if not prompt:
+        safe_print("[ERROR] 검증 프롬프트 생성 실패")
+        return False
+
+    result = run_verification_agent(prompt)
+    return handle_verification_result(result, "올리브영")
+
+
+# ================================================================
+#  Step 3: 네이버 + 유튜브 API 수집
+# ================================================================
+
+def run_step3():
+    """네이버/유튜브 API 수집 — Claude가 키워드 결정."""
+    today_str = datetime.now().strftime("%Y%m%d")
+
+    safe_print(f"\n{'=' * 50}")
+    safe_print(f"  Step 3: API 수집 (키워드 생성 + 네이버 + 유튜브)")
+    safe_print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    safe_print(f"{'=' * 50}\n")
+
+    # 올리브영 JSON 확인
+    oy_path = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
+    if not os.path.exists(oy_path):
+        oy_files = sorted(glob.glob(os.path.join(DATA_DIR, "oliveyoung_*.json")))
+        oy_files = [f for f in oy_files if "sample" not in os.path.basename(f) and "keywords" not in os.path.basename(f)]
+        if oy_files:
+            oy_path = oy_files[-1]
         else:
-            log("4. NAVER", f"실패: {result.stderr[:200]}", ok=False)
-            return None
-    except Exception as e:
-        log("4. NAVER", f"오류: {e}", ok=False)
-        return None
+            safe_print("[ERROR] 올리브영 데이터 없음. Step 1 먼저 실행.")
+            return False
+    safe_print(f"[OY] {os.path.basename(oy_path)}")
+
+    # Phase 0: 올리브영 글로벌 몰에서 공식 영문명 수집
+    global_script = os.path.join(SCRIPTS_DIR, "fetch_global_names.py")
+    global_names_path = os.path.join(DATA_DIR, f"_global_names_{today_str}.json")
+    if os.path.exists(global_script):
+        try:
+            r = subprocess.run(
+                [sys.executable, global_script],
+                capture_output=True, text=True, timeout=300,
+                encoding="utf-8", errors="replace"
+            )
+            if r.returncode == 0 and os.path.exists(global_names_path):
+                safe_print("[GLOBAL] 영문명 수집 완료")
+            else:
+                safe_print(f"[GLOBAL] 영문명 수집 실패 - 번역 방식으로 진행")
+        except Exception as e:
+            safe_print(f"[GLOBAL] 영문명 수집 에러: {e}")
+
+    # Phase 1: Claude가 최적 키워드 생성
+    keywords_path = os.path.join(DATA_DIR, f"_keywords_{today_str}.json")
+    kw_result = run_keyword_agent(oy_path)
+    if kw_result and "keywords" in kw_result:
+        with open(keywords_path, "w", encoding="utf-8") as f:
+            json.dump(kw_result["keywords"], f, ensure_ascii=False, indent=2)
+        safe_print(f"[KEYWORD] {len(kw_result['keywords'])}개 키워드 생성 완료")
+    else:
+        safe_print("[KEYWORD] 키워드 생성 실패 - 기본 키워드로 진행")
+
+    results = {}
+
+    # Phase 2: 네이버 API
+    nv_script = os.path.join(SCRIPTS_DIR, "naver_trend.py")
+    if os.path.exists(nv_script):
+        try:
+            r = subprocess.run(
+                [sys.executable, nv_script],
+                capture_output=True, text=True, timeout=180,
+                encoding="utf-8", errors="replace"
+            )
+            if r.returncode == 0:
+                safe_print("[NAVER] OK")
+                nv_files = sorted(glob.glob(os.path.join(DATA_DIR, "naver_*.json")))
+                nv_files = [f for f in nv_files
+                            if "sample" not in os.path.basename(f)
+                            and "rank" not in os.path.basename(f)]
+                results["naver"] = nv_files[-1] if nv_files else None
+            else:
+                safe_print(f"[NAVER] FAIL - {r.stderr[:200]}")
+        except Exception as e:
+            safe_print(f"[NAVER] FAIL - {e}")
+    else:
+        safe_print("[NAVER] SKIP - naver_trend.py 없음")
+
+    # Phase 3: 유튜브 API
+    yt_script = os.path.join(SCRIPTS_DIR, "youtube_trend.py")
+    if os.path.exists(yt_script):
+        try:
+            r = subprocess.run(
+                [sys.executable, yt_script],
+                capture_output=True, text=True, timeout=300,
+                encoding="utf-8", errors="replace"
+            )
+            if r.returncode == 0:
+                safe_print("[YOUTUBE] OK")
+                # API 에러 파일 확인
+                api_err_path = os.path.join(DATA_DIR, "_youtube_api_errors.txt")
+                if os.path.exists(api_err_path):
+                    with open(api_err_path, "r", encoding="utf-8") as ef:
+                        err_keywords = ef.read().strip().split("\n")
+                    safe_print(f"[YOUTUBE] API 에러 {len(err_keywords)}건 발생!")
+                    safe_print(f"  에러 키워드: {', '.join(err_keywords[:10])}")
+                    os.remove(api_err_path)
+                yt_files = sorted(glob.glob(os.path.join(DATA_DIR, "youtube_*.json")))
+                yt_files = [f for f in yt_files
+                            if "sample" not in os.path.basename(f)]
+                results["youtube"] = yt_files[-1] if yt_files else None
+            else:
+                safe_print(f"[YOUTUBE] FAIL - {r.stderr[:200]}")
+        except Exception as e:
+            safe_print(f"[YOUTUBE] FAIL - {e}")
+    else:
+        safe_print("[YOUTUBE] SKIP - youtube_trend.py 없음")
+
+    # 네이버/유튜브 0 비율 보고
+    zero_report = []
+    nv_path = results.get("naver")
+    if nv_path and os.path.exists(nv_path):
+        with open(nv_path, "r", encoding="utf-8") as f:
+            nv_data = json.load(f)
+        nv_total = len(nv_data)
+        nv_zero = sum(1 for n in nv_data if n.get("search_volume", n.get("search_volume_this_week", 0)) == 0)
+        nv_pct = nv_zero * 100 // nv_total if nv_total else 0
+        zero_report.append(f"네이버: {nv_zero}/{nv_total}건 검색량 0 ({nv_pct}%)")
+        safe_print(f"[결과] 네이버 검색량 0: {nv_zero}/{nv_total} ({nv_pct}%)")
+
+    yt_path_result = results.get("youtube")
+    if yt_path_result and os.path.exists(yt_path_result):
+        with open(yt_path_result, "r", encoding="utf-8") as f:
+            yt_data = json.load(f)
+        yt_total = len(yt_data)
+        yt_zero = sum(1 for y in yt_data if y.get("video_count", 0) == 0)
+        yt_err = sum(1 for y in yt_data if y.get("api_error", False))
+        yt_pct = yt_zero * 100 // yt_total if yt_total else 0
+        zero_report.append(f"유튜브: {yt_zero}/{yt_total}건 영상 0 ({yt_pct}%), API에러 {yt_err}건")
+        safe_print(f"[결과] 유튜브 영상 0: {yt_zero}/{yt_total} ({yt_pct}%), API에러: {yt_err}")
+
+    # 결과 경로를 임시 파일에 저장 (Step 4에서 사용)
+    state = {
+        "oy_path": oy_path,
+        "naver_path": results.get("naver"),
+        "youtube_path": results.get("youtube"),
+        "today_str": today_str,
+        "zero_report": zero_report,
+    }
+    state_path = os.path.join(DATA_DIR, "_pipeline_state.json")
+    with open(state_path, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False)
+
+    return True
 
 
-def step_youtube():
-    """5. 유튜브 API 호출."""
-    script = os.path.join(SCRIPTS_DIR, "youtube_trend.py")
-    if not os.path.exists(script):
-        log("5. YOUTUBE", "youtube_trend.py 없음", ok=False)
-        return None
-    try:
-        result = subprocess.run(
-            [sys.executable, script],
-            capture_output=True, text=True, timeout=120,
-            encoding="utf-8", errors="replace"
-        )
-        if result.returncode == 0:
-            log("5. YOUTUBE", "유튜브 데이터 수집 완료")
-            yt_files = sorted(glob.glob(os.path.join(DATA_DIR, "youtube_*.json")))
-            yt_files = [f for f in yt_files if "sample" not in os.path.basename(f)]
-            return yt_files[-1] if yt_files else None
-        else:
-            log("5. YOUTUBE", f"실패: {result.stderr[:200]}", ok=False)
-            return None
-    except Exception as e:
-        log("5. YOUTUBE", f"오류: {e}", ok=False)
-        return None
+# ================================================================
+#  Step 4: API 데이터 검증 (Verification Agent)
+# ================================================================
+
+def build_api_verification_prompt(oy_path, nv_path, yt_path):
+    """API 데이터 검증 프롬프트 생성."""
+    parts = [f"""너는 K-Beauty Trend Tracker의 데이터 검증자야.
+수집 agent가 올리브영 랭킹 기반으로 네이버/유튜브 API 데이터를 수집했어.
+수집 과정을 전혀 모르는 상태에서, 결과 파일만 보고 검증해.
+
+## 검증 대상 파일
+올리브영: {os.path.abspath(oy_path)}"""]
+
+    if nv_path and os.path.exists(nv_path):
+        parts.append(f"네이버: {os.path.abspath(nv_path)}")
+    else:
+        parts.append("네이버: (수집 실패 또는 없음)")
+
+    if yt_path and os.path.exists(yt_path):
+        parts.append(f"유튜브: {os.path.abspath(yt_path)}")
+    else:
+        parts.append("유튜브: (수집 실패 또는 없음)")
+
+    # 직전 날짜 데이터 경로 (변동 비교용)
+    prev_nv = _find_previous_daily_path("naver")
+    if prev_nv:
+        parts.append(f"\n직전 네이버 데이터 (변동 비교용): {prev_nv}")
+
+    parts.append(f"""
+## 검증 항목
+
+### 네이버 API 데이터 검증
+- 검색량(search_volume 또는 search_volume_this_week)이 0인 제품 비율: 90% 이상이면 API 이상
+- 직전 날짜 데이터 대비 평균 검색량 변동이 10배 이상이면 이상
+- 파일명에 "sample"이 포함되어 있으면 샘플 데이터
+
+### 유튜브 API 데이터 검증
+- api_error: true인 제품이 있으면 issues에 명시 (API 에러로 -1 반환된 제품)
+- 파일명에 "sample"이 포함되어 있으면 샘플 데이터
+
+### video_count_3month 합리성 검증
+- video_count_3month 필드가 있는 제품에 대해:
+  - video_count_3month가 video_count(2주)보다 작으면 이상 (3개월이 2주보다 적을 수 없음)
+  - video_count_3month가 -1이면 API 에러 (issues에 포함)
+  - video_count_3month가 1000 이상이면 키워드가 너무 일반적일 가능성 (확인 필요)
+
+### 전체 데이터 품질
+- 네이버+유튜브 둘 다 결과가 0인 제품이 전체의 50% 이상이면 이상
+- 네이버/유튜브 파일 모두 없으면 passed: false
+
+## 출력 형식
+반드시 아래 JSON 형식으로만 응답해:
+- 모두 정상이면: {{"passed": true, "issues": []}}
+- 문제 있으면: {{"passed": false, "issues": ["문제1", "문제2", ...]}}
+
+수집 실패(파일 없음)는 issues에 기록하되, 네이버/유튜브 중 하나만 실패해도 passed: true 가능.
+둘 다 실패했으면 passed: false.""")
+
+    return "\n".join(parts)
 
 
-def step_save_daily(today_str, oy_file, nv_file, yt_file):
-    """6. data/daily/YYYY-MM-DD/ 폴더에 저장."""
-    date_folder = datetime.strptime(today_str, "%Y%m%d").strftime("%Y-%m-%d")
+def run_step4():
+    """API 데이터 검증 - 독립 Verification Agent 호출 + 결과 저장.
+
+    검증 Agent는 별도 프로세스(claude -p)로 실행되며:
+    - Read, Glob 도구만 사용 가능 (Bash, Write 불가 → 데이터 수정 불가)
+    - --no-session-persistence → 수집 과정 기억 없음
+    - 결과는 _verification_result.json에 파일 해시와 함께 저장
+    - Step 5가 이 파일을 하드체크 → 검증 없이 진행 불가
+    """
+    safe_print(f"\n{'=' * 50}")
+    safe_print(f"  Step 4: API 데이터 검증 (독립 검증 Agent)")
+    safe_print(f"{'=' * 50}")
+
+    # 파이프라인 상태 로드
+    state_path = os.path.join(DATA_DIR, "_pipeline_state.json")
+    if os.path.exists(state_path):
+        with open(state_path, "r", encoding="utf-8") as f:
+            state = json.load(f)
+    else:
+        today_str = datetime.now().strftime("%Y%m%d")
+        state = {
+            "oy_path": os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json"),
+            "naver_path": None,
+            "youtube_path": None,
+            "today_str": today_str,
+        }
+
+    oy_path = state["oy_path"]
+    nv_path = state.get("naver_path")
+    yt_path = state.get("youtube_path")
+
+    if not os.path.exists(oy_path):
+        safe_print(f"[ERROR] {oy_path} 없음")
+        return False
+
+    prompt = build_api_verification_prompt(oy_path, nv_path, yt_path)
+    result = run_verification_agent(prompt)
+
+    # === 검증 결과를 파일로 저장 (Step 5에서 강제 확인) ===
+    file_hashes = {}
+    for label, path in [("oliveyoung", oy_path), ("naver", nv_path), ("youtube", yt_path)]:
+        if path and os.path.exists(path):
+            file_hashes[label] = compute_file_hash(path)
+
+    verification_data = {
+        "passed": result["passed"],
+        "issues": result["issues"],
+        "verified_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "verified_date": datetime.now().strftime("%Y%m%d"),
+        "file_hashes": file_hashes,
+        "verified_by": "claude -p verification agent (independent process)",
+    }
+
+    vr_path = os.path.join(DATA_DIR, "_verification_result.json")
+    with open(vr_path, "w", encoding="utf-8") as f:
+        json.dump(verification_data, f, ensure_ascii=False, indent=2)
+    safe_print(f"[VERIFY] 검증 결과 저장: _verification_result.json")
+
+    return handle_verification_result(result, "API")
+
+
+# ================================================================
+#  Step 5: daily 저장 + 3일치 확인 + 갱신
+# ================================================================
+
+def run_step5():
+    """daily 폴더 저장 + 3일치 확인 + score 계산 + 사이트 갱신."""
+    today = datetime.now()
+    today_str = today.strftime("%Y%m%d")
+    start = time.time()
+
+    safe_print(f"\n{'=' * 50}")
+    safe_print(f"  Step 5: 저장 + 갱신 확인")
+    safe_print(f"{'=' * 50}\n")
+
+    # 이전 날짜 불완전 daily 폴더 + 좀비 상태 파일 정리
+    cleanup_incomplete_daily(today_str)
+
+    # ================================================================
+    # 검증 결과 강제 확인 (하드코딩 — 우회 불가)
+    # _verification_result.json이 없거나 passed=false면 여기서 중단.
+    # 파일 해시까지 대조해서 검증 이후 데이터 변조도 감지.
+    # ================================================================
+    vr_path = os.path.join(DATA_DIR, "_verification_result.json")
+    if not os.path.exists(vr_path):
+        safe_print("[BLOCK] _verification_result.json 없음")
+        safe_print("  Step 4 (독립 검증)를 먼저 실행해야 합니다.")
+        safe_print("  검증 없이는 절대 진행 불가.")
+        return False
+
+    with open(vr_path, "r", encoding="utf-8") as f:
+        vr = json.load(f)
+
+    if not vr.get("passed"):
+        safe_print("[BLOCK] 검증 실패 상태 — Step 5 진행 불가")
+        for issue in vr.get("issues", []):
+            safe_print(f"  - {issue}")
+        safe_print("  데이터를 수정하고 Step 4를 다시 실행하세요.")
+        return False
+
+    if vr.get("verified_date") != today_str:
+        safe_print(f"[BLOCK] 검증 결과가 오늘({today_str})이 아님: {vr.get('verified_date')}")
+        safe_print("  Step 4를 다시 실행하세요.")
+        return False
+
+    safe_print("[CHECK] 검증 결과 확인: passed=true")
+
+    # 파이프라인 상태 로드
+    state_path = os.path.join(DATA_DIR, "_pipeline_state.json")
+    if os.path.exists(state_path):
+        with open(state_path, "r", encoding="utf-8") as f:
+            state = json.load(f)
+    else:
+        state = {"oy_path": os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json"),
+                 "naver_path": None, "youtube_path": None, "today_str": today_str}
+
+    oy_path = state["oy_path"]
+    nv_path = state.get("naver_path")
+    yt_path = state.get("youtube_path")
+
+    # 파일 해시 대조 (검증 이후 데이터 변조 방지)
+    saved_hashes = vr.get("file_hashes", {})
+    for label, path in [("oliveyoung", oy_path), ("naver", nv_path), ("youtube", yt_path)]:
+        if path and os.path.exists(path) and label in saved_hashes:
+            current_hash = compute_file_hash(path)
+            if current_hash != saved_hashes[label]:
+                safe_print(f"[BLOCK] {label} 파일이 검증 이후 변경됨!")
+                safe_print("  검증된 데이터와 현재 데이터가 다릅니다.")
+                safe_print("  Step 4를 다시 실행하세요.")
+                return False
+
+    safe_print("[CHECK] 파일 해시 일치 — 검증 후 변조 없음")
+
+    # daily 폴더에 저장
+    date_folder = today.strftime("%Y-%m-%d")
     daily_path = os.path.join(DAILY_DIR, date_folder)
     os.makedirs(daily_path, exist_ok=True)
 
     saved = 0
-    if oy_file and os.path.exists(oy_file):
-        dest = os.path.join(daily_path, f"oliveyoung_{today_str}.json")
-        shutil.copy2(oy_file, dest)
-        saved += 1
-        print(f"       -> {dest}")
+    saved_sources = {}
+    for src, prefix in [(oy_path, "oliveyoung"), (nv_path, "naver"), (yt_path, "youtube")]:
+        if src and os.path.exists(src):
+            dest = os.path.join(daily_path, f"{prefix}_{today_str}.json")
+            shutil.copy2(src, dest)
+            saved += 1
+            saved_sources[prefix] = os.path.basename(src)
+            safe_print(f"  -> daily/{date_folder}/{prefix}_{today_str}.json")
 
-    if nv_file and os.path.exists(nv_file):
-        dest = os.path.join(daily_path, f"naver_{today_str}.json")
-        shutil.copy2(nv_file, dest)
-        saved += 1
-        print(f"       -> {dest}")
+    # 수집 메타데이터 기록 (이 날짜가 실제 파이프라인 수집인지 증명)
+    meta = {
+        "collected_at": today.strftime("%Y-%m-%d %H:%M:%S"),
+        "collected_by": "run_daily_collect.py pipeline",
+        "sources": saved_sources,
+        "verified": True,
+        "verified_at": vr.get("verified_at"),
+        "verified_by": vr.get("verified_by"),
+        "file_hashes": saved_hashes,
+    }
+    meta_path = os.path.join(daily_path, "_collection_meta.json")
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
 
-    if yt_file and os.path.exists(yt_file):
-        dest = os.path.join(daily_path, f"youtube_{today_str}.json")
-        shutil.copy2(yt_file, dest)
-        saved += 1
-        print(f"       -> {dest}")
+    safe_print(f"[SAVE] {saved}개 파일 저장 + 메타데이터 기록")
 
-    log("6. SAVE", f"daily/{date_folder}/ 에 {saved}개 파일 저장")
-    return daily_path
+    # 3일치 완전 수집 확인 (올리브영+네이버+유튜브 모두 있어야 함)
+    complete_count, incomplete_days = count_complete_daily_data()
+    oy_only_count = count_daily_data()
 
+    safe_print(f"\n  완전 수집(OY+NV+YT): {complete_count}/{PERIOD_DAYS}일")
+    safe_print(f"  올리브영만 수집: {oy_only_count}일")
 
-def count_daily_data():
-    """data/daily/ 폴더에서 oliveyoung 데이터가 있는 날짜 수."""
-    if not os.path.isdir(DAILY_DIR):
-        return 0
-    count = 0
-    for folder in os.listdir(DAILY_DIR):
-        folder_path = os.path.join(DAILY_DIR, folder)
-        if os.path.isdir(folder_path):
-            oy_files = glob.glob(os.path.join(folder_path, "oliveyoung_*.json"))
-            if oy_files:
-                count += 1
-    return count
+    if incomplete_days:
+        for day, missing in incomplete_days:
+            safe_print(f"  {day}: {', '.join(missing)} 누락")
 
+    if complete_count >= PERIOD_DAYS:
+        safe_print(f"\n{complete_count}일치 완전 데이터 -> 사이트 갱신 시작")
 
-def step_check_and_update(today_str):
-    """7. 3일치 데이터 확인 → 갱신 여부."""
-    collected = count_daily_data()
-
-    if collected >= PERIOD_DAYS:
-        print(f"\n{'=' * 50}")
-        print(f"  {collected}일치 데이터 수집됨 → 사이트 갱신 시작!")
-        print(f"{'=' * 50}\n")
-
-        # score_calculator.py 실행
+        # score_calculator
         calc_script = os.path.join(BASE_DIR, "score_calculator.py")
-        result = subprocess.run(
+        calc = subprocess.run(
             [sys.executable, calc_script],
             capture_output=True, text=True, timeout=60,
             encoding="utf-8", errors="replace"
         )
-        if result.returncode == 0:
-            log("7. CALC", "점수 계산 완료")
-            for line in result.stdout.split("\n"):
+        if calc.returncode == 0:
+            safe_print("[CALC] OK")
+            for line in calc.stdout.split("\n"):
                 if line.strip():
-                    print(f"       {line.strip()}")
+                    safe_print(f"  {line.strip()}")
         else:
-            log("7. CALC", f"실패: {result.stderr[:200]}", ok=False)
+            safe_print(f"[CALC] FAIL - {calc.stderr[:200]}")
             return False
 
-        # generate_site.py 실행
+        # generate_site
         site_script = os.path.join(BASE_DIR, "generate_site.py")
-        result = subprocess.run(
-            [sys.executable, site_script],
-            capture_output=True, text=True, timeout=30,
-            encoding="utf-8", errors="replace"
-        )
-        if result.returncode == 0:
-            log("7. SITE", "사이트 생성 완료")
-            return True
-        else:
-            log("7. SITE", f"실패: {result.stderr[:200]}", ok=False)
-            return False
+        if os.path.exists(site_script):
+            site = subprocess.run(
+                [sys.executable, site_script],
+                capture_output=True, text=True, timeout=30,
+                encoding="utf-8", errors="replace"
+            )
+            if site.returncode == 0:
+                safe_print("[SITE] OK")
+            else:
+                safe_print(f"[SITE] FAIL - {site.stderr[:200]}")
+                return False
+
+        safe_print("\n[GIT] 커밋 + 푸시는 수동 또는 Claude Code에서 실행하세요.")
     else:
-        remaining = PERIOD_DAYS - collected
-        print(f"\n{'=' * 50}")
-        print(f"  데이터 수집 완료. 아직 {collected}일치.")
-        print(f"  사이트 갱신 안 함. ({remaining}일 더 필요)")
-        print(f"{'=' * 50}")
-        return True
+        remaining = PERIOD_DAYS - complete_count
+        safe_print(f"\n사이트 갱신 불가: 네이버/유튜브 데이터 누락 "
+                    f"({complete_count}/{PERIOD_DAYS}일 완전 수집, {remaining}일 더 필요)")
 
-
-def main():
-    start = time.time()
-    today = datetime.now()
-    today_str = today.strftime("%Y%m%d")
-    print(f"\n{'=' * 50}")
-    print(f"  K-Beauty Daily Data Collection")
-    print(f"  {today.strftime('%Y-%m-%d %H:%M')}")
-    print(f"{'=' * 50}\n")
-
-    # Step 1: 캡처
-    capture_ok = step_capture()
-
-    # Step 2: 확인 대기
-    if capture_ok:
-        if not step_wait_confirmation():
-            return False
-
-    # Step 3: 제품 추출
-    oy_file = step_extract_products(today_str)
-
-    # Step 4 & 5: API 호출
-    nv_file = step_naver()
-    yt_file = step_youtube()
-
-    # Step 6: daily 폴더 저장
-    if oy_file:
-        step_save_daily(today_str, oy_file, nv_file, yt_file)
-
-    # Step 7: 갱신 여부
-    step_check_and_update(today_str)
+    # 임시 파일 정리
+    for tmp in [state_path, vr_path,
+                os.path.join(DATA_DIR, f"_keywords_{today_str}.json"),
+                os.path.join(DATA_DIR, f"_global_names_{today_str}.json")]:
+        if os.path.exists(tmp):
+            os.remove(tmp)
 
     elapsed = time.time() - start
-    print(f"\n  Total time: {elapsed:.1f}s")
+    safe_print(f"\nStep 5 완료: {elapsed:.1f}s")
     return True
 
 
-if __name__ == "__main__":
-    ok = main()
+# ================================================================
+#  유틸리티
+# ================================================================
+
+def count_daily_data():
+    """data/daily/에서 oliveyoung 데이터가 있는 날짜 수."""
+    if not os.path.isdir(DAILY_DIR):
+        return 0
+    count = 0
+    for folder in sorted(os.listdir(DAILY_DIR)):
+        folder_path = os.path.join(DAILY_DIR, folder)
+        if os.path.isdir(folder_path):
+            if glob.glob(os.path.join(folder_path, "oliveyoung_*.json")):
+                count += 1
+    return count
+
+
+def count_complete_daily_data():
+    """data/daily/에서 파이프라인으로 실제 수집되고 3종 모두 있는 날짜 수.
+
+    실제 수집 판별 기준:
+    - _collection_meta.json 파일이 존재 (파이프라인이 기록)
+    - 또는 올리브영+네이버+유튜브 3종 모두 존재 (레거시 호환)
+    샘플 데이터(파일명에 sample 포함)는 제외.
+    """
+    if not os.path.isdir(DAILY_DIR):
+        return 0, []
+    complete_days = []
+    incomplete_days = []
+    for folder in sorted(os.listdir(DAILY_DIR)):
+        folder_path = os.path.join(DAILY_DIR, folder)
+        if not os.path.isdir(folder_path):
+            continue
+
+        # 메타데이터 확인 (파이프라인 수집 증명)
+        meta_path = os.path.join(folder_path, "_collection_meta.json")
+        has_meta = os.path.exists(meta_path)
+
+        oy = [f for f in glob.glob(os.path.join(folder_path, "oliveyoung_*.json"))
+              if "sample" not in os.path.basename(f)]
+        nv = [f for f in glob.glob(os.path.join(folder_path, "naver_*.json"))
+              if "sample" not in os.path.basename(f)]
+        yt = [f for f in glob.glob(os.path.join(folder_path, "youtube_*.json"))
+              if "sample" not in os.path.basename(f)]
+
+        if oy and nv and yt and has_meta:
+            complete_days.append(folder)
+        elif oy:
+            missing = []
+            if not nv:
+                missing.append("naver")
+            if not yt:
+                missing.append("youtube")
+            if not has_meta:
+                missing.append("meta(미검증)")
+            incomplete_days.append((folder, missing))
+    return len(complete_days), incomplete_days
+
+
+def cleanup_incomplete_daily(today_str):
+    """오늘 이전 날짜 중 불완전한(OY+NV+YT 3종 미달) daily 폴더 삭제."""
+    if not os.path.isdir(DAILY_DIR):
+        return
+    today_folder = datetime.now().strftime("%Y-%m-%d")
+    for folder in sorted(os.listdir(DAILY_DIR)):
+        if folder >= today_folder:
+            continue  # 오늘 이후는 건드리지 않음
+        folder_path = os.path.join(DAILY_DIR, folder)
+        if not os.path.isdir(folder_path):
+            continue
+        oy = glob.glob(os.path.join(folder_path, "oliveyoung_*.json"))
+        nv = glob.glob(os.path.join(folder_path, "naver_*.json"))
+        yt = glob.glob(os.path.join(folder_path, "youtube_*.json"))
+        meta = os.path.exists(os.path.join(folder_path, "_collection_meta.json"))
+        if not (oy and nv and yt and meta):
+            safe_print(f"  [정리] 불완전 daily/{folder} 삭제")
+            shutil.rmtree(folder_path)
+
+
+def cleanup_stale_state_files(today_str):
+    """이전 날짜의 좀비 상태 파일 정리."""
+    for name in ["_pipeline_state.json", "_verification_result.json"]:
+        path = os.path.join(DATA_DIR, name)
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            file_date = data.get("today_str") or data.get("verified_date") or ""
+            if file_date and file_date != today_str:
+                safe_print(f"  [정리] 이전 날짜({file_date}) {name} 삭제")
+                os.remove(path)
+        except (json.JSONDecodeError, KeyError):
+            safe_print(f"  [정리] 손상된 {name} 삭제")
+            os.remove(path)
+    # 이전 날짜 키워드 파일도 정리
+    for f in glob.glob(os.path.join(DATA_DIR, "_keywords_*.json")):
+        if today_str not in os.path.basename(f):
+            safe_print(f"  [정리] 이전 키워드 파일 삭제: {os.path.basename(f)}")
+            os.remove(f)
+
+
+def _find_previous_daily_path(source_prefix):
+    """data/daily/에서 가장 최근 날짜의 해당 소스 파일 경로 반환."""
+    if not os.path.isdir(DAILY_DIR):
+        return None
+    folders = sorted(
+        [f for f in os.listdir(DAILY_DIR) if os.path.isdir(os.path.join(DAILY_DIR, f))],
+        reverse=True
+    )
+    for folder in folders:
+        folder_path = os.path.join(DAILY_DIR, folder)
+        files = glob.glob(os.path.join(folder_path, f"{source_prefix}_*.json"))
+        if files:
+            return files[0]
+    return None
+
+
+# ================================================================
+#  Orchestrator (메인)
+# ================================================================
+
+def run_full_pipeline():
+    """전체 파이프라인 실행: Step 1 -> 2 -> 3 -> 4 -> 5."""
+    safe_print("=" * 50)
+    safe_print("  K-Beauty Trend Tracker - Daily Pipeline")
+    safe_print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    safe_print("=" * 50)
+
+    # 이전 날짜 좀비 파일 정리
+    today_str = datetime.now().strftime("%Y%m%d")
+    cleanup_stale_state_files(today_str)
+    cleanup_incomplete_daily(today_str)
+
+    # Step 1: 캡처
+    if not run_step1():
+        return False
+
+    # Step 1은 캡처만 하고 추출은 별도 (Claude Code 또는 DOM 스크래핑)
+    today_str = datetime.now().strftime("%Y%m%d")
+    oy_path = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
+    if not os.path.exists(oy_path):
+        safe_print(f"\n[대기] oliveyoung_{today_str}.json 추출 후 다시 실행하세요.")
+        safe_print(f"  또는: python run_daily_collect.py step2  (추출 완료 후)")
+        return True
+
+    # Step 2: 올리브영 검증
+    if not run_step2(today_str):
+        return False
+
+    # Step 3: API 수집
+    if not run_step3():
+        return False
+
+    # Step 4: API 검증
+    if not run_step4():
+        return False
+
+    # Step 5: 저장 + 갱신
+    if not run_step5():
+        return False
+
+    safe_print(f"\n{'=' * 50}")
+    safe_print("  파이프라인 완료!")
+    safe_print(f"{'=' * 50}")
+    return True
+
+
+def main():
+    if len(sys.argv) < 2:
+        # 인자 없으면 전체 파이프라인
+        ok = run_full_pipeline()
+        sys.exit(0 if ok else 1)
+
+    mode = sys.argv[1].lower()
+
+    if mode == "step1":
+        ok = run_step1()
+    elif mode == "step2":
+        today_str = sys.argv[2] if len(sys.argv) > 2 else None
+        ok = run_step2(today_str)
+    elif mode == "step3":
+        ok = run_step3()
+    elif mode == "step4":
+        ok = run_step4()
+    elif mode == "step5":
+        ok = run_step5()
+    elif mode == "all":
+        ok = run_full_pipeline()
+    elif mode == "status":
+        safe_print(f"daily 데이터: {count_daily_data()}/{PERIOD_DAYS}일")
+        ok = True
+    else:
+        safe_print(f"알 수 없는 모드: {mode}")
+        safe_print("사용법: python run_daily_collect.py [step1|step2|step3|step4|step5|all|status]")
+        ok = False
+
     sys.exit(0 if ok else 1)
+
+
+if __name__ == "__main__":
+    main()
