@@ -229,7 +229,6 @@ def build_discover_html(products):
 
 def build_keywords_html(data):
     keywords = data.get("keywords", {})
-    outside = data.get("outside_oliveyoung", {})
     html = ""
 
     nv_rising = keywords.get("naver_rising", [])
@@ -258,26 +257,6 @@ def build_keywords_html(data):
   <span class="kw-rate">+{kw["change_rate"]:.0f}%</span>
 </div>'''
         html += f'<div class="kw-section" style="margin-top:20px"><h3>&#9654; YouTube คีย์เวิร์ดยอดนิยม</h3>{items}</div>'
-
-    out_nv = outside.get("naver", [])
-    out_yt = outside.get("youtube", [])
-    if out_nv or out_yt:
-        items = ""
-        for o in out_nv[:5]:
-            items += f'''<div class="kw-item outside-item">
-  <span class="kw-src src-nv">Naver</span><span class="kw-text">{esc(o["keyword"])}</span>
-  <span class="kw-rate">+{o["change_rate"]:.0f}%</span>
-</div>'''
-        for o in out_yt[:5]:
-            items += f'''<div class="kw-item outside-item">
-  <span class="kw-src src-yt">YouTube</span><span class="kw-text">{esc(o["keyword"])}</span>
-  <span class="kw-rate">+{o["change_rate"]:.0f}%</span>
-</div>'''
-        html += f'''<div class="kw-section outside-section" style="margin-top:20px">
-  <h3>&#128293; มาแรงนอก Olive Young</h3>
-  <p class="kw-sub">คีย์เวิร์ดที่กำลังมาแรงแต่ยังไม่อยู่ใน Olive Young Best Seller</p>
-  {items}
-</div>'''
 
     if not html:
         html = '<p class="empty-msg">ยังไม่มีข้อมูลคีย์เวิร์ด</p>'
@@ -315,29 +294,6 @@ def build_seller_html(data):
   <div class="si-reason">สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย -- เหมาะสำหรับสต็อกระยะยาว</div></div>'''
         html += f'''<div class="ss ss-steady"><h3>&#127942; Steady Seller ({len(sss)})</h3>
   <p class="ss-desc">สินค้าที่ได้รับการพิสูจน์แล้วว่าขายดีต่อเนื่อง</p>{items}</div>'''
-
-    # Outside Olive Young
-    outside = data.get("outside_oliveyoung", {})
-    out_nv = outside.get("naver", [])
-    out_yt = outside.get("youtube", [])
-    if out_nv or out_yt:
-        items = ""
-        combined = []
-        for o in out_nv:
-            combined.append({"keyword": o["keyword"], "en": o.get("search_keyword_en", o["keyword"]), "rate": o["change_rate"], "src": "Naver"})
-        for o in out_yt:
-            combined.append({"keyword": o["keyword"], "en": o.get("search_keyword_en", o["keyword"]), "rate": o["change_rate"], "src": "YouTube"})
-        combined.sort(key=lambda x: x["rate"], reverse=True)
-        for c in combined[:8]:
-            display_kw = c["en"] if c["en"] != c["keyword"] else c["keyword"]
-            shopee_url = f"https://shopee.co.th/search?keyword={urllib.parse.quote(c['en'])}"
-            items += f'''<div class="si si-outside">
-  <div class="si-name">{esc(display_kw)} <span class="si-src">{c["src"]}</span></div>
-  <div class="si-rate">+{c["rate"]:.0f}%</div>
-  <a href="{esc(shopee_url)}" target="_blank" rel="noopener" class="si-shopee-link">Shopee &#128269;</a>
-</div>'''
-        html += f'''<div class="ss ss-outside"><h3>&#127757; โอกาสนอก Olive Young</h3>
-  <p class="ss-desc">คีย์เวิร์ดที่กำลังมาแรงแต่ยังไม่อยู่ใน OY Best Seller -- โอกาสเข้าตลาดก่อน!</p>{items}</div>'''
 
     # Dropped products
     dropped = data.get("dropped_products", [])
