@@ -647,8 +647,7 @@ def generate_html(data):
 <!-- Tab 1: Rankings -->
 <div class="panel active" id="p-ranking">
   <div class="stats">
-    <div class="st"><div class="st-v">{stats["total_products"]}</div><div class="st-l">TOP 30</div></div>
-    <div class="st"><div class="st-v">{stats["total_analyzed"]}</div><div class="st-l">วิเคราะห์</div></div>
+    <div class="st"><div class="st-v">{sum(1 for p in products if p.get("signal") == "rising")}</div><div class="st-l">&#128640; Rising</div></div>
     <div class="st"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">&#9203; รอติดตาม</div></div>
     <div class="st"><div class="st-v">{stats["hidden_gem_count"]}</div><div class="st-l">Hidden Gem</div></div>
     <div class="st"><div class="st-v">{stats.get("steady_seller_count", 0)}</div><div class="st-l">Steady Seller</div></div>
