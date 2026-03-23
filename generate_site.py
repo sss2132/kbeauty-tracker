@@ -94,9 +94,9 @@ def build_product_cards(products):
         brand_en = esc(p.get("brand_en", p["brand"]))
         name_ko = esc(p["name_ko"])
         name_th = esc(p.get("name_th", ""))
-        # 표시 우선순위: search_keyword (영문 정제) > name_th > name_ko
-        sk = p.get("search_keyword", "").strip()
-        display_name = esc(sk) if sk else (name_th if name_th else name_ko)
+        # 표시: 영문명(name_en) 상단, 한글명(name_ko) 하단
+        name_en = esc(p.get("name_en", "").strip())
+        display_name = name_en if name_en else name_ko
         cat = p["category"]
         cat_color = CAT_COLORS.get(cat, "#999")
         cat_emoji = CAT_EMOJIS.get(cat, "&#10024;")
@@ -191,8 +191,8 @@ def build_discover_html(products):
             brand_en = esc(p.get("brand_en", p["brand"]))
             name_ko = esc(p["name_ko"])
             name_th = esc(p.get("name_th", ""))
-            sk = p.get("search_keyword", "").strip()
-            display_name = esc(sk) if sk else (name_th if name_th else name_ko)
+            name_en = esc(p.get("name_en", "").strip())
+            display_name = name_en if name_en else name_ko
             cat = p["category"]
             cat_emoji = CAT_EMOJIS.get(cat, "&#10024;")
             total = p["scores"]["total"]
@@ -278,8 +278,9 @@ def build_seller_html(data):
     if hgs:
         items = ""
         for hg in hgs:
-            display_name = hg.get("name_en") or hg.get("name_ko", "")
-            items += f'''<div class="si si-gem"><div class="si-name">{esc(hg.get("brand_en", hg["brand"]))} {esc(display_name)}</div>
+            en_name = hg.get("name_en", "").strip()
+            ko_name = hg.get("name_ko", "")
+            items += f'''<div class="si si-gem"><div class="si-name">{esc(en_name) if en_name else esc(ko_name)}</div>
   <div class="si-reason">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล -- โอกาสเข้าตลาดก่อนคู่แข่ง</div></div>'''
         html += f'''<div class="ss ss-gem"><h3>&#128142; Hidden Gem - โอกาส ({len(hgs)})</h3>
   <p class="ss-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</p>{items}</div>'''
@@ -289,8 +290,9 @@ def build_seller_html(data):
     if sss:
         items = ""
         for ss in sss:
-            display_name = ss.get("name_en") or ss.get("name_ko", "")
-            items += f'''<div class="si si-steady"><div class="si-name">{esc(ss.get("brand_en", ss["brand"]))} {esc(display_name)}</div>
+            en_name = ss.get("name_en", "").strip()
+            ko_name = ss.get("name_ko", "")
+            items += f'''<div class="si si-steady"><div class="si-name">{esc(en_name) if en_name else esc(ko_name)}</div>
   <div class="si-reason">สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย -- เหมาะสำหรับสต็อกระยะยาว</div></div>'''
         html += f'''<div class="ss ss-steady"><h3>&#127942; Steady Seller ({len(sss)})</h3>
   <p class="ss-desc">สินค้าที่ได้รับการพิสูจน์แล้วว่าขายดีต่อเนื่อง</p>{items}</div>'''
@@ -300,10 +302,11 @@ def build_seller_html(data):
     if dropped:
         items = ""
         for dp in dropped:
-            brand_en = esc(dp.get("brand_en", dp["brand"]))
-            display_name = dp.get("name_en") or dp.get("name_ko", "")
+            en_name = dp.get("name_en", "").strip()
+            ko_name = dp.get("name_ko", "")
+            display_name = en_name if en_name else ko_name
             items += f'''<div class="si si-dropped">
-  <div class="si-name">{brand_en} {esc(display_name)}</div>
+  <div class="si-name">{esc(display_name)}</div>
 </div>'''
         html += f'''<div class="ss ss-dropped"><h3>&#128308; สินค้าที่หลุดจาก TOP 30 ครั้งนี้ ({len(dropped)})</h3>
   <p class="ss-desc">สินค้าที่อยู่ใน TOP 30 ครั้งก่อนแต่หลุดออกแล้ว</p>{items}</div>'''
@@ -316,7 +319,9 @@ def build_seller_html(data):
     if top5:
         items = ""
         for i, p in enumerate(top5, 1):
-            nm = esc(f"{p.get('brand_en', p['brand'])} {p.get('name_en', '') or p['name_ko']}")
+            en_name = p.get("name_en", "").strip()
+            ko_name = p.get("name_ko", "")
+            nm = esc(en_name if en_name else ko_name)
             note = esc(p.get("seller_note", ""))
             shopee = esc(p.get("shopee_url", "#"))
             lazada = esc(p.get("lazada_url", "#"))
@@ -366,8 +371,10 @@ def generate_html(data):
     if bts:
         bt_items = ""
         for bt in bts:
-            bt_display = bt.get("name_en") or bt.get("name_ko", "")
-            bt_items += f'''<div class="si si-buzz"><div class="si-name">{esc(bt.get("brand_en", bt["brand"]))} {esc(bt_display)}</div>
+            en_name = bt.get("name_en", "").strip()
+            ko_name = bt.get("name_ko", "")
+            bt_display = en_name if en_name else ko_name
+            bt_items += f'''<div class="si si-buzz"><div class="si-name">{esc(bt_display)}</div>
   <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div>'''
         buzz_pro_html = f'''<div class="ss ss-buzz" style="margin-top:16px">
     <h3>&#9203; รอติดตาม ({len(bts)} รายการ)</h3>
