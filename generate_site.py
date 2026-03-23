@@ -302,6 +302,17 @@ def build_seller_html(data):
         html += f'''<div class="ss ss-gem"><h3>&#128142; Hidden Gem - โอกาส ({len(hgs)})</h3>
   <p class="ss-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</p>{items}</div>'''
 
+    # Steady Seller
+    sss = data.get("steady_sellers", [])
+    if sss:
+        items = ""
+        for ss in sss:
+            display_name = ss.get("name_en") or ss.get("name_ko", "")
+            items += f'''<div class="si si-steady"><div class="si-name">{esc(ss.get("brand_en", ss["brand"]))} {esc(display_name)}</div>
+  <div class="si-reason">สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย -- เหมาะสำหรับสต็อกระยะยาว</div></div>'''
+        html += f'''<div class="ss ss-steady"><h3>&#127942; Steady Seller ({len(sss)})</h3>
+  <p class="ss-desc">สินค้าที่ได้รับการพิสูจน์แล้วว่าขายดีต่อเนื่อง</p>{items}</div>'''
+
     # Outside Olive Young
     outside = data.get("outside_oliveyoung", {})
     out_nv = outside.get("naver", [])
@@ -522,6 +533,7 @@ def generate_html(data):
 .ss{{margin-bottom:16px}}.ss h3{{font-size:15px;font-weight:700;margin-bottom:4px}}.ss-desc{{font-size:12px;color:#999;margin-bottom:10px}}
 .ss-buzz{{background:#fff8f0;border-radius:12px;padding:14px;border-left:4px solid #ffa502}}
 .ss-gem{{background:#f0fff8;border-radius:12px;padding:14px;border-left:4px solid #2ed573}}
+.ss-steady{{background:#f0f0ff;border-radius:12px;padding:14px;border-left:4px solid #5352ed}}
 .ss-outside{{background:#f8f0ff;border-radius:12px;padding:14px;border-left:4px solid #8854d0}}
 .ss-dropped{{background:#f5f5f5;border-radius:12px;padding:14px;border-left:4px solid #999}}
 .si{{background:#fff;border-radius:8px;padding:10px;margin-bottom:6px;box-shadow:0 1px 2px rgba(0,0,0,.04)}}

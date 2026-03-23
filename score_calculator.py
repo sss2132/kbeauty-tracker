@@ -617,13 +617,13 @@ def main(use_period=True):
     steady_sellers = []
     for p in all_products:
         if "buzz_trap" in p["flags"]:
-            buzz_traps.append({"rank": p["rank"], "brand": p["brand"], "name_ko": p["name_ko"], "scores": p["scores"],
+            buzz_traps.append({"rank": p["rank"], "brand": p["brand"], "brand_en": p.get("brand_en", ""), "name_ko": p["name_ko"], "name_en": p.get("name_en", ""), "scores": p["scores"],
                                "reason": "social buzz high but OY sales rank low"})
         if "hidden_gem" in p["flags"]:
-            hidden_gems.append({"rank": p["rank"], "brand": p["brand"], "name_ko": p["name_ko"], "scores": p["scores"],
+            hidden_gems.append({"rank": p["rank"], "brand": p["brand"], "brand_en": p.get("brand_en", ""), "name_ko": p["name_ko"], "name_en": p.get("name_en", ""), "scores": p["scores"],
                                 "reason": "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล"})
         if "steady_seller" in p["flags"]:
-            steady_sellers.append({"rank": p["rank"], "brand": p["brand"], "name_ko": p["name_ko"], "scores": p["scores"],
+            steady_sellers.append({"rank": p["rank"], "brand": p["brand"], "brand_en": p.get("brand_en", ""), "name_ko": p["name_ko"], "name_en": p.get("name_en", ""), "scores": p["scores"],
                                    "reason": "proven product with consistent sales and existing reviews"})
 
     naver_rising.sort(key=lambda x: x["change_rate"], reverse=True)
