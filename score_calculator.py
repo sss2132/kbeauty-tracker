@@ -412,6 +412,20 @@ def main(use_period=True):
     yt_map = {item["product_code"]: item for item in yt_data}
     oy_codes = {p["product_code"] for p in oy_data}
 
+    # 키워드 맵 로드 (english_name 용)
+    kw_map = {}
+    kw_files = sorted(glob.glob(os.path.join(DATA_DIR, "_keywords_*.json")))
+    if kw_files:
+        try:
+            with open(kw_files[-1], "r", encoding="utf-8") as f:
+                kw_list = json.load(f)
+                if isinstance(kw_list, list):
+                    kw_map = {k["product_code"]: k for k in kw_list}
+                elif isinstance(kw_list, dict) and "keywords" in kw_list:
+                    kw_map = {k["product_code"]: k for k in kw_list["keywords"]}
+        except (json.JSONDecodeError, KeyError):
+            pass
+
     # Collect absolute values for log normalization
     nv_volumes = []
     yt_views = []
@@ -432,8 +446,13 @@ def main(use_period=True):
     youtube_rising = []
     translation_lines = []
 
+    # 비화장품 카테고리 제외
+    NON_COSMETIC_CATEGORIES = {"health", "food", "snack", "supplement", "medical"}
+
     for i, oy in enumerate(oy_data):
         code = oy["product_code"]
+        if oy.get("category", "") in NON_COSMETIC_CATEGORIES:
+            continue
         nv = nv_map.get(code, {})
         yt = yt_map.get(code, {})
 
@@ -482,14 +501,27 @@ def main(use_period=True):
         note = seller_note(scores, flags)
         sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
 
+        # name_ko: 한글 브랜드명 + 한글 제품명 (search_keyword에서 영문 브랜드를 한글로 대체)
+        raw_sk = oy.get("search_keyword", oy["name"])
+        brand_en = oy.get("brand_en", "")
+        brand_ko = oy.get("brand", "")
+        if brand_en and raw_sk.startswith(brand_en):
+            name_ko_val = brand_ko + raw_sk[len(brand_en):]
+        else:
+            name_ko_val = raw_sk
+
+        # name_en: 키워드 맵의 english_name 또는 search_keyword(영문브랜드+제품명)
+        kw_entry = kw_map.get(code, {}) if kw_map else {}
+        name_en_val = kw_entry.get("english_name", sk)
+
         product = {
             "rank": 0,
             "oliveyoung_rank": oy["rank"],
             "brand": oy["brand"],
             "brand_en": oy.get("brand_en", ""),
-            "name_ko": oy.get("search_keyword", oy["name"]),
-            "name_en": oy.get("name_en", ""),
-            "search_keyword": oy.get("search_keyword", ""),
+            "name_ko": name_ko_val,
+            "name_en": name_en_val,
+            "search_keyword": sk,
             "name_th": translations.get(code, {}).get("name_th", ""),
             "category": oy["category"],
             "scores": scores,
