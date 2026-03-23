@@ -82,9 +82,10 @@ KEYWORD_SCHEMA = json.dumps({
                 "properties": {
                     "product_code": {"type": "string"},
                     "naver_keyword": {"type": "string"},
-                    "youtube_keyword": {"type": "string"}
+                    "youtube_keyword": {"type": "string"},
+                    "english_name": {"type": "string"}
                 },
-                "required": ["product_code", "naver_keyword", "youtube_keyword"]
+                "required": ["product_code", "naver_keyword", "youtube_keyword", "english_name"]
             }
         }
     },
@@ -134,20 +135,26 @@ def run_keyword_agent(oy_path, timeout=600):
 - 예: "클리오 킬커버 파운웨어 쿠션 기획" → "클리오 킬커버 쿠션"
 
 ## 유튜브 키워드 규칙 (youtube_keyword)
-- 영문 키워드로 검색 (한국 유튜버는 제목에 한국어 풀네임을 잘 안 씀. 영문명이 제목/설명에 더 많이 포함됨)
-- 올리브영 글로벌 몰 공식 영문명 파일이 있으면 반드시 참조: {global_names_ref}
+- 한국어 키워드로 검색 (한국 트렌드 기준이므로 한국어 영상을 정확히 잡아야 함)
+- 네이버 키워드보다 조금 더 구체적으로: 브랜드명 + 제품 라인명 + 제품 타입
+- 예: "달바 워터풀 톤업 선크림 핑크", "메디힐 마데카소사이드 세럼", "토리든 다이브인 세럼"
+- 번들/골라담기 제품은 CLAUDE.md의 "확정된 번들 제품 키워드" 참조 (한글 키워드도 동일 원칙: 공통 상위 키워드 사용)
+
+## 영문명 규칙 (english_name)
+- 올리브영 글로벌 몰 공식 영문명 파일 반드시 참조: {global_names_ref}
   - 파일의 products 객체에서 product_code로 검색, global_name 필드가 공식 영문명
   - 공식 영문명에서 용량/기획/세트 정보를 제거하고 핵심 제품명만 사용
   - 파일에 없는 제품은 한국어 제품명을 영어로 번역
-- 예: "메디힐 더마 패드" → 공식: "MEDIHEAL Toner Pad" → 키워드: "Mediheal Toner Pad"
-- 예: "클리오 킬커버 파운웨어 쿠션" → 공식: "CLIO Kill Cover Founwear Cushion" → 키워드: "CLIO Kill Cover Founwear Cushion"
+- 이 영문명은 YouTube 검색이 아닌 웹사이트 게시용으로 사용됨
+- 예: "메디힐 마데카소사이드 세럼" → english_name: "MEDIHEAL Madecassoside Blemish Repair Serum"
+- 예: "클리오 킬커버 파운웨어 쿠션" → english_name: "CLIO Kill Cover Founwear Cushion"
 
 ## 비화장품 제외 규칙
 - 건강기능식품(비타민, 단백질쉐이크, 콜라겐 영양제 등), 과자/스낵(베이글칩 등), 의료기기는 제외
 - 콜라겐 "패치"나 콜라겐 "세럼"은 화장품이므로 포함
 - 판단 기준: 피부에 바르거나 붙이는 제품 = 화장품, 먹는 제품 = 비화장품
 
-화장품인 제품만(최대 50개) product_code, naver_keyword, youtube_keyword를 생성해.
+화장품인 제품만(최대 50개) product_code, naver_keyword, youtube_keyword, english_name을 생성해.
 비화장품은 keywords 배열에서 완전히 제외해."""
 
     cmd = [
@@ -347,6 +354,12 @@ Claude Code가 스크린샷 또는 DOM에서 제품 추출합니다.
 - "오늘의 특가" 빨간 배너, 순위 숫자 없음 = 오특 (is_oteuk: true)
 - 오특 rank는 앞뒤 순위에서 유추
 
+=== 번들/중복 제품 감지 (필수) ===
+- "N종 골라담기", "N종 택1", "N종 중 택" 등이 포함된 제품은 번들 제품으로 표시
+- 같은 제품이 다른 기획(예: 10매 vs 1매, 단품 vs 세트)으로 여러 순위에 등장하면 중복으로 표시
+- search_keyword가 동일한 제품이 여러 개 있으면 반드시 확인 후 표시
+- CLAUDE.md의 "번들/골라담기 제품 처리 규칙" 참조하여 확정된 키워드가 있으면 사용
+
 추출 완료 후: python run_daily_collect.py step2
 """.strip())
 
@@ -407,6 +420,15 @@ JSON 파일:
    - JSON의 name 필드가 스크린샷의 실제 제품명과 일치하는지 엄격히 대조
    - 스크린샷에 보이는 제품명의 핵심 부분(브랜드+라인명+제품고유명)이 JSON에 정확히 반영되었는지
    - 제품명이 요약/축소/변경되었으면 반드시 issues에 포함하고 스크린샷 원본 텍스트를 명시
+7. 번들/골라담기 제품 감지:
+   - 제품명에 "골라담기", "택1", "N종" 등이 포함된 제품을 모두 찾아서 보고
+   - 해당 제품의 search_keyword가 하위 제품군을 포괄하는 공통 키워드인지 확인
+   - CLAUDE.md의 "확정된 번들 제품 키워드" 표와 대조하여, 확정 키워드가 있으면 일치하는지 검증
+   - 표에 없는 새로운 번들 제품이 발견되면 issues에 포함하여 보고
+8. 중복 제품 감지:
+   - 같은 제품이 다른 기획(10매 vs 1매, 단품 vs 세트 등)으로 여러 순위에 등장하는지 확인
+   - search_keyword가 동일한 제품 쌍이 있으면 모두 보고 (합산 대상)
+   - 이전 날짜 데이터가 있으면 비교: 어제 없던 제품이 갑자기 나타났는데, 어제 있던 유사 제품이 사라진 경우 → 같은 제품의 이름 변경 가능성 보고
 
 ## 출력 형식
 반드시 아래 JSON 형식으로만 응답해:
@@ -472,11 +494,17 @@ def run_step3():
             return False
     safe_print(f"[OY] {os.path.basename(oy_path)}")
 
-    # Phase 0: 올리브영 글로벌 몰에서 공식 영문명 수집
+    # Phase 0: 올리브영 글로벌 몰에서 공식 영문명 수집 (필수 - 건너뛰기 금지)
     global_script = os.path.join(SCRIPTS_DIR, "fetch_global_names.py")
     global_names_path = os.path.join(DATA_DIR, f"_global_names_{today_str}.json")
-    if os.path.exists(global_script):
+    global_ok = False
+    max_global_retries = 3
+    for attempt in range(1, max_global_retries + 1):
+        if not os.path.exists(global_script):
+            safe_print("[GLOBAL ERROR] fetch_global_names.py 스크립트 없음 - Step 3 중단")
+            return False
         try:
+            safe_print(f"[GLOBAL] 영문명 수집 시도 {attempt}/{max_global_retries}")
             r = subprocess.run(
                 [sys.executable, global_script],
                 capture_output=True, text=True, timeout=300,
@@ -484,10 +512,19 @@ def run_step3():
             )
             if r.returncode == 0 and os.path.exists(global_names_path):
                 safe_print("[GLOBAL] 영문명 수집 완료")
+                global_ok = True
+                break
             else:
-                safe_print(f"[GLOBAL] 영문명 수집 실패 - 번역 방식으로 진행")
+                stderr_msg = (r.stderr or "")[:200]
+                safe_print(f"[GLOBAL] 시도 {attempt} 실패: {stderr_msg}")
         except Exception as e:
-            safe_print(f"[GLOBAL] 영문명 수집 에러: {e}")
+            safe_print(f"[GLOBAL] 시도 {attempt} 에러: {e}")
+        if attempt < max_global_retries:
+            time.sleep(5)
+
+    if not global_ok:
+        safe_print("[GLOBAL ERROR] 글로벌몰 영문명 수집 실패 (3회 재시도 후). Step 3 중단. 텔레그램으로 알림 필요.")
+        return False
 
     # Phase 1: Claude가 최적 키워드 생성
     keywords_path = os.path.join(DATA_DIR, f"_keywords_{today_str}.json")
@@ -873,6 +910,16 @@ def run_step5():
                 os.path.join(DATA_DIR, f"_global_names_{today_str}.json")]:
         if os.path.exists(tmp):
             os.remove(tmp)
+
+    # 스크린샷 archive 이동
+    archive_dir = os.path.join(SCREENSHOT_DIR, "archive", today_str[:4] + "-" + today_str[4:6])
+    ss_files = glob.glob(os.path.join(SCREENSHOT_DIR, f"oliveyoung_{today_str}_*.png"))
+    if ss_files:
+        os.makedirs(archive_dir, exist_ok=True)
+        for ss in ss_files:
+            dest = os.path.join(archive_dir, os.path.basename(ss))
+            shutil.move(ss, dest)
+        safe_print(f"[ARCHIVE] 스크린샷 {len(ss_files)}장 → archive/{today_str[:4]}-{today_str[4:6]}/")
 
     elapsed = time.time() - start
     safe_print(f"\nStep 5 완료: {elapsed:.1f}s")
