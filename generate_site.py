@@ -94,7 +94,9 @@ def build_product_cards(products):
         brand_en = esc(p.get("brand_en", p["brand"]))
         name_ko = esc(p["name_ko"])
         name_th = esc(p.get("name_th", ""))
-        display_name = name_th if name_th else name_ko
+        # 표시 우선순위: search_keyword (영문 정제) > name_th > name_ko
+        sk = p.get("search_keyword", "").strip()
+        display_name = esc(sk) if sk else (name_th if name_th else name_ko)
         cat = p["category"]
         cat_color = CAT_COLORS.get(cat, "#999")
         cat_emoji = CAT_EMOJIS.get(cat, "&#10024;")
@@ -189,7 +191,8 @@ def build_discover_html(products):
             brand_en = esc(p.get("brand_en", p["brand"]))
             name_ko = esc(p["name_ko"])
             name_th = esc(p.get("name_th", ""))
-            display_name = name_th if name_th else name_ko
+            sk = p.get("search_keyword", "").strip()
+            display_name = esc(sk) if sk else (name_th if name_th else name_ko)
             cat = p["category"]
             cat_emoji = CAT_EMOJIS.get(cat, "&#10024;")
             total = p["scores"]["total"]

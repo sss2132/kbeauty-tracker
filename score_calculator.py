@@ -420,9 +420,9 @@ def main(use_period=True):
         code = oy["product_code"]
         nv = nv_map.get(code, {})
         yt = yt_map.get(code, {})
-        nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)))
-        yt_views.append(yt.get("total_views", 0))
-        yt_vcounts.append(yt.get("video_count", 0))
+        nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
+        yt_views.append(yt.get("total_views", 0) or 0)
+        yt_vcounts.append(yt.get("video_count", 0) or 0)
 
     nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(oy_data)
     yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(oy_data)
@@ -517,7 +517,7 @@ def main(use_period=True):
         if nv.get("change_rate", 0) >= 20:
             yt_kw = yt.get("keyword", "")
             naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv.get("change_rate", 0)})
-        if yt.get("change_rate", yt.get("view_change_rate", 0)) >= 30:
+        if (yt.get("change_rate", yt.get("view_change_rate", 0)) or 0) >= 30:
             youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt.get("change_rate", yt.get("view_change_rate", 0)), "video_count": yt.get("video_count", 0)})
 
     # Sort by total score
