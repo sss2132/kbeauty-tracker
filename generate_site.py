@@ -474,7 +474,7 @@ def generate_html(data):
 .panel{{display:none;padding:16px}}.panel.active{{display:block}}
 
 /* Keywords */
-.kw-section{{margin-bottom:8px}}.kw-section h3{{font-size:15px;font-weight:700;margin-bottom:12px}}
+.kw-section{{margin-bottom:8px;background:#fff;border-radius:12px;padding:14px;border-left:4px solid #e8547a}}.kw-section h3{{font-size:15px;font-weight:700;margin-bottom:12px}}
 .kw-sub{{font-size:12px;color:#999;margin-bottom:10px}}
 .kw-item{{display:flex;align-items:center;gap:8px;margin-bottom:8px}}
 .kw-rank{{font-size:12px;font-weight:700;color:#e8547a;min-width:24px}}
@@ -512,9 +512,9 @@ def generate_html(data):
 .pro-table{{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}}
 .pro-table th{{background:#e8547a;color:#fff;padding:8px;text-align:left}}.pro-table td{{padding:8px;border-bottom:1px solid #eee}}
 .pro-table tr:nth-child(even) td{{background:#fafafa}}
-.pro-price{{text-align:center;margin:16px 0;padding:16px;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}}
+.pro-price{{text-align:center;margin:16px 0;padding:16px;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-left:4px solid #e8547a}}
 .pro-price .price{{font-size:22px;font-weight:700;color:#e8547a}}
-.email-form{{background:#fff;border-radius:12px;padding:16px;margin:16px 0;box-shadow:0 1px 3px rgba(0,0,0,.06);text-align:center}}
+.email-form{{background:#fff;border-radius:12px;padding:16px;margin:16px 0;box-shadow:0 1px 3px rgba(0,0,0,.06);text-align:center;border-left:4px solid #e8547a}}
 .email-form h3{{font-size:15px;margin-bottom:8px}}.email-form p{{font-size:12px;color:#666;margin-bottom:12px}}
 .email-row{{display:flex;gap:8px}}.email-row input{{flex:1;padding:10px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;font-family:inherit;outline:none}}
 .email-row input:focus{{border-color:#e8547a}}.email-row button{{padding:10px 18px;background:#e8547a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}}
@@ -522,7 +522,7 @@ def generate_html(data):
 .pro-trust{{text-align:center;font-size:11px;color:#999;margin-top:12px;line-height:1.6}}
 
 /* Method */
-.msec{{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}}
+.msec{{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-left:4px solid #e8547a}}
 .msec h3{{font-size:15px;font-weight:700;margin-bottom:10px}}.msec p{{font-size:13px;color:#555;line-height:1.6;margin-bottom:8px}}
 .wbar{{display:flex;height:32px;border-radius:8px;overflow:hidden;margin:10px 0}}
 .w-oy{{background:#e8547a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}}
@@ -572,7 +572,7 @@ def generate_html(data):
 .disc-rising{{background:#f3eeff;border-left:4px solid #8854d0}}
 .disc-gem{{background:#f0fff8;border-left:4px solid #2ed573}}
 .disc-new{{background:#eef6ff;border-left:4px solid #0984e3}}
-.disc-stable{{background:#fffbeb;border-left:4px solid #f9ca24}}
+.disc-steady{{background:#f0f0ff;border-left:4px solid #5352ed}}
 .disc-title{{font-size:15px;font-weight:700;margin-bottom:2px}}
 .disc-desc{{font-size:12px;color:#777;margin-bottom:10px}}
 .disc-card{{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:10px;padding:10px;margin-bottom:6px}}
