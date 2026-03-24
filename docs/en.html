@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>K-Beauty Trend Tracker Thailand</title>
+<meta name="description" content="ติดตามเทรนด์เครื่องสำอางเกาหลียอดนิยม อัปเดตทุก 3 วัน พร้อมคะแนนจาก Olive Young, Naver Shopping และ YouTube">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+#kbeauty-app{font-family:'Noto Sans Thai','Noto Sans KR',system-ui,sans-serif;background:#f8f9fa;color:#2d3436;max-width:520px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:160px}
+
+/* Warning banner */
+.warn-banner{background:#fff3cd;border-bottom:2px solid #ffc107;padding:10px 36px 10px 14px;font-size:12px;color:#856404;line-height:1.5;position:relative}
+.warn-close{position:absolute;top:6px;right:10px;background:none;border:none;font-size:16px;color:#856404;cursor:pointer}
+
+/* Header */
+.hdr{background:linear-gradient(135deg,#e8547a,#ff6b9d);color:#fff;padding:16px 20px;text-align:center}
+.hdr h1{font-size:18px;font-weight:700}.hdr .sub{font-size:12px;opacity:.85;margin-top:2px}.hdr .tagline{font-size:11px;opacity:.7;margin-top:4px;letter-spacing:.3px}
+.update-cycle{font-size:10px;opacity:.6;margin-top:4px;text-align:center}.update-date{font-size:10px;opacity:.6;margin-top:2px;text-align:center}
+
+/* Tabs */
+.tab-bar{display:flex;background:#fff;border-bottom:2px solid #eee;position:sticky;top:0;z-index:100}
+.tab-btn{flex:1;padding:10px 2px;font-size:13px;font-weight:600;background:none;border:none;color:#999;cursor:pointer;border-bottom:3px solid transparent;transition:.2s;font-family:inherit}
+.tab-btn.active{color:#e8547a;border-bottom-color:#e8547a}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 16px}
+.st{background:#fff;border-radius:10px;padding:10px 6px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.st-v{font-size:20px;font-weight:700;color:#e8547a}.st-l{font-size:11px;color:#999;margin-top:2px}
+
+/* Filter */
+.fbar{display:flex;gap:6px;padding:8px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}.fbar::-webkit-scrollbar{display:none}
+.fbtn{padding:7px 14px;border-radius:20px;border:1.5px solid #ddd;background:#fff;font-size:12px;font-weight:600;color:#666;cursor:pointer;white-space:nowrap;transition:.2s;font-family:inherit}
+.fbtn.active{background:#e8547a;color:#fff;border-color:#e8547a}
+
+/* Rank change */
+.rc{display:block;font-size:10px;font-weight:700;margin-top:1px}
+.rc-up{color:#2ed573}.rc-down{color:#ff4757}.rc-same{color:#999}.rc-new{color:#3742fa}
+
+/* Product Card */
+.plist{padding:8px 16px}
+.product-card{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:12px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.product-card[data-hidden="true"]{display:none}
+.product-rank{min-width:32px;height:42px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#666;background:#f0f0f0;flex-shrink:0}
+.rank-gold{background:linear-gradient(135deg,#f9ca24,#f0932b);color:#fff}
+.rank-silver{background:linear-gradient(135deg,#dfe6e9,#b2bec3);color:#fff}
+.rank-bronze{background:linear-gradient(135deg,#e17055,#d63031);color:#fff}
+.rank-gold .rc,.rank-silver .rc,.rank-bronze .rc{color:rgba(255,255,255,.85)}
+.product-emoji{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.product-info{flex:1;min-width:0}
+.product-brand{font-size:12px;font-weight:700;color:#e8547a;text-transform:uppercase}
+.product-name{font-size:14px;color:#2d3436;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
+.product-name-ko{font-size:11px;color:#999;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.product-scores{display:flex;gap:4px;margin-top:3px}
+.sb{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px}
+.sb-oy{background:#fff0f3;color:#e8547a}.sb-nr{background:#e8f4fd;color:#0984e3}.sb-ns{background:#f0fff4;color:#00b894}.sb-yt{background:#fff0f0;color:#ff0000}
+.trend-tag{font-size:9px;font-weight:700}
+.product-badges{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;align-items:center}
+.badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.3px}
+.badge-hot{background:#ff4757;color:#fff}.badge-rising{background:#8854d0;color:#fff}
+.badge-buzz{background:#ffa502;color:#fff}.badge-gem{background:#2ed573;color:#fff}.badge-steady{background:#3742fa;color:#fff}
+.rising-detail{font-size:10px;color:#8854d0;font-weight:600}
+.badge-desc{font-size:0.75rem;color:#999;display:block;margin-top:1px}
+@media(max-width:480px){.badge-desc{display:none}}
+.seller-grade{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px}
+.grade-now{background:#2ed573;color:#fff}.grade-watch{background:#3742fa;color:#fff}.grade-hold{background:#ffa502;color:#fff}.grade-proven{background:#5352ed;color:#fff}
+.product-right{text-align:center;flex-shrink:0;min-width:58px}
+.rank-big{font-size:22px;font-weight:700;color:#e8547a}
+.score-small{font-size:12px;color:#999;margin-top:1px}
+.btn-buy{display:block;margin-top:3px;padding:5px 12px;background:#e8547a;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* Buy links dropdown */
+.buy-links{display:none;width:100%;padding:6px 0 0}.buy-links.open{display:block}
+.buy-links a{display:flex;align-items:center;gap:8px;padding:8px 10px;margin:4px 0;background:#f8f9fa;border-radius:8px;text-decoration:none;color:#2d3436;transition:.15s}
+.buy-links a:hover{background:#eee}
+.bl-icon{font-size:18px;flex-shrink:0}.bl-name{font-size:13px;font-weight:600;flex:1}.bl-desc{font-size:11px;color:#999}
+.bl-note{font-size:10px;color:#bbb;text-align:center;margin-top:4px;padding-bottom:2px}
+
+/* Panels */
+.panel{display:none;padding:16px}.panel.active{display:block}
+
+/* Keywords */
+.kw-section{margin-bottom:8px;background:#fff;border-radius:12px;padding:14px;border-left:4px solid #e8547a}.kw-section h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.kw-sub{font-size:12px;color:#999;margin-bottom:10px}
+.kw-item{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.kw-rank{font-size:12px;font-weight:700;color:#e8547a;min-width:24px}
+.kw-text{font-size:12px;min-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kw-bar-wrap{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.kw-bar{height:100%;background:linear-gradient(90deg,#e8547a,#ff6b9d);border-radius:4px}
+.kw-bar-yt{background:linear-gradient(90deg,#ff0000,#ff4444)}
+.kw-rate{font-size:11px;font-weight:700;color:#00b894;min-width:45px;text-align:right}
+.kw-src{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;min-width:48px;text-align:center}
+.src-nv{background:#f0fff4;color:#00b894}.src-yt{background:#fff0f0;color:#ff0000}
+.outside-section{background:#fff;border-radius:12px;padding:14px;border-left:4px solid #6c5ce7}
+.outside-item{background:#f8f9fa;border-radius:8px;padding:8px}
+
+/* Seller */
+.ss{margin-bottom:16px}.ss h3{font-size:15px;font-weight:700;margin-bottom:4px}.ss-desc{font-size:12px;color:#999;margin-bottom:10px}
+.ss-buzz{background:#fff8f0;border-radius:12px;padding:14px;border-left:4px solid #ffa502}
+.ss-gem{background:#f0fff8;border-radius:12px;padding:14px;border-left:4px solid #2ed573}
+.ss-steady{background:#f0f0ff;border-radius:12px;padding:14px;border-left:4px solid #5352ed}
+.ss-outside{background:#f8f0ff;border-radius:12px;padding:14px;border-left:4px solid #8854d0}
+.ss-dropped{background:#f5f5f5;border-radius:12px;padding:14px;border-left:4px solid #999}
+.si{background:#fff;border-radius:8px;padding:10px;margin-bottom:6px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.si-dropped{background:#fafafa;border:1px dashed #ddd}
+.si-name{font-size:13px;font-weight:600}.si-scores{font-size:11px;color:#999;margin-top:2px}.si-reason{font-size:12px;color:#666;margin-top:4px}
+.si-outside{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.si-src{font-size:9px;font-weight:700;background:#f0f0f0;padding:1px 5px;border-radius:3px;color:#666}
+.si-rate{font-size:13px;font-weight:700;color:#00b894}.si-shopee-link{font-size:11px;color:#e8547a;text-decoration:none;font-weight:600}
+.src-item{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.src-rank{font-size:14px;font-weight:700;color:#e8547a}.src-info{flex:1;min-width:0}
+.src-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.src-note{font-size:10px;color:#999;margin-top:1px}
+.src-right{text-align:center;flex-shrink:0}.src-score{display:block;font-size:18px;font-weight:700}
+.btn-buy-sm{display:block;margin-top:3px;padding:4px 10px;background:#e8547a;color:#fff;border:none;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* Pro tab */
+.pro-hdr{text-align:center;padding:20px 0 10px}.pro-hdr h2{font-size:18px;color:#e8547a}.pro-hdr p{font-size:13px;color:#666;margin-top:4px}
+.pro-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.pro-table th{background:#e8547a;color:#fff;padding:8px;text-align:left}.pro-table td{padding:8px;border-bottom:1px solid #eee}
+.pro-table tr:nth-child(even) td{background:#fafafa}
+.pro-price{text-align:center;margin:16px 0;padding:16px;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-left:4px solid #e8547a}
+.pro-price .price{font-size:22px;font-weight:700;color:#e8547a}
+.email-form{background:#fff;border-radius:12px;padding:16px;margin:16px 0;box-shadow:0 1px 3px rgba(0,0,0,.06);text-align:center;border-left:4px solid #e8547a}
+.email-form h3{font-size:15px;margin-bottom:8px}.email-form p{font-size:12px;color:#666;margin-bottom:12px}
+.email-row{display:flex;gap:8px}.email-row input{flex:1;padding:10px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;font-family:inherit;outline:none}
+.email-row input:focus{border-color:#e8547a}.email-row button{padding:10px 18px;background:#e8547a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+.email-thanks{display:none;color:#00b894;font-weight:600;font-size:13px;padding:10px 0}
+.pro-trust{text-align:center;font-size:11px;color:#999;margin-top:12px;line-height:1.6}
+
+/* Method */
+.msec{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-left:4px solid #e8547a}
+.msec h3{font-size:15px;font-weight:700;margin-bottom:10px}.msec p{font-size:13px;color:#555;line-height:1.6;margin-bottom:8px}
+.wbar{display:flex;height:32px;border-radius:8px;overflow:hidden;margin:10px 0}
+.w-oy{background:#e8547a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.w-nv{background:#00b894;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.w-yt{background:#ff0000;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.sg{margin-bottom:12px}.sg-label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:4px}
+.sslider{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:#eee;outline:none;cursor:pointer}
+.sslider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#e8547a;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sslider.sl-nr::-webkit-slider-thumb{background:#0984e3}
+.sslider.sl-ns::-webkit-slider-thumb{background:#00b894}
+.sslider.sl-yt::-webkit-slider-thumb{background:#ff0000}
+.sim-res{background:#f8f9fa;border-radius:10px;padding:14px;text-align:center;margin-top:12px}
+.sim-total{font-size:36px;font-weight:700}.sim-signal{margin-top:6px;font-size:13px;font-weight:600}
+
+/* Newsletter banner */
+.nl-banner{background:linear-gradient(135deg,#e8547a,#ff6b9d);border-radius:12px;margin:16px;padding:16px;text-align:center;color:#fff}
+.nl-banner h4{font-size:14px;margin-bottom:8px}.nl-banner .email-row input{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff}
+.nl-banner .email-row input::placeholder{color:rgba(255,255,255,.6)}
+.nl-banner .email-row button{background:#fff;color:#e8547a}
+.nl-thanks{display:none;color:#fff;font-weight:600;font-size:13px;padding:8px 0}
+
+/* Share */
+.share-bar{display:flex;justify-content:center;gap:10px;padding:12px 16px;flex-wrap:wrap}
+.share-btn{display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600;text-decoration:none;color:#fff;cursor:pointer;border:none;font-family:inherit}
+.share-line{background:#06c755}.share-fb{background:#1877f2}.share-tw{background:#1da1f2}.share-tiktok{background:#010101}.share-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}.share-yt{background:#ff0000}.share-copy{background:#2d3436}
+
+/* Footer */
+.footer{position:absolute;bottom:0;left:0;right:0;background:#2d3436;color:#aaa;padding:14px 16px;font-size:11px;text-align:center;line-height:1.7}
+
+.cat-legend{display:flex;gap:10px;padding:4px 16px 8px;overflow-x:auto;font-size:11px;color:#666}
+.cat-legend span{white-space:nowrap}
+.ss-teaser{font-size:13px;color:#666;margin-top:8px}
+.blur-list{filter:blur(4px);pointer-events:none;user-select:none}
+.blur-wrap{position:relative}.blur-cta{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#e8547a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;z-index:10;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2d3436;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
+.toast.show{opacity:1}
+.empty-msg{text-align:center;color:#999;padding:40px 0;font-size:14px}
+
+/* View toggle */
+.view-toggle{display:flex;gap:6px;padding:8px 16px}
+.vt-btn{flex:1;padding:10px;border-radius:10px;border:1.5px solid #ddd;background:#fff;font-size:13px;font-weight:700;color:#666;cursor:pointer;font-family:inherit;transition:.2s;text-align:center}
+.vt-btn.vt-active{background:#e8547a;color:#fff;border-color:#e8547a}
+
+/* Discover view */
+.discover-view{padding:8px 16px}
+.disc-section{border-radius:12px;padding:14px;margin-bottom:12px}
+.disc-rising{background:#f3eeff;border-left:4px solid #8854d0}
+.disc-gem{background:#f0fff8;border-left:4px solid #2ed573}
+.disc-new{background:#eef6ff;border-left:4px solid #0984e3}
+.disc-steady{background:#f0f0ff;border-left:4px solid #5352ed}
+.disc-title{font-size:15px;font-weight:700;margin-bottom:2px}
+.disc-desc{font-size:12px;color:#777;margin-bottom:10px}
+.disc-card{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:10px;padding:10px;margin-bottom:6px}
+.disc-card[data-hidden="true"]{display:none}
+.disc-rank{font-size:13px;font-weight:700;color:#e8547a;min-width:40px;text-align:center}
+.disc-rank .rc{display:inline;margin-left:2px}
+.disc-emoji{font-size:20px;flex-shrink:0}
+.disc-info{flex:1;min-width:0}
+.disc-score{font-size:18px;font-weight:700;color:#e8547a;flex-shrink:0;min-width:36px;text-align:center}
+.disc-empty{text-align:center;color:#999;padding:40px 0;font-size:14px}
+.disc-empty-sec{text-align:center;color:#aaa;padding:16px 0;font-size:13px}
+/* Mobile */
+@media(max-width:380px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .product-card{gap:6px;padding:10px}.product-emoji{width:30px;height:30px;font-size:18px}.rank-big{font-size:18px}
+  .tab-btn{font-size:11px;padding:9px 1px}
+  .product-name{font-size:13px}.product-brand{font-size:11px}.product-name-ko{font-size:10px}
+  .sb{font-size:9px}.badge{font-size:8px}
+}
+</style>
+<style>.lang-toggle{position:fixed;top:8px;right:8px;z-index:200;background:#fff;color:#333;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.15)}</style>
+</head>
+<body>
+<a href="index.html" class="lang-toggle" title="ไทย">&#127481;&#127469; TH</a>
+<div id="kbeauty-app">
+
+
+
+<div class="hdr">
+  <h1>K-Beauty Trend Tracker</h1>
+  <div class="sub">เทรนด์ความงามเกาหลี | อัปเดต: 24 มี.ค. 2026</div>
+  <div class="tagline">จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา</div>
+  <div class="update-cycle">อัปเดตทุก 3 วัน | ข้อมูลจาก 3 วัน เพื่อความแม่นยำของอันดับ</div>
+  <div class="update-date">อัปเดตล่าสุด: อัปเดต: 24 มี.ค. 2026</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="ranking">อันดับ</button>
+  <button class="tab-btn" data-tab="keywords">Keywords</button>
+  <button class="tab-btn" data-tab="seller">For Sellers</button>
+  <button class="tab-btn" data-tab="pro">รายงาน Pro</button>
+  <button class="tab-btn" data-tab="method">วิธีคำนวณ</button>
+</div>
+
+<!-- Tab 1: Rankings -->
+<div class="panel active" id="p-ranking">
+  <div class="stats">
+    <div class="st"><div class="st-v">1</div><div class="st-l">&#128640; Rising</div></div>
+    <div class="st"><div class="st-v">6</div><div class="st-l">&#9203; Buzz Trap</div></div>
+    <div class="st"><div class="st-v">1</div><div class="st-l">Hidden Gem</div></div>
+    <div class="st"><div class="st-v">0</div><div class="st-l">Steady Seller</div></div>
+  </div>
+  <div class="fbar">
+    <button class="fbtn active" data-cat="all">ทั้งหมด</button>
+    <button class="fbtn" data-cat="skincare">สกินแคร์</button>
+    <button class="fbtn" data-cat="makeup">เมกอัพ</button>
+    <button class="fbtn" data-cat="suncare">กันแดด</button>
+    <button class="fbtn" data-cat="maskpack">มาสก์แพ็ค</button>
+    <button class="fbtn" data-cat="haircare">แฮร์แคร์</button>
+    <button class="fbtn" data-cat="bodycare">บอดี้แคร์</button>
+  </div>
+  <div class="view-toggle">
+    <button class="vt-btn vt-active" data-view="discover">&#128293; Discover</button>
+    <button class="vt-btn" data-view="ranking">&#128202; อันดับ</button>
+  </div>
+  <div class="cat-legend">
+    <span>&#128167; สกินแคร์</span>
+    <span>&#128132; เมกอัพ</span>
+    <span>&#9728;&#65039; กันแดด</span>
+    <span>&#129526; มาสก์แพ็ค</span>
+    <span>&#128135; แฮร์แคร์</span>
+    <span>&#129524; บอดี้แคร์</span>
+  </div>
+  <div class="ranking-view" style="display:none"><div class="plist"><div class="product-card" data-category="makeup">
+  <div class="product-rank rank-gold">1<span class="rc rc-same">--</span></div>
+  <div class="product-emoji">&#128132;</div>
+  <div class="product-info">
+    <div class="product-brand">Laneige</div>
+    <div class="product-name">LANEIGE Neo Cushion Mewy</div>
+    <div class="product-name-ko">라네즈 네오 쿠션 더 매트</div>
+    <div class="product-badges"><span class="badge badge-hot" title="สินค้าขายดีและเป็นกระแสบนโซเชียล">HOT</span><span class="badge-desc">สินค้าขายดีและเป็นกระแสบนโซเชียล</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="maskpack">
+  <div class="product-rank rank-silver">2<span class="rc rc-up">&#9650;1</span></div>
+  <div class="product-emoji">&#129526;</div>
+  <div class="product-info">
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL Essential Mask Sheet</div>
+    <div class="product-name-ko">메디힐 에센셜 마스크팩</div>
+    <div class="product-badges"><span class="badge badge-hot" title="สินค้าขายดีและเป็นกระแสบนโซเชียล">HOT</span><span class="badge-desc">สินค้าขายดีและเป็นกระแสบนโซเชียล</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank rank-bronze">3<span class="rc rc-up">&#9650;5</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Anua</div>
+    <div class="product-name">Anua PDRN Hyaluronic Acid Capsule 100 Serum</div>
+    <div class="product-name-ko">아누아 피디알엔 히알루론산 캡슐 100 세럼</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="makeup">
+  <div class="product-rank ">4<span class="rc rc-up">&#9650;10</span></div>
+  <div class="product-emoji">&#128132;</div>
+  <div class="product-info">
+    <div class="product-brand">Jung Saem Mool</div>
+    <div class="product-name">JUNGSAEMMOOL Essential Skin Nuder Cushion</div>
+    <div class="product-name-ko">정샘물 에센셜 스킨 누더 쿠션</div>
+    <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="makeup">
+  <div class="product-rank ">5<span class="rc rc-up">&#9650;2</span></div>
+  <div class="product-emoji">&#128132;</div>
+  <div class="product-info">
+    <div class="product-brand">The Saem</div>
+    <div class="product-name">The Saem Cover Perfection Triple Pot Concealer Glow</div>
+    <div class="product-name-ko">더샘 커버 퍼펙션 트리플 팟 컨실러 글로우</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="suncare">
+  <div class="product-rank ">6<span class="rc rc-down">&#9660;1</span></div>
+  <div class="product-emoji">&#9728;&#65039;</div>
+  <div class="product-info">
+    <div class="product-brand">Round Lab</div>
+    <div class="product-name">ROUND LAB Birch Juice Moisturizing Sunscreen</div>
+    <div class="product-name-ko">라운드랩 자작나무 수분 선크림</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Round%20Lab%20%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4%20%EC%88%98%EB%B6%84%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Round%20Lab%20%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4%20%EC%88%98%EB%B6%84%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Round%20Lab%20%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4%20%EC%88%98%EB%B6%84%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Round%20Lab%20%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4%20%EC%88%98%EB%B6%84%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">7<span class="rc rc-down">&#9660;3</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Aestura</div>
+    <div class="product-name">Aestura Atobarrier 365 Cream</div>
+    <div class="product-name-ko">에스트라 아토베리어365 크림</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">8<span class="rc rc-up">&#9650;7</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Wellage</div>
+    <div class="product-name">WELLAGE Real Hyaluronic Blue 100 Ampoule</div>
+    <div class="product-name-ko">웰라쥬 리얼 히알루로닉 블루 100 앰플</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">9<span class="rc rc-up">&#9650;3</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL Toner Pad 100+</div>
+    <div class="product-name-ko">메디힐 더마 패드</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="maskpack">
+  <div class="product-rank ">10<span class="rc rc-same">--</span></div>
+  <div class="product-emoji">&#129526;</div>
+  <div class="product-info">
+    <div class="product-brand">Torriden</div>
+    <div class="product-name">Torriden Dive In Low Molecular Hyaluronic Acid Mask Sheet</div>
+    <div class="product-name-ko">토리든 시트 마스크</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="haircare">
+  <div class="product-rank ">11<span class="rc rc-same">--</span></div>
+  <div class="product-emoji">&#128135;</div>
+  <div class="product-info">
+    <div class="product-brand">Chungmijung</div>
+    <div class="product-name">Chungmijung Kelp Shampoo</div>
+    <div class="product-name-ko">청미정 다시마 샴푸</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Chungmijung%20%EB%8B%A4%EC%8B%9C%EB%A7%88%20%EC%83%B4%ED%91%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Chungmijung%20%EB%8B%A4%EC%8B%9C%EB%A7%88%20%EC%83%B4%ED%91%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Chungmijung%20%EB%8B%A4%EC%8B%9C%EB%A7%88%20%EC%83%B4%ED%91%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Chungmijung%20%EB%8B%A4%EC%8B%9C%EB%A7%88%20%EC%83%B4%ED%91%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="haircare">
+  <div class="product-rank ">12<span class="rc rc-up">&#9650;1</span></div>
+  <div class="product-emoji">&#128135;</div>
+  <div class="product-info">
+    <div class="product-brand">Unove</div>
+    <div class="product-name">UNOVE Deep Damage Treatment EX</div>
+    <div class="product-name-ko">어노브 딥 데미지 헤어 트리트먼트 EX</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">13<span class="rc rc-up">&#9650;3</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Anua</div>
+    <div class="product-name">Anua PDRN Hyaluronic Acid Moisture Capsule Mist</div>
+    <div class="product-name-ko">아누아 피디알엔 히알루론산 수분 캡슐 미스트</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%B6%84%20%EC%BA%A1%EC%8A%90%20%EB%AF%B8%EC%8A%A4%ED%8A%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%B6%84%20%EC%BA%A1%EC%8A%90%20%EB%AF%B8%EC%8A%A4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%B6%84%20%EC%BA%A1%EC%8A%90%20%EB%AF%B8%EC%8A%A4%ED%8A%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%B6%84%20%EC%BA%A1%EC%8A%90%20%EB%AF%B8%EC%8A%A4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">14<span class="rc rc-up">&#9650;4</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Torriden</div>
+    <div class="product-name">Torriden DIVE-IN Low Molecule Hyaluronic Acid Serum</div>
+    <div class="product-name-ko">토리든 다이브인 저분자 히알루론산 세럼</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%A0%80%EB%B6%84%EC%9E%90%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%A0%80%EB%B6%84%EC%9E%90%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%A0%80%EB%B6%84%EC%9E%90%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%A0%80%EB%B6%84%EC%9E%90%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">15<span class="rc rc-down">&#9660;9</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL PDRN Pore Tightening Serum</div>
+    <div class="product-name-ko">메디힐 PDRN 모공 탄력 세럼</div>
+    <div class="product-badges"><span class="badge badge-gem" title="Sells well in Korea but low social buzz — opportunity to enter market early">HIDDEN GEM</span><span class="badge-desc">Sells well in Korea but low social buzz — opportunity to enter market early</span><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Mediheal%20PDRN%20%EB%AA%A8%EA%B3%B5%20%ED%83%84%EB%A0%A5%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20PDRN%20%EB%AA%A8%EA%B3%B5%20%ED%83%84%EB%A0%A5%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20PDRN%20%EB%AA%A8%EA%B3%B5%20%ED%83%84%EB%A0%A5%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Mediheal%20PDRN%20%EB%AA%A8%EA%B3%B5%20%ED%83%84%EB%A0%A5%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="suncare">
+  <div class="product-rank ">16<span class="rc rc-down">&#9660;14</span></div>
+  <div class="product-emoji">&#9728;&#65039;</div>
+  <div class="product-info">
+    <div class="product-brand">d'Alba</div>
+    <div class="product-name">d'Alba Waterfull Tone-up Sunscreen Purple</div>
+    <div class="product-name-ko">달바 퍼플 톤업 선크림</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">17<span class="rc rc-up">&#9650;5</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">S.Nature</div>
+    <div class="product-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
+    <div class="product-name-ko">에스네이처 아쿠아 스쿠알란 수분크림</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=S.Nature%20%EC%95%84%EC%BF%A0%EC%95%84%20%EC%8A%A4%EC%BF%A0%EC%95%8C%EB%9E%80%20%EC%88%98%EB%B6%84%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=S.Nature%20%EC%95%84%EC%BF%A0%EC%95%84%20%EC%8A%A4%EC%BF%A0%EC%95%8C%EB%9E%80%20%EC%88%98%EB%B6%84%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=S.Nature%20%EC%95%84%EC%BF%A0%EC%95%84%20%EC%8A%A4%EC%BF%A0%EC%95%8C%EB%9E%80%20%EC%88%98%EB%B6%84%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=S.Nature%20%EC%95%84%EC%BF%A0%EC%95%84%20%EC%8A%A4%EC%BF%A0%EC%95%8C%EB%9E%80%20%EC%88%98%EB%B6%84%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="haircare">
+  <div class="product-rank ">18<span class="rc rc-down">&#9660;9</span></div>
+  <div class="product-emoji">&#128135;</div>
+  <div class="product-info">
+    <div class="product-brand">Unove</div>
+    <div class="product-name">Unove Deep Damage Repair Shampoo</div>
+    <div class="product-name-ko">어노브 딥 데미지 리페어 샴푸</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%83%B4%ED%91%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%83%B4%ED%91%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%83%B4%ED%91%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%83%B4%ED%91%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="cleansing">
+  <div class="product-rank ">19<span class="rc rc-up">&#9650;4</span></div>
+  <div class="product-emoji">&#10024;</div>
+  <div class="product-info">
+    <div class="product-brand">Make P:rem</div>
+    <div class="product-name">Make P:rem Safe Me Relief Moisture Cleansing Oil</div>
+    <div class="product-name-ko">메이크프렘 세이프 미 클렌징밀크</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Make%20P%3Arem%20%EC%84%B8%EC%9D%B4%ED%94%84%20%EB%AF%B8%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Make%20P%3Arem%20%EC%84%B8%EC%9D%B4%ED%94%84%20%EB%AF%B8%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Make%20P%3Arem%20%EC%84%B8%EC%9D%B4%ED%94%84%20%EB%AF%B8%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Make%20P%3Arem%20%EC%84%B8%EC%9D%B4%ED%94%84%20%EB%AF%B8%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">20<span class="rc rc-up">&#9650;1</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">La Roche-Posay</div>
+    <div class="product-name">La Roche-Posay Cicaplast Baume B5+</div>
+    <div class="product-name-ko">라로슈포제 시카밤 B5</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">21<span class="rc rc-up">&#9650;3</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">La Roche-Posay</div>
+    <div class="product-name">La Roche-Posay Cicaplast Baume B5+</div>
+    <div class="product-name-ko">라로슈포제 시카플라스트 밤 B5</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8A%B8%20%EB%B0%A4%20B5&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8A%B8%20%EB%B0%A4%20B5" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8A%B8%20%EB%B0%A4%20B5&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8A%B8%20%EB%B0%A4%20B5" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="maskpack">
+  <div class="product-rank ">22<span class="rc rc-up">&#9650;3</span></div>
+  <div class="product-emoji">&#129526;</div>
+  <div class="product-info">
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL Essential Mask Sheet</div>
+    <div class="product-name-ko">메디힐 에센셜 마스크팩 고기능</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9%20%EA%B3%A0%EA%B8%B0%EB%8A%A5&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9%20%EA%B3%A0%EA%B8%B0%EB%8A%A5" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9%20%EA%B3%A0%EA%B8%B0%EB%8A%A5&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9%20%EA%B3%A0%EA%B8%B0%EB%8A%A5" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">23<span class="rc rc-down">&#9660;4</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">d'Alba</div>
+    <div class="product-name">d'Alba White Truffle First Spray Serum</div>
+    <div class="product-name-ko">달바 퍼스트 스프레이 세럼</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="maskpack">
+  <div class="product-rank ">24<span class="rc rc-down">&#9660;7</span></div>
+  <div class="product-emoji">&#129526;</div>
+  <div class="product-info">
+    <div class="product-brand">Menokin</div>
+    <div class="product-name">MENOKIN 30 Seconds Quick Bubble Mask Set</div>
+    <div class="product-name-ko">메노킨 30초 퀵 버블 마스크</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Menokin%2030%EC%B4%88%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Menokin%2030%EC%B4%88%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Menokin%2030%EC%B4%88%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Menokin%2030%EC%B4%88%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">25<span class="rc rc-up">&#9650;5</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
+    <div class="product-name-ko">메디힐 마데카소사이드 흔적 리페어 세럼</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="cleansing">
+  <div class="product-rank ">26<span class="rc rc-up">&#9650;3</span></div>
+  <div class="product-emoji">&#10024;</div>
+  <div class="product-info">
+    <div class="product-brand">Manyo</div>
+    <div class="product-name">Manyo Pure Cleansing Oil</div>
+    <div class="product-name-ko">마녀공장 퓨어 클렌징오일</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span><span class="seller-grade grade-hold">Hold</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">27<span class="rc rc-down">&#9660;1</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Dr.G</div>
+    <div class="product-name">Dr.G Red Blemish Clear Soothing Cream</div>
+    <div class="product-name-ko">닥터지 레드 블레미쉬 클리어 수딩크림</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="cleansing">
+  <div class="product-rank ">28<span class="rc rc-down">&#9660;1</span></div>
+  <div class="product-emoji">&#10024;</div>
+  <div class="product-info">
+    <div class="product-brand">Beplain</div>
+    <div class="product-name">beplain Mung Bean pH-Balanced Cleansing Foam</div>
+    <div class="product-name-ko">비플레인 녹두 약산성 클렌징폼</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="suncare">
+  <div class="product-rank ">29<span class="rc rc-new">NEW</span></div>
+  <div class="product-emoji">&#9728;&#65039;</div>
+  <div class="product-info">
+    <div class="product-brand">d'Alba</div>
+    <div class="product-name">d'Alba [PINK CORRECTING] Waterfull Tone-Up Sun Cream Duo Set (</div>
+    <div class="product-name-ko">달바 핑크 톤업 선크림</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span><span class="seller-grade grade-hold">Hold</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">30<span class="rc rc-new">NEW</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Estee Lauder</div>
+    <div class="product-name">Estee Lauder Advanced Night Repair</div>
+    <div class="product-name-ko">에스티로더 갈색병</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span><span class="seller-grade grade-hold">Hold</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Estee%20Lauder%20%EA%B0%88%EC%83%89%EB%B3%91&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Estee%20Lauder%20%EA%B0%88%EC%83%89%EB%B3%91" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Estee%20Lauder%20%EA%B0%88%EC%83%89%EB%B3%91&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Estee%20Lauder%20%EA%B0%88%EC%83%89%EB%B3%91" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div></div></div>
+  <div class="discover-view"><div class="disc-section disc-rising">
+  <div class="disc-title">&#128640; Rising</div>
+  <div class="disc-desc">Products that rose significantly in ranking</div>
+  <div class="disc-card" data-category="makeup">
+  <div class="disc-rank">#4 <span class="rc rc-up">&#9650;10</span></div>
+  <div class="disc-emoji">&#128132;</div>
+  <div class="disc-info">
+    <div class="product-brand">Jung Saem Mool</div>
+    <div class="product-name">JUNGSAEMMOOL Essential Skin Nuder Cushion</div>
+    <div class="product-name-ko">정샘물 에센셜 스킨 누더 쿠션</div>
+    <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span></div>
+  </div>
+</div>
+</div><div class="disc-section disc-gem">
+  <div class="disc-title">&#128142; Hidden Gem</div>
+  <div class="disc-desc">Sells well in Korea but low social buzz — opportunity to enter market early</div>
+  <div class="disc-card" data-category="skincare">
+  <div class="disc-rank">#15 <span class="rc rc-down">&#9660;9</span></div>
+  <div class="disc-emoji">&#128167;</div>
+  <div class="disc-info">
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL PDRN Pore Tightening Serum</div>
+    <div class="product-name-ko">메디힐 PDRN 모공 탄력 세럼</div>
+    <div class="product-badges"><span class="badge badge-gem" title="Sells well in Korea but low social buzz — opportunity to enter market early">HIDDEN GEM</span><span class="badge-desc">Sells well in Korea but low social buzz — opportunity to enter market early</span></div>
+  </div>
+</div>
+</div><div class="disc-section disc-steady">
+  <div class="disc-title">&#127942; Steady Seller</div>
+  <div class="disc-desc">Consistently selling well with many reviews — proven product</div>
+  <div class="disc-empty-sec">None this period</div>
+</div><div class="disc-section disc-new">
+  <div class="disc-title">&#127381; New Entry</div>
+  <div class="disc-desc">First time entering TOP 30!</div>
+  <div class="disc-empty-sec">None this period</div>
+</div></div>
+</div>
+
+<!-- Tab 2: Keywords -->
+<div class="panel" id="p-keywords">
+  <div class="kw-section"><h3>&#128269; Naver Shopping Rising</h3><div class="kw-item">
+  <span class="kw-rank">#1</span><span class="kw-text">Bring Green Tea Tree Cica Soothing Cream</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:100%"></div></div>
+  <span class="kw-rate">+12</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#2</span><span class="kw-text">Menokin Quick Bubble Mask</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:83%"></div></div>
+  <span class="kw-rate">+10</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#3</span><span class="kw-text">Dear Dahlia Petal Drop Liquid Blush</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:75%"></div></div>
+  <span class="kw-rate">+9</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#4</span><span class="kw-text">VDL Cover Stain Perfecting Foundation</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:67%"></div></div>
+  <span class="kw-rate">+8</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#5</span><span class="kw-text">Blanc Nature Acne Cleansing Foam</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:58%"></div></div>
+  <span class="kw-rate">+7</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#6</span><span class="kw-text">Round Lab Birch Juice Moisturizing Sunscreen</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:50%"></div></div>
+  <span class="kw-rate">+6</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#7</span><span class="kw-text">Heart Percent Dote On Mood Glowy Tint</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:50%"></div></div>
+  <span class="kw-rate">+6</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#8</span><span class="kw-text">Torriden Dive In Serum</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:42%"></div></div>
+  <span class="kw-rate">+5</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#9</span><span class="kw-text">CLIO Sharp So Simple Waterproof Pencil Liner</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:42%"></div></div>
+  <span class="kw-rate">+5</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#10</span><span class="kw-text">MEDIHEAL Pad</span>
+  <div class="kw-bar-wrap"><div class="kw-bar" style="width:25%"></div></div>
+  <span class="kw-rate">+3</span>
+</div></div><div class="kw-section" style="margin-top:20px"><h3>&#9654; YouTube Rising</h3><div class="kw-item">
+  <span class="kw-rank">#1</span><span class="kw-text">Parnell Cicamanu 92 Serum</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:100%"></div></div>
+  <span class="kw-rate">+15</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#2</span><span class="kw-text">Biodance Bio-Collagen Real Deep Mask</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:67%"></div></div>
+  <span class="kw-rate">+10</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#3</span><span class="kw-text">Estee Lauder Advanced Night Repair</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:67%"></div></div>
+  <span class="kw-rate">+10</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#4</span><span class="kw-text">Laneige Neo Cushion Matte</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:53%"></div></div>
+  <span class="kw-rate">+8</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#5</span><span class="kw-text">Jung Saem Mool Essential Skin Nuder Cushion</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:53%"></div></div>
+  <span class="kw-rate">+8</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#6</span><span class="kw-text">Mediheal Madecassoside Blemish Repair Serum</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:47%"></div></div>
+  <span class="kw-rate">+7</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#7</span><span class="kw-text">Anua PDRN Hyaluronic Acid Serum</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:27%"></div></div>
+  <span class="kw-rate">+4</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#8</span><span class="kw-text">Torriden Mask Sheet</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:27%"></div></div>
+  <span class="kw-rate">+4</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#9</span><span class="kw-text">Anua PDRN Hyaluronic Acid Mist</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:20%"></div></div>
+  <span class="kw-rate">+3</span>
+</div><div class="kw-item">
+  <span class="kw-rank">#10</span><span class="kw-text">d'Alba White Truffle First Spray Serum</span>
+  <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:20%"></div></div>
+  <span class="kw-rate">+3</span>
+</div></div>
+</div>
+
+<!-- Tab 3: Seller -->
+<div class="panel" id="p-seller">
+  <div class="ss ss-buzz"><h3>&#9203; Buzz Trap (6 items)</h3>
+  <p class="ss-desc">สินค้าที่ยังต้องHoldข้อมูลเพิ่มเติม ดูรายละเอียดใน Pro</p>
+  <p class="ss-teaser">&#128274; ดูรายชื่อทั้งหมดได้ที่แท็บ <a href="#" onclick="document.querySelectorAll('.tab-btn')[3].click();return false" style="color:#e8547a;font-weight:700">รายงาน Pro</a></p>
+</div><div class="ss ss-gem"><h3>&#128142; Hidden Gem - โอกาส (1)</h3>
+  <p class="ss-desc">Sells well in Korea but low social buzz — opportunity to enter market early</p><div class="si si-gem"><div class="si-name">Mediheal PDRN 모공 탄력 세럼</div>
+  <div class="si-reason">Sells well in Korea but low social buzz — opportunity to enter market early -- โอกาสเข้าตลาดก่อนคู่แข่ง</div></div></div><div class="ss ss-dropped"><h3>&#128308; สินค้าที่หลุดจาก TOP 30 ครั้งนี้ (2)</h3>
+  <p class="ss-desc">สินค้าที่อยู่ใน TOP 30 ครั้งก่อนแต่หลุดออกแล้ว</p><div class="si si-dropped">
+  <div class="si-name">바이오던스 리얼 딥 마스크</div>
+</div><div class="si si-dropped">
+  <div class="si-name">파넬 시카마누 92세럼</div>
+</div></div><div class="ss"><h3>&#127942; แนะนำซื้อขาย TOP 5</h3><div class="src-item">
+  <span class="src-rank">#1</span>
+  <div class="src-info"><div class="src-name">LANEIGE Neo Cushion Mewy</div><div class="src-note">OY TOP5</div></div>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div><div class="src-item">
+  <span class="src-rank">#2</span>
+  <div class="src-info"><div class="src-name">MEDIHEAL Essential Mask Sheet</div><div class="src-note">OY TOP5</div></div>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div><div class="src-item">
+  <span class="src-rank">#3</span>
+  <div class="src-info"><div class="src-name">Anua PDRN Hyaluronic Acid Capsule 100 Serum</div><div class="src-note">OY TOP5</div></div>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div><div class="src-item">
+  <span class="src-rank">#4</span>
+  <div class="src-info"><div class="src-name">JUNGSAEMMOOL Essential Skin Nuder Cushion</div><div class="src-note">search rising</div></div>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div><div class="src-item">
+  <span class="src-rank">#5</span>
+  <div class="src-info"><div class="src-name">The Saem Cover Perfection Triple Pot Concealer Glow</div><div class="src-note">OY TOP15</div></div>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div></div>
+</div>
+
+<!-- Tab 4: Pro Report -->
+<div class="panel" id="p-pro">
+  <div class="pro-hdr">
+    <h2>รายงานเทรนด์ K-Beauty</h2>
+    <p>For Sellersและอินฟลูเอนเซอร์</p>
+  </div>
+  <table class="pro-table">
+    <tr><th>ฟีเจอร์</th><th>ฟรี</th><th>Pro &#11088;</th></tr>
+    <tr><td>TOP 10 อันดับ</td><td>&#10004;</td><td>&#10004;</td></tr>
+    <tr><td>คะแนนรายแหล่ง (OY/NS/YT)</td><td>&#10060;</td><td>&#10004;</td></tr>
+    <tr><td>TOP 30 รายละเอียด</td><td>&#10060;</td><td>&#10004;</td></tr>
+    <tr><td>&#9203; Buzz Trap ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
+    <tr><td>Hidden Gem ทั้งหมด</td><td>บางส่วน</td><td>&#10004;</td></tr>
+    <tr><td>Outside OY โอกาส</td><td>&#10060;</td><td>&#10004;</td></tr>
+    <tr><td>คู่มือFor Sellers</td><td>&#10060;</td><td>&#10004;</td></tr>
+    <tr><td>วิเคราะห์ Shopee TH</td><td>&#10060;</td><td>&#10004;</td></tr>
+    <tr><td>รายงานทางอีเมลทุก 3 วัน</td><td>&#10060;</td><td>&#10004;</td></tr>
+  </table>
+  <div class="pro-price">
+    <div class="price">เร็วๆ นี้</div>
+    <div style="font-size:12px;color:#999;margin-top:4px">กำลังเตรียมแพ็กเกจราคาพิเศษ</div>
+  </div>
+  <div class="email-form" id="pro-email-form">
+    <h3>&#128233; ลงทะเบียนรับรายงานฟรีฉบับแรก</h3>
+    <p>ใส่อีเมลเพื่อรับรายงานเทรนด์ K-Beauty ฟรี 1 ฉบับ</p>
+    <div class="email-row">
+      <input type="email" id="pro-email" placeholder="you@email.com">
+      <button onclick="handleProEmail()">Subscribe</button>
+    </div>
+    <div class="email-thanks" id="pro-thanks">Thank you! เราจะส่งรายงานให้คุณเร็วๆ นี้ &#127881;</div>
+  </div>
+  <div class="ss ss-buzz" style="margin-top:16px">
+    <h3>&#9203; Buzz Trap (6 items)</h3>
+    <p class="ss-desc">สินค้าที่ยังต้องHoldข้อมูลเพิ่มเติม</p>
+    <div class="blur-wrap">
+      <div class="blur-list"><div class="si si-buzz"><div class="si-name">Manyo 퓨어 클렌징오일</div>
+  <div class="si-reason">Holdข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">d'Alba 핑크 톤업 선크림</div>
+  <div class="si-reason">Holdข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">Estee Lauder 갈색병</div>
+  <div class="si-reason">Holdข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">Medicube PDRN 핑크 앰플</div>
+  <div class="si-reason">Holdข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">VDL 커버스테인 퍼펙팅 파운데이션</div>
+  <div class="si-reason">Holdข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">FWEE 3D 볼류밍 글로스</div>
+  <div class="si-reason">Holdข้อมูลเพิ่มเติม</div></div></div>
+      <a href="#" class="blur-cta" onclick="this.parentElement.querySelector('.blur-list').classList.remove('blur-list');this.remove();return false">&#128275; ปลดล็อกดูรายชื่อ</a>
+    </div>
+  </div>
+  <div class="pro-trust">
+    ข้อมูลจาก Olive Young Korea, Naver Shopping, YouTube<br>
+    อัปเดตทุก 3 วัน โดยทีมผู้เชี่ยวชาญ K-Beauty
+  </div>
+</div>
+
+<!-- Tab 5: Method -->
+<div class="panel" id="p-method">
+  <div class="msec">
+    <h3>&#128202; วิธีคำนวณคะแนน</h3>
+    <p>คะแนนรวมคำนวณจาก <strong>อัลกอริทึมเฉพาะ</strong> ที่วิเคราะห์ข้อมูลจาก 3 แหล่งข้อมูล:</p>
+    <p>&#128722; ยอดขายจริงจาก Olive Young Korea<br>
+    &#128202; อันดับสินค้ายอดนิยมจาก Naver Shopping<br>
+    &#128269; ปริมาณการค้นหาจาก Naver Shopping<br>
+    &#128250; กระแสรีวิวจาก YouTube</p>
+    <p style="color:#999;font-size:12px;margin-top:8px">สัดส่วนและเกณฑ์คะแนนเป็นสูตรเฉพาะของ K-Beauty Trend Tracker</p>
+  </div>
+  <div class="msec">
+    <h3>&#128680; &#9203; Buzz Trap — What is it?</h3>
+    <p>สินค้าที่คนค้นหาและรีวิวมากในโซเชียล แต่ยอดขายจริงยังไม่สูง -- อาจเป็นแค่กระแสชั่วคราว ควรระวังในการสต็อก</p>
+    <h3 style="margin-top:12px">&#128142; Hidden Gem — What is it?</h3>
+    <p>Sells well in Korea but low social buzz — opportunity to enter market early -- โอกาสทองFor Sellersเข้าตลาดก่อนคู่แข่ง</p>
+    <h3 style="margin-top:12px">&#127942; Steady Seller — What is it?</h3>
+    <p>Products consistently selling well with many reviews over the past 3 months — proven sellers suitable for long-term stocking</p>
+    <h3 style="margin-top:12px">&#128640; RISING — What is it?</h3>
+    <p>สินค้าที่อันดับรวมสูงขึ้นมากจากครั้งก่อน (10 อันดับขึ้นไป) -- สินค้ากำลังจะมาแรง!</p>
+  </div>
+</div>
+
+<!-- Newsletter Banner -->
+<div class="nl-banner" id="nl-banner">
+  <h4>&#128233; Get K-Beauty trends every update</h4>
+  <div class="email-row">
+    <input type="email" id="nl-email" placeholder="you@email.com">
+    <button onclick="handleNlEmail()">Subscribe</button>
+  </div>
+  <div class="nl-thanks" id="nl-thanks">Thank you! &#127881;</div>
+</div>
+
+<!-- Share -->
+<div class="share-bar">
+  <a class="share-btn share-line" href="https://social-plugins.line.me/lineit/share?url=https://kbeauty-th.github.io&text=&#127472;&#127479; อันดับเทรนด์ K-Beauty อัปเดตล่าสุด จากข้อมูลจริง #KBeautyTH" target="_blank" rel="noopener">LINE</a>
+  <a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://kbeauty-th.github.io" target="_blank" rel="noopener">Facebook</a>
+  <a class="share-btn share-tw" href="https://twitter.com/intent/tweet?text=&#127472;&#127479; อันดับเทรนด์ K-Beauty อัปเดตล่าสุด จากข้อมูลจริง #KBeautyTH&url=https://kbeauty-th.github.io" target="_blank" rel="noopener">X</a>
+  <button class="share-btn share-tiktok" onclick="copyAndToast(this)">TikTok</button>
+  <button class="share-btn share-ig" onclick="copyAndToast(this)">Instagram</button>
+  <button class="share-btn share-yt" onclick="copyAndToast(this)">YouTube</button>
+  <button class="share-btn share-copy" onclick="copyAndToast(this)">&#128203; Copy</button>
+</div>
+<div class="toast" id="copy-toast"></div>
+
+<div class="footer">
+  For reference only. Not investment or purchasing advice.<br>
+  Sources: Olive Young Korea, Naver Shopping, YouTube | Updated every 3 days<br>
+  Some links are affiliate links — purchases help support this site
+</div>
+
+</div>
+
+<script>
+(function(){
+  /* Tabs */
+  var tabs=document.querySelectorAll('.tab-btn'),panels=document.querySelectorAll('.panel');
+  tabs.forEach(function(b){b.addEventListener('click',function(){
+    tabs.forEach(function(t){t.classList.remove('active')});
+    panels.forEach(function(p){p.classList.remove('active')});
+    b.classList.add('active');
+    document.getElementById('p-'+b.dataset.tab).classList.add('active');
+  })});
+
+  /* View toggle */
+  var vtBtns=document.querySelectorAll('.vt-btn');
+  var rankView=document.querySelector('.ranking-view');
+  var discView=document.querySelector('.discover-view');
+  vtBtns.forEach(function(b){b.addEventListener('click',function(){
+    vtBtns.forEach(function(v){v.classList.remove('vt-active')});b.classList.add('vt-active');
+    if(b.dataset.view==='ranking'){rankView.style.display='block';discView.style.display='none'}
+    else{rankView.style.display='none';discView.style.display='';applyCatFilter()}
+  })});
+
+  /* Category filter */
+  var fbs=document.querySelectorAll('.fbtn');
+  function applyCatFilter(){
+    var active=document.querySelector('.fbtn.active');
+    var c=active?active.dataset.cat:'all';
+    var cards=document.querySelectorAll('.product-card');
+    cards.forEach(function(card){
+      if(c==='all'||card.dataset.category===c){card.style.display='flex';card.setAttribute('data-hidden','false')}
+      else{card.style.display='none';card.setAttribute('data-hidden','true')}
+    });
+    var dcards=document.querySelectorAll('.disc-card');
+    dcards.forEach(function(card){
+      if(c==='all'||card.dataset.category===c){card.style.display='flex';card.setAttribute('data-hidden','false')}
+      else{card.style.display='none';card.setAttribute('data-hidden','true')}
+    });
+    /* Hide empty sections */
+    document.querySelectorAll('.disc-section').forEach(function(sec){
+      var visible=sec.querySelectorAll('.disc-card:not([data-hidden="true"])');
+      sec.style.display=visible.length?'':'none';
+    });
+  }
+  fbs.forEach(function(b){b.addEventListener('click',function(){
+    fbs.forEach(function(f){f.classList.remove('active')});b.classList.add('active');
+    applyCatFilter();
+  })});
+
+})();
+
+function saveEmail(email){
+  var list=JSON.parse(localStorage.getItem('kbeauty_emails')||'[]');
+  if(list.indexOf(email)===-1)list.push(email);
+  localStorage.setItem('kbeauty_emails',JSON.stringify(list));
+}
+function handleProEmail(){
+  var e=document.getElementById('pro-email');
+  if(e.value&&e.value.includes('@')){
+    saveEmail(e.value);
+    document.querySelector('#pro-email-form .email-row').style.display='none';
+    document.getElementById('pro-thanks').style.display='block';
+  }else{e.style.borderColor='#ff4757';e.focus()}
+}
+function handleNlEmail(){
+  var e=document.getElementById('nl-email');
+  if(e.value&&e.value.includes('@')){
+    saveEmail(e.value);
+    document.querySelector('#nl-banner .email-row').style.display='none';
+    document.getElementById('nl-thanks').style.display='block';
+  }else{e.style.borderColor='#ff4757';e.focus()}
+}
+function copyAndToast(btn){
+  var url='https://kbeauty-th.github.io';
+  navigator.clipboard.writeText(url).then(function(){
+    var t=document.getElementById('copy-toast');
+    t.textContent='\u0e25\u0e34\u0e07\u0e01\u0e4c\u0e16\u0e39\u0e01\u0e04\u0e31\u0e14\u0e25\u0e2d\u0e01\u0e41\u0e25\u0e49\u0e27!';
+    t.classList.add('show');
+    setTimeout(function(){t.classList.remove('show')},2000);
+  });
+}
+</script>
+</body>
+</html>
