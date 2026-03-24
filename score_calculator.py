@@ -225,7 +225,7 @@ def compute_period_oy_scores(period):
             score = calc_oliveyoung_score(item["rank"], item.get("review_count", 0))
 
             # 오특 패널티
-            if item.get("is_promotion", False):
+            if item.get("is_promotion", item.get("is_oteuk", False)):
                 score = score * PROMOTION_PENALTY
 
             if code not in product_scores:
@@ -399,7 +399,7 @@ def compute_single_day_scores(date_obj, period_dates):
         yt = yt_map.get(code, {})
 
         oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
-        if oy.get("is_promotion", False):
+        if oy.get("is_promotion", oy.get("is_oteuk", False)):
             oy_score = round(oy_score * PROMOTION_PENALTY)
 
         nv_score = nv_norm[idx] if nv_data else 0
@@ -449,7 +449,7 @@ def compute_single_day_scores(date_obj, period_dates):
             "oliveyoung_rank": oy["rank"],
             "scores": scores,
             "youtube_available": yt_score is not None,
-            "is_promotion": oy.get("is_promotion", False),
+            "is_promotion": oy.get("is_promotion", oy.get("is_oteuk", False)),
             "url": oy.get("url", ""),
             "review_count": oy.get("review_count", 0),
             "naver_change_rate": nv.get("change_rate", None),
@@ -760,7 +760,7 @@ def main(use_period=True):
             yt = yt_map.get(code, {})
 
             oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
-            if oy.get("is_promotion", False):
+            if oy.get("is_promotion", oy.get("is_oteuk", False)):
                 oy_score = round(oy_score * PROMOTION_PENALTY)
 
             nv_score = nv_norm[idx] if nv_data else 0
@@ -836,7 +836,7 @@ def main(use_period=True):
                 "oliveyoung_global_url": make_affiliate_url("", product_code=code, platform="oliveyoung"),
                 "seller_note": note,
                 "youtube_available": yt_score is not None,
-                "is_promotion": oy.get("is_promotion", False),
+                "is_promotion": oy.get("is_promotion", oy.get("is_oteuk", False)),
                 "consecutive_periods": 0,
             }
             all_products.append(product)
