@@ -731,15 +731,7 @@ def main(use_period=True):
             all_products.append(product)
             translation_lines.append(f'{code}|{p.get("brand_en", "")}|{p.get("name", "")}')
 
-            if nv.get("change_rate", 0) >= 20:
-                yt_kw = yt.get("keyword", "")
-                nv_cr = min(nv.get("change_rate", 0), 500)
-                naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv_cr})
-            yt_cr = yt.get("change_rate", yt.get("view_change_rate", 0)) or 0
-            yt_lw_views = yt.get("total_views_last_week", 0) or 0
-            if yt_cr >= 30 and yt_lw_views >= 100:
-                yt_cr_capped = min(yt_cr, 500)
-                youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt_cr_capped, "video_count": yt.get("video_count", 0)})
+            # rising keywords는 아래에서 순위 기반으로 계산
 
     else:
         # fallback: 기존 단일 데이터 방식 (daily 폴더 없을 때)
@@ -846,15 +838,7 @@ def main(use_period=True):
             all_products.append(product)
             translation_lines.append(f'{code}|{oy.get("brand_en", "")}|{oy["name"]}')
 
-            if nv.get("change_rate", 0) >= 20:
-                yt_kw = yt.get("keyword", "")
-                nv_cr = min(nv.get("change_rate", 0), 500)
-                naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv_cr})
-            yt_cr = yt.get("change_rate", yt.get("view_change_rate", 0)) or 0
-            yt_lw_views = yt.get("total_views_last_week", 0) or 0
-            if yt_cr >= 30 and yt_lw_views >= 100:
-                yt_cr_capped = min(yt_cr, 500)
-                youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt_cr_capped, "video_count": yt.get("video_count", 0)})
+            # rising keywords는 아래에서 순위 기반으로 계산
 
     # Sort by total score
     all_products.sort(key=lambda p: p["scores"]["total"], reverse=True)
@@ -961,6 +945,53 @@ def main(use_period=True):
         if "steady_seller" in p["flags"]:
             steady_sellers.append({"rank": p["rank"], "brand": p["brand"], "brand_en": p.get("brand_en", ""), "name_ko": p["name_ko"], "name_en": p.get("name_en", ""), "scores": p["scores"],
                                    "reason": "proven product with consistent sales and existing reviews"})
+
+    # ── Rising Keywords: API 2주치 데이터로 순위 변동 계산 ──
+    naver_rising = []
+    youtube_rising = []
+
+    nv_map_all = {item["product_code"]: item for item in nv_data}
+    yt_map_all = {item["product_code"]: item for item in yt_data}
+
+    # 네이버: 이번주/전주 검색량으로 순위 매기고 변동 계산
+    nv_items = [(code, nv_map_all[code]) for code in nv_map_all
+                if not nv_map_all[code].get("product_code", "").startswith("OUTSIDE")]
+    if nv_items:
+        nv_this_sorted = sorted(nv_items, key=lambda x: x[1].get("search_volume", 0) or 0, reverse=True)
+        nv_last_sorted = sorted(nv_items, key=lambda x: x[1].get("search_volume_last_week", 0) or 0, reverse=True)
+        nv_this_rank = {code: i + 1 for i, (code, _) in enumerate(nv_this_sorted)}
+        nv_last_rank = {code: i + 1 for i, (code, _) in enumerate(nv_last_sorted)}
+        for code, item in nv_items:
+            rank_change = nv_last_rank.get(code, 50) - nv_this_rank.get(code, 50)
+            if rank_change >= 3:
+                yt_item = yt_map_all.get(code, {})
+                naver_rising.append({
+                    "keyword": item.get("keyword", ""),
+                    "keyword_en": yt_item.get("keyword", ""),
+                    "change_rate": rank_change,  # 순위 변동 (위)
+                    "this_rank": nv_this_rank[code],
+                    "last_rank": nv_last_rank[code],
+                })
+
+    # 유튜브: 이번주/전주 조회수로 순위 매기고 변동 계산
+    yt_items = [(code, yt_map_all[code]) for code in yt_map_all
+                if yt_map_all[code].get("youtube_available", True)
+                and not yt_map_all[code].get("api_error", False)]
+    if yt_items:
+        yt_this_sorted = sorted(yt_items, key=lambda x: x[1].get("total_views", 0) or 0, reverse=True)
+        yt_last_sorted = sorted(yt_items, key=lambda x: x[1].get("total_views_last_week", 0) or 0, reverse=True)
+        yt_this_rank = {code: i + 1 for i, (code, _) in enumerate(yt_this_sorted)}
+        yt_last_rank = {code: i + 1 for i, (code, _) in enumerate(yt_last_sorted)}
+        for code, item in yt_items:
+            rank_change = yt_last_rank.get(code, 50) - yt_this_rank.get(code, 50)
+            if rank_change >= 3:
+                youtube_rising.append({
+                    "keyword": item.get("keyword", ""),
+                    "change_rate": rank_change,  # 순위 변동 (위)
+                    "video_count": item.get("video_count", 0),
+                    "this_rank": yt_this_rank[code],
+                    "last_rank": yt_last_rank[code],
+                })
 
     naver_rising.sort(key=lambda x: x["change_rate"], reverse=True)
     youtube_rising.sort(key=lambda x: x["change_rate"], reverse=True)

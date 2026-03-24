@@ -37,37 +37,38 @@
   "products": [
     {
       "rank": 1,
-      "oliveyoung_rank": 3,
-      "brand": "달바",
-      "brand_en": "d'Alba",
-      "name_ko": "달바 퍼플 톤업 선크림",
-      "name_en": "d'Alba 퍼플 톤업 선크림",
-      "search_keyword": "d'Alba 퍼플 톤업 선크림",
-      "name_th": "",
-      "category": "suncare",
+      "oliveyoung_rank": 4,
+      "brand": "메디힐",
+      "brand_en": "Mediheal",
+      "name_ko": "메디힐 에센셜 마스크팩",
+      "name_en": "Mediheal 에센셜 마스크팩",
+      "search_keyword": "Mediheal 에센셜 마스크팩",
+      "name_th": "Mediheal มาสก์แผ่น Essential 10 แผ่น 7 สูตร",
+      "category": "maskpack",
       "scores": {
-        "oliveyoung": 96,
-        "naver_search": 81,
-        "youtube": 0,
-        "total": 90
+        "total": 86,
+        "oliveyoung": 94,
+        "naver_search": 73,
+        "youtube": 0
       },
-      "naver_change_rate": -39.3,
-      "youtube_change_rate": -100.0,
+      "naver_change_rate": -30.3,
+      "youtube_change_rate": null,
       "signal": "hot",
       "flags": [],
       "seller_grade": "",
-      "rank_change": "+1",
-      "product_code": "A000000200614",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000200614&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=3",
-      "shopee_url": "https://shopee.co.th/search?keyword=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC",
+      "rank_change": "+2",
+      "product_code": "A000000223414",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000223414&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=4",
+      "shopee_url": "https://shopee.co.th/search?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9",
       "oliveyoung_global_url": null,
-      "seller_note": "OY TOP5 / search rising",
+      "seller_note": "OY TOP5",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 2,
@@ -80,10 +81,10 @@
       "name_th": "",
       "category": "makeup",
       "scores": {
+        "total": 86,
         "oliveyoung": 100,
         "naver_search": 70,
-        "youtube": 78,
-        "total": 86
+        "youtube": 78
       },
       "naver_change_rate": -37.6,
       "youtube_change_rate": 100.0,
@@ -101,44 +102,11 @@
       "seller_note": "OY TOP5",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 3,
-      "oliveyoung_rank": 4,
-      "brand": "메디힐",
-      "brand_en": "Mediheal",
-      "name_ko": "메디힐 에센셜 마스크팩",
-      "name_en": "Mediheal 에센셜 마스크팩",
-      "search_keyword": "Mediheal 에센셜 마스크팩",
-      "name_th": "Mediheal มาสก์แผ่น Essential 10 แผ่น 7 สูตร",
-      "category": "maskpack",
-      "scores": {
-        "oliveyoung": 94,
-        "naver_search": 73,
-        "youtube": 0,
-        "total": 86
-      },
-      "naver_change_rate": -30.3,
-      "youtube_change_rate": null,
-      "signal": "hot",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000223414",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000223414&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=4",
-      "shopee_url": "https://shopee.co.th/search?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9",
-      "oliveyoung_global_url": null,
-      "seller_note": "OY TOP5",
-      "youtube_available": false,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 4,
       "oliveyoung_rank": 6,
       "brand": "아누아",
       "brand_en": "Anua",
@@ -148,17 +116,17 @@
       "name_th": "ANUA เซรั่ม PDRN Hyaluronic Acid Capsule 100 30ml",
       "category": "skincare",
       "scores": {
+        "total": 79,
         "oliveyoung": 90,
         "naver_search": 73,
-        "youtube": 66,
-        "total": 79
+        "youtube": 66
       },
       "naver_change_rate": 7.1,
       "youtube_change_rate": 100.0,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "+4",
+      "rank_change": "+5",
       "product_code": "A000000231894",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000231894&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=6",
       "shopee_url": "https://shopee.co.th/search?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC&af_id=kbeautyth",
@@ -169,10 +137,11 @@
       "seller_note": "OY TOP5",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 5,
+      "rank": 4,
       "oliveyoung_rank": 22,
       "brand": "정샘물",
       "brand_en": "Jung Saem Mool",
@@ -182,17 +151,17 @@
       "name_th": "Jung Saem Mool คุชชั่น Essential Skin Nuder",
       "category": "makeup",
       "scores": {
+        "total": 78,
         "oliveyoung": 58,
         "naver_search": 100,
-        "youtube": 89,
-        "total": 78
+        "youtube": 89
       },
       "naver_change_rate": -33.3,
       "youtube_change_rate": 17535.9,
-      "signal": "",
+      "signal": "rising",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "+9",
+      "rank_change": "+10",
       "product_code": "A000000139063",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000139063&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=22",
       "shopee_url": "https://shopee.co.th/search?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&af_id=kbeautyth",
@@ -203,10 +172,11 @@
       "seller_note": "search rising",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 6,
+      "rank": 5,
       "oliveyoung_rank": 8,
       "brand": "더샘",
       "brand_en": "The Saem",
@@ -216,17 +186,17 @@
       "name_th": "",
       "category": "makeup",
       "scores": {
+        "total": 77,
         "oliveyoung": 86,
         "naver_search": 73,
-        "youtube": 66,
-        "total": 77
+        "youtube": 66
       },
       "naver_change_rate": -14.6,
       "youtube_change_rate": -65.1,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "+1",
+      "rank_change": "+2",
       "product_code": "A000000248185",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000248185&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=8",
       "shopee_url": "https://shopee.co.th/search?keyword=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC%20%EA%B8%80%EB%A1%9C%EC%9A%B0&af_id=kbeautyth",
@@ -237,7 +207,43 @@
       "seller_note": "OY TOP15",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 6,
+      "oliveyoung_rank": 9,
+      "brand": "에스트라",
+      "brand_en": "Aestura",
+      "name_ko": "에스트라 아토베리어365 크림",
+      "name_en": "Aestura 아토베리어365 크림",
+      "search_keyword": "Aestura 아토베리어365 크림",
+      "name_th": "Aestura ครีม Atobarrier 365 80ml",
+      "category": "skincare",
+      "scores": {
+        "total": 76,
+        "oliveyoung": 84,
+        "naver_search": 49,
+        "youtube": 93
+      },
+      "naver_change_rate": -59.8,
+      "youtube_change_rate": -69.7,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "watch",
+      "rank_change": "-2",
+      "product_code": "A000000222833",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000222833&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=9",
+      "shopee_url": "https://shopee.co.th/search?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC",
+      "oliveyoung_global_url": null,
+      "seller_note": "OY TOP15",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 7,
@@ -250,10 +256,10 @@
       "name_th": "",
       "category": "suncare",
       "scores": {
+        "total": 76,
         "oliveyoung": 98,
         "naver_search": 58,
-        "youtube": 58,
-        "total": 76
+        "youtube": 58
       },
       "naver_change_rate": 58.6,
       "youtube_change_rate": 100.0,
@@ -271,44 +277,11 @@
       "seller_note": "OY TOP5",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 8,
-      "oliveyoung_rank": 9,
-      "brand": "에스트라",
-      "brand_en": "Aestura",
-      "name_ko": "에스트라 아토베리어365 크림",
-      "name_en": "Aestura 아토베리어365 크림",
-      "search_keyword": "Aestura 아토베리어365 크림",
-      "name_th": "Aestura ครีม Atobarrier 365 80ml",
-      "category": "skincare",
-      "scores": {
-        "oliveyoung": 84,
-        "naver_search": 49,
-        "youtube": 93,
-        "total": 76
-      },
-      "naver_change_rate": -59.8,
-      "youtube_change_rate": -69.7,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "watch",
-      "rank_change": "-4",
-      "product_code": "A000000222833",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000222833&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=9",
-      "shopee_url": "https://shopee.co.th/search?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%ED%81%AC%EB%A6%BC",
-      "oliveyoung_global_url": null,
-      "seller_note": "OY TOP15",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 9,
       "oliveyoung_rank": 19,
       "brand": "웰라쥬",
       "brand_en": "Wellage",
@@ -318,17 +291,17 @@
       "name_th": "Wellage แอมพูล Real Hyaluronic Blue 100 75ml",
       "category": "skincare",
       "scores": {
+        "total": 74,
         "oliveyoung": 64,
         "naver_search": 90,
-        "youtube": 0,
-        "total": 74
+        "youtube": 0
       },
       "naver_change_rate": 1.6,
       "youtube_change_rate": null,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "+6",
+      "rank_change": "+7",
       "product_code": "A000000235247",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000235247&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=19",
       "shopee_url": "https://shopee.co.th/search?keyword=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C&af_id=kbeautyth",
@@ -339,10 +312,11 @@
       "seller_note": "search rising",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 10,
+      "rank": 9,
       "oliveyoung_rank": 5,
       "brand": "메디힐",
       "brand_en": "Mediheal",
@@ -352,17 +326,17 @@
       "name_th": "Mediheal แพดผิว Derma 200 แผ่น",
       "category": "skincare",
       "scores": {
+        "total": 72,
         "oliveyoung": 92,
         "naver_search": 48,
-        "youtube": 64,
-        "total": 72
+        "youtube": 64
       },
       "naver_change_rate": 51.7,
       "youtube_change_rate": 6191.7,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "+2",
+      "rank_change": "+3",
       "product_code": "A000000171427",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000171427&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=5",
       "shopee_url": "https://shopee.co.th/search?keyword=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C&af_id=kbeautyth",
@@ -373,10 +347,11 @@
       "seller_note": "OY TOP5",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 11,
+      "rank": 10,
       "oliveyoung_rank": 12,
       "brand": "토리든",
       "brand_en": "Torriden",
@@ -386,17 +361,17 @@
       "name_th": "Torriden มาสก์แผ่น 10 แผ่น 4 สูตร",
       "category": "maskpack",
       "scores": {
+        "total": 72,
         "oliveyoung": 78,
         "naver_search": 60,
-        "youtube": 74,
-        "total": 72
+        "youtube": 74
       },
       "naver_change_rate": -60.6,
       "youtube_change_rate": 4287.4,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "-1",
+      "rank_change": "0",
       "product_code": "A000000158752",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000158752&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=12",
       "shopee_url": "https://shopee.co.th/search?keyword=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC&af_id=kbeautyth",
@@ -407,10 +382,11 @@
       "seller_note": "OY TOP15",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 12,
+      "rank": 11,
       "oliveyoung_rank": 14,
       "brand": "청미정",
       "brand_en": "Chungmijung",
@@ -420,17 +396,17 @@
       "name_th": "",
       "category": "haircare",
       "scores": {
+        "total": 71,
         "oliveyoung": 74,
         "naver_search": 67,
-        "youtube": 0,
-        "total": 71
+        "youtube": 0
       },
       "naver_change_rate": -30.5,
       "youtube_change_rate": null,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "-1",
+      "rank_change": "0",
       "product_code": "A000000213261",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000213261&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=14",
       "shopee_url": "https://shopee.co.th/search?keyword=Chungmijung%20%EB%8B%A4%EC%8B%9C%EB%A7%88%20%EC%83%B4%ED%91%B8&af_id=kbeautyth",
@@ -441,10 +417,11 @@
       "seller_note": "OY TOP15",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 13,
+      "rank": 12,
       "oliveyoung_rank": 16,
       "brand": "어노브",
       "brand_en": "Unove",
@@ -454,17 +431,17 @@
       "name_th": "A'NOVA ทรีทเมนต์ผม Deep Damage EX 320ml",
       "category": "haircare",
       "scores": {
+        "total": 70,
         "oliveyoung": 70,
         "naver_search": 69,
-        "youtube": 0,
-        "total": 70
+        "youtube": 0
       },
       "naver_change_rate": 9.5,
       "youtube_change_rate": null,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "0",
+      "rank_change": "+1",
       "product_code": "A000000171423",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000171423&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=16",
       "shopee_url": "https://shopee.co.th/search?keyword=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX&af_id=kbeautyth",
@@ -475,10 +452,11 @@
       "seller_note": "OY TOP15",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 14,
+      "rank": 13,
       "oliveyoung_rank": 15,
       "brand": "아누아",
       "brand_en": "Anua",
@@ -488,17 +466,17 @@
       "name_th": "",
       "category": "skincare",
       "scores": {
+        "total": 68,
         "oliveyoung": 72,
         "naver_search": 62,
-        "youtube": 66,
-        "total": 68
+        "youtube": 66
       },
       "naver_change_rate": -41.7,
       "youtube_change_rate": 100.0,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "+2",
+      "rank_change": "+3",
       "product_code": "A000000247773",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000247773&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=15",
       "shopee_url": "https://shopee.co.th/search?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%B6%84%20%EC%BA%A1%EC%8A%90%20%EB%AF%B8%EC%8A%A4%ED%8A%B8&af_id=kbeautyth",
@@ -509,10 +487,11 @@
       "seller_note": "OY TOP15",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 15,
+      "rank": 14,
       "oliveyoung_rank": 17,
       "brand": "토리든",
       "brand_en": "Torriden",
@@ -522,17 +501,17 @@
       "name_th": "Torriden เซรั่ม Hyaluronic Acid โมเลกุลต่ำ DIVE-IN 50ml",
       "category": "skincare",
       "scores": {
+        "total": 66,
         "oliveyoung": 68,
         "naver_search": 63,
-        "youtube": 65,
-        "total": 66
+        "youtube": 65
       },
       "naver_change_rate": 19.5,
       "youtube_change_rate": 100.0,
       "signal": "",
       "flags": [],
       "seller_grade": "watch",
-      "rank_change": "+3",
+      "rank_change": "+4",
       "product_code": "A000000247193",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000247193&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=17",
       "shopee_url": "https://shopee.co.th/search?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%A0%80%EB%B6%84%EC%9E%90%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%84%B8%EB%9F%BC&af_id=kbeautyth",
@@ -543,10 +522,11 @@
       "seller_note": "",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 16,
+      "rank": 15,
       "oliveyoung_rank": 7,
       "brand": "메디힐",
       "brand_en": "Mediheal",
@@ -556,10 +536,10 @@
       "name_th": "Mediheal เซรั่ม PDRN กระชับรูขุมขน 40ml",
       "category": "skincare",
       "scores": {
+        "total": 62,
         "oliveyoung": 88,
         "naver_search": 22,
-        "youtube": 0,
-        "total": 62
+        "youtube": 0
       },
       "naver_change_rate": -74.2,
       "youtube_change_rate": null,
@@ -568,7 +548,7 @@
         "hidden_gem"
       ],
       "seller_grade": "watch",
-      "rank_change": "-10",
+      "rank_change": "-9",
       "product_code": "A000000232179",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000232179&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=7",
       "shopee_url": "https://shopee.co.th/search?keyword=Mediheal%20PDRN%20%EB%AA%A8%EA%B3%B5%20%ED%83%84%EB%A0%A5%20%EC%84%B8%EB%9F%BC&af_id=kbeautyth",
@@ -579,7 +559,43 @@
       "seller_note": "OY TOP15 / search low / hidden gem",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 16,
+      "oliveyoung_rank": 3,
+      "brand": "달바",
+      "brand_en": "d'Alba",
+      "name_ko": "달바 퍼플 톤업 선크림",
+      "name_en": "d'Alba 퍼플 톤업 선크림",
+      "search_keyword": "d'Alba 퍼플 톤업 선크림",
+      "name_th": "",
+      "category": "suncare",
+      "scores": {
+        "total": 61,
+        "oliveyoung": 48,
+        "naver_search": 81,
+        "youtube": 0
+      },
+      "naver_change_rate": -39.3,
+      "youtube_change_rate": -100.0,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "watch",
+      "rank_change": "-14",
+      "product_code": "A000000200614",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000200614&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=3",
+      "shopee_url": "https://shopee.co.th/search?keyword=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=d%27Alba%20%ED%8D%BC%ED%94%8C%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC",
+      "oliveyoung_global_url": null,
+      "seller_note": "search rising",
+      "youtube_available": false,
+      "is_promotion": true,
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 17,
@@ -592,10 +608,10 @@
       "name_th": "esNature ครีม Aqua Squalane 60ml",
       "category": "skincare",
       "scores": {
+        "total": 60,
         "oliveyoung": 50,
         "naver_search": 73,
-        "youtube": 63,
-        "total": 60
+        "youtube": 63
       },
       "naver_change_rate": -14.6,
       "youtube_change_rate": 567.8,
@@ -613,7 +629,8 @@
       "seller_note": "",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 18,
@@ -626,10 +643,10 @@
       "name_th": "",
       "category": "haircare",
       "scores": {
+        "total": 59,
         "oliveyoung": 76,
         "naver_search": 34,
-        "youtube": 0,
-        "total": 59
+        "youtube": 0
       },
       "naver_change_rate": -70.8,
       "youtube_change_rate": null,
@@ -647,44 +664,11 @@
       "seller_note": "OY TOP15 / search low",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 19,
-      "oliveyoung_rank": 25,
-      "brand": "라로슈포제",
-      "brand_en": "La Roche-Posay",
-      "name_ko": "라로슈포제 시카밤 B5",
-      "name_en": "La Roche-Posay 시카밤 B5",
-      "search_keyword": "La Roche-Posay 시카밤 B5",
-      "name_th": "",
-      "category": "skincare",
-      "scores": {
-        "oliveyoung": 52,
-        "naver_search": 65,
-        "youtube": 61,
-        "total": 58
-      },
-      "naver_change_rate": -15.1,
-      "youtube_change_rate": 100.0,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "+2",
-      "product_code": "A000000247689",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000247689&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=25",
-      "shopee_url": "https://shopee.co.th/search?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5",
-      "oliveyoung_global_url": null,
-      "seller_note": "",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 20,
       "oliveyoung_rank": 28,
       "brand": "메이크프렘",
       "brand_en": "Make P:rem",
@@ -694,17 +678,17 @@
       "name_th": "Make P:rem คลีนซิ่งมิลค์ Safe Me",
       "category": "cleansing",
       "scores": {
+        "total": 58,
         "oliveyoung": 46,
         "naver_search": 75,
-        "youtube": 0,
-        "total": 58
+        "youtube": 0
       },
       "naver_change_rate": -7.4,
       "youtube_change_rate": null,
       "signal": "",
       "flags": [],
       "seller_grade": "",
-      "rank_change": "+3",
+      "rank_change": "+4",
       "product_code": "A000000247182",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000247182&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=28",
       "shopee_url": "https://shopee.co.th/search?keyword=Make%20P%3Arem%20%EC%84%B8%EC%9D%B4%ED%94%84%20%EB%AF%B8%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC&af_id=kbeautyth",
@@ -715,7 +699,43 @@
       "seller_note": "search rising",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 20,
+      "oliveyoung_rank": 25,
+      "brand": "라로슈포제",
+      "brand_en": "La Roche-Posay",
+      "name_ko": "라로슈포제 시카밤 B5",
+      "name_en": "La Roche-Posay 시카밤 B5",
+      "search_keyword": "La Roche-Posay 시카밤 B5",
+      "name_th": "",
+      "category": "skincare",
+      "scores": {
+        "total": 58,
+        "oliveyoung": 52,
+        "naver_search": 65,
+        "youtube": 61
+      },
+      "naver_change_rate": -15.1,
+      "youtube_change_rate": 100.0,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "+1",
+      "product_code": "A000000247689",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000247689&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=25",
+      "shopee_url": "https://shopee.co.th/search?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5",
+      "oliveyoung_global_url": null,
+      "seller_note": "",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 21,
@@ -728,10 +748,10 @@
       "name_th": "La Roche-Posay บาล์ม Cicaplast B5+ 100ml",
       "category": "skincare",
       "scores": {
+        "total": 56,
         "oliveyoung": 48,
         "naver_search": 65,
-        "youtube": 61,
-        "total": 56
+        "youtube": 61
       },
       "naver_change_rate": -15.1,
       "youtube_change_rate": 100.0,
@@ -749,7 +769,8 @@
       "seller_note": "",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 22,
@@ -762,10 +783,10 @@
       "name_th": "Mediheal มาสก์แผ่น Essential 1 แผ่น 7 สูตร",
       "category": "maskpack",
       "scores": {
+        "total": 54,
         "oliveyoung": 42,
         "naver_search": 73,
-        "youtube": 0,
-        "total": 54
+        "youtube": 0
       },
       "naver_change_rate": -30.3,
       "youtube_change_rate": null,
@@ -783,7 +804,8 @@
       "seller_note": "",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 23,
@@ -796,10 +818,10 @@
       "name_th": "d'Alba เซรั่มสเปรย์ First Spray 100ml",
       "category": "skincare",
       "scores": {
+        "total": 53,
         "oliveyoung": 62,
         "naver_search": 30,
-        "youtube": 65,
-        "total": 53
+        "youtube": 65
       },
       "naver_change_rate": -58.3,
       "youtube_change_rate": 100.0,
@@ -817,44 +839,11 @@
       "seller_note": "search low",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 24,
-      "oliveyoung_rank": 21,
-      "brand": "메디힐",
-      "brand_en": "Mediheal",
-      "name_ko": "메디힐 마데카소사이드 흔적 리페어 세럼",
-      "name_en": "Mediheal 마데카소사이드 흔적 리페어 세럼",
-      "search_keyword": "Mediheal 마데카소사이드 흔적 리페어 세럼",
-      "name_th": "Mediheal เซรั่ม Madecassoside ลดรอย 40ml",
-      "category": "skincare",
-      "scores": {
-        "oliveyoung": 60,
-        "naver_search": 0,
-        "youtube": 100,
-        "total": 52
-      },
-      "naver_change_rate": 0.0,
-      "youtube_change_rate": 2872.2,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "+6",
-      "product_code": "A000000211119",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000211119&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=21",
-      "shopee_url": "https://shopee.co.th/search?keyword=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 25,
       "oliveyoung_rank": 24,
       "brand": "메노킨",
       "brand_en": "Menokin",
@@ -864,17 +853,17 @@
       "name_th": "",
       "category": "maskpack",
       "scores": {
+        "total": 52,
         "oliveyoung": 54,
         "naver_search": 50,
-        "youtube": 0,
-        "total": 52
+        "youtube": 0
       },
       "naver_change_rate": 153.7,
       "youtube_change_rate": null,
       "signal": "",
       "flags": [],
       "seller_grade": "",
-      "rank_change": "-8",
+      "rank_change": "-7",
       "product_code": "A000000234422",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000234422&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=24",
       "shopee_url": "https://shopee.co.th/search?keyword=Menokin%2030%EC%B4%88%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC&af_id=kbeautyth",
@@ -885,10 +874,11 @@
       "seller_note": "",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 26,
+      "rank": 25,
       "oliveyoung_rank": 37,
       "brand": "마녀공장",
       "brand_en": "Manyo",
@@ -898,10 +888,10 @@
       "name_th": "Ma:nyo ออยล์ทำความสะอาด Pure 200ml",
       "category": "cleansing",
       "scores": {
+        "total": 52,
         "oliveyoung": 28,
         "naver_search": 76,
-        "youtube": 68,
-        "total": 52
+        "youtube": 68
       },
       "naver_change_rate": -20.5,
       "youtube_change_rate": 96.9,
@@ -910,7 +900,7 @@
         "buzz_trap"
       ],
       "seller_grade": "hold",
-      "rank_change": "+3",
+      "rank_change": "+4",
       "product_code": "A000000247918",
       "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000247918&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=37",
       "shopee_url": "https://shopee.co.th/search?keyword=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC&af_id=kbeautyth",
@@ -921,114 +911,46 @@
       "seller_note": "search rising / BUZZ TRAP",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 26,
+      "oliveyoung_rank": 21,
+      "brand": "메디힐",
+      "brand_en": "Mediheal",
+      "name_ko": "메디힐 마데카소사이드 흔적 리페어 세럼",
+      "name_en": "Mediheal 마데카소사이드 흔적 리페어 세럼",
+      "search_keyword": "Mediheal 마데카소사이드 흔적 리페어 세럼",
+      "name_th": "Mediheal เซรั่ม Madecassoside ลดรอย 40ml",
+      "category": "skincare",
+      "scores": {
+        "total": 52,
+        "oliveyoung": 60,
+        "naver_search": 0,
+        "youtube": 100
+      },
+      "naver_change_rate": 0.0,
+      "youtube_change_rate": 2872.2,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "+4",
+      "product_code": "A000000211119",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000211119&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=21",
+      "shopee_url": "https://shopee.co.th/search?keyword=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 27,
-      "oliveyoung_rank": 31,
-      "brand": "닥터지",
-      "brand_en": "Dr.G",
-      "name_ko": "닥터지 레드 블레미쉬 클리어 수딩크림",
-      "name_en": "Dr.G 레드 블레미쉬 클리어 수딩크림",
-      "search_keyword": "Dr.G 레드 블레미쉬 클리어 수딩크림",
-      "name_th": "",
-      "category": "skincare",
-      "scores": {
-        "oliveyoung": 40,
-        "naver_search": 54,
-        "youtube": 62,
-        "total": 50
-      },
-      "naver_change_rate": -52.7,
-      "youtube_change_rate": 100.0,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "-1",
-      "product_code": "A000000164615",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000164615&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=31",
-      "shopee_url": "https://shopee.co.th/search?keyword=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC",
-      "oliveyoung_global_url": null,
-      "seller_note": "",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 28,
-      "oliveyoung_rank": 32,
-      "brand": "비플레인",
-      "brand_en": "Beplain",
-      "name_ko": "비플레인 녹두 약산성 클렌징폼",
-      "name_en": "Beplain 녹두 약산성 클렌징폼",
-      "search_keyword": "Beplain 녹두 약산성 클렌징폼",
-      "name_th": "",
-      "category": "cleansing",
-      "scores": {
-        "oliveyoung": 38,
-        "naver_search": 58,
-        "youtube": 60,
-        "total": 50
-      },
-      "naver_change_rate": -53.9,
-      "youtube_change_rate": -68.9,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "-1",
-      "product_code": "A000000245446",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000245446&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=32",
-      "shopee_url": "https://shopee.co.th/search?keyword=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC",
-      "oliveyoung_global_url": null,
-      "seller_note": "",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 29,
-      "oliveyoung_rank": 36,
-      "brand": "달바",
-      "brand_en": "d'Alba",
-      "name_ko": "달바 핑크 톤업 선크림",
-      "name_en": "d'Alba 핑크 톤업 선크림",
-      "search_keyword": "d'Alba 핑크 톤업 선크림",
-      "name_th": "",
-      "category": "suncare",
-      "scores": {
-        "oliveyoung": 30,
-        "naver_search": 79,
-        "youtube": 0,
-        "total": 50
-      },
-      "naver_change_rate": -39.3,
-      "youtube_change_rate": -100.0,
-      "signal": "",
-      "flags": [
-        "buzz_trap"
-      ],
-      "seller_grade": "hold",
-      "rank_change": "NEW",
-      "product_code": "A000000232725",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000232725&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=36",
-      "shopee_url": "https://shopee.co.th/search?keyword=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC",
-      "oliveyoung_global_url": null,
-      "seller_note": "search rising / BUZZ TRAP",
-      "youtube_available": false,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 30,
       "oliveyoung_rank": 42,
       "brand": "에스티로더",
       "brand_en": "Estee Lauder",
@@ -1038,10 +960,10 @@
       "name_th": "",
       "category": "skincare",
       "scores": {
+        "total": 50,
         "oliveyoung": 18,
         "naver_search": 86,
-        "youtube": 65,
-        "total": 50
+        "youtube": 65
       },
       "naver_change_rate": -49.9,
       "youtube_change_rate": 100.0,
@@ -1061,48 +983,120 @@
       "seller_note": "search rising / BUZZ TRAP",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 28,
+      "oliveyoung_rank": 32,
+      "brand": "비플레인",
+      "brand_en": "Beplain",
+      "name_ko": "비플레인 녹두 약산성 클렌징폼",
+      "name_en": "Beplain 녹두 약산성 클렌징폼",
+      "search_keyword": "Beplain 녹두 약산성 클렌징폼",
+      "name_th": "",
+      "category": "cleansing",
+      "scores": {
+        "total": 50,
+        "oliveyoung": 38,
+        "naver_search": 58,
+        "youtube": 60
+      },
+      "naver_change_rate": -53.9,
+      "youtube_change_rate": -68.9,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "-1",
+      "product_code": "A000000245446",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000245446&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=32",
+      "shopee_url": "https://shopee.co.th/search?keyword=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Beplain%20%EB%85%B9%EB%91%90%20%EC%95%BD%EC%82%B0%EC%84%B1%20%ED%81%B4%EB%A0%8C%EC%A7%95%ED%8F%BC",
+      "oliveyoung_global_url": null,
+      "seller_note": "",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 29,
+      "oliveyoung_rank": 36,
+      "brand": "달바",
+      "brand_en": "d'Alba",
+      "name_ko": "달바 핑크 톤업 선크림",
+      "name_en": "d'Alba 핑크 톤업 선크림",
+      "search_keyword": "d'Alba 핑크 톤업 선크림",
+      "name_th": "",
+      "category": "suncare",
+      "scores": {
+        "total": 50,
+        "oliveyoung": 30,
+        "naver_search": 79,
+        "youtube": 0
+      },
+      "naver_change_rate": -39.3,
+      "youtube_change_rate": -100.0,
+      "signal": "",
+      "flags": [
+        "buzz_trap"
+      ],
+      "seller_grade": "hold",
+      "rank_change": "NEW",
+      "product_code": "A000000232725",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000232725&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=36",
+      "shopee_url": "https://shopee.co.th/search?keyword=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC",
+      "oliveyoung_global_url": null,
+      "seller_note": "search rising / BUZZ TRAP",
+      "youtube_available": false,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 30,
+      "oliveyoung_rank": 31,
+      "brand": "닥터지",
+      "brand_en": "Dr.G",
+      "name_ko": "닥터지 레드 블레미쉬 클리어 수딩크림",
+      "name_en": "Dr.G 레드 블레미쉬 클리어 수딩크림",
+      "search_keyword": "Dr.G 레드 블레미쉬 클리어 수딩크림",
+      "name_th": "",
+      "category": "skincare",
+      "scores": {
+        "total": 50,
+        "oliveyoung": 40,
+        "naver_search": 54,
+        "youtube": 62
+      },
+      "naver_change_rate": -52.7,
+      "youtube_change_rate": 100.0,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "-4",
+      "product_code": "A000000164615",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000164615&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=31",
+      "shopee_url": "https://shopee.co.th/search?keyword=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Dr.G%20%EB%A0%88%EB%93%9C%20%EB%B8%94%EB%A0%88%EB%AF%B8%EC%89%AC%20%ED%81%B4%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%ED%81%AC%EB%A6%BC",
+      "oliveyoung_global_url": null,
+      "seller_note": "",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
     }
   ],
   "products_extended": [
     {
       "rank": 31,
-      "oliveyoung_rank": 10,
-      "brand": "동아제약",
-      "brand_en": "Dong-A Pharm",
-      "name_ko": "동아제약 아크네 프로 크림제",
-      "name_en": "Dong-A Pharm 아크네 프로 크림제",
-      "search_keyword": "Dong-A Pharm 아크네 프로 크림제",
-      "name_th": "",
-      "category": "skincare",
-      "scores": {
-        "oliveyoung": 82,
-        "naver_search": 0,
-        "youtube": 0,
-        "total": 49
-      },
-      "naver_change_rate": 0.0,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [
-        "hidden_gem"
-      ],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000249651",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000249651&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=10",
-      "shopee_url": "https://shopee.co.th/search?keyword=Dong-A%20Pharm%20%EC%95%84%ED%81%AC%EB%84%A4%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Dong-A%20Pharm%20%EC%95%84%ED%81%AC%EB%84%A4%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Dong-A%20Pharm%20%EC%95%84%ED%81%AC%EB%84%A4%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Dong-A%20Pharm%20%EC%95%84%ED%81%AC%EB%84%A4%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C",
-      "oliveyoung_global_url": null,
-      "seller_note": "OY TOP15 / search low / hidden gem",
-      "youtube_available": false,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 32,
       "oliveyoung_rank": 23,
       "brand": "바이오던스",
       "brand_en": "Biodance",
@@ -1112,10 +1106,10 @@
       "name_th": "Biodance มาสก์แผ่น Real Deep 7+1 แผ่น",
       "category": "maskpack",
       "scores": {
+        "total": 49,
         "oliveyoung": 56,
         "naver_search": 22,
-        "youtube": 68,
-        "total": 49
+        "youtube": 68
       },
       "naver_change_rate": -12.3,
       "youtube_change_rate": 100.0,
@@ -1133,10 +1127,11 @@
       "seller_note": "search low",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 33,
+      "rank": 32,
       "oliveyoung_rank": 34,
       "brand": "파넬",
       "brand_en": "Parnell",
@@ -1146,10 +1141,10 @@
       "name_th": "",
       "category": "skincare",
       "scores": {
+        "total": 43,
         "oliveyoung": 34,
         "naver_search": 34,
-        "youtube": 69,
-        "total": 43
+        "youtube": 69
       },
       "naver_change_rate": -76.5,
       "youtube_change_rate": 100.0,
@@ -1167,10 +1162,11 @@
       "seller_note": "search low",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 34,
+      "rank": 33,
       "oliveyoung_rank": 39,
       "brand": "코링코",
       "brand_en": "Coringco",
@@ -1180,10 +1176,10 @@
       "name_th": "",
       "category": "makeup",
       "scores": {
+        "total": 40,
         "oliveyoung": 24,
         "naver_search": 63,
-        "youtube": 0,
-        "total": 40
+        "youtube": 0
       },
       "naver_change_rate": -14.5,
       "youtube_change_rate": null,
@@ -1201,10 +1197,11 @@
       "seller_note": "",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 35,
+      "rank": 34,
       "oliveyoung_rank": 40,
       "brand": "클리오",
       "brand_en": "CLIO",
@@ -1214,10 +1211,10 @@
       "name_th": "",
       "category": "makeup",
       "scores": {
+        "total": 38,
         "oliveyoung": 22,
         "naver_search": 51,
-        "youtube": 51,
-        "total": 38
+        "youtube": 51
       },
       "naver_change_rate": 75.2,
       "youtube_change_rate": -93.1,
@@ -1235,10 +1232,11 @@
       "seller_note": "",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 36,
+      "rank": 35,
       "oliveyoung_rank": 43,
       "brand": "메디큐브",
       "brand_en": "Medicube",
@@ -1248,10 +1246,10 @@
       "name_th": "Medicube แอมพูล PDRN Pink 30ml",
       "category": "skincare",
       "scores": {
+        "total": 34,
         "oliveyoung": 16,
         "naver_search": 30,
-        "youtube": 71,
-        "total": 34
+        "youtube": 71
       },
       "naver_change_rate": -82.8,
       "youtube_change_rate": -58.3,
@@ -1271,44 +1269,11 @@
       "seller_note": "search low / BUZZ TRAP",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 37,
-      "oliveyoung_rank": 33,
-      "brand": "어노브",
-      "brand_en": "Unove",
-      "name_ko": "어노브 실크 헤어 오일 에센스",
-      "name_en": "Unove 실크 헤어 오일 에센스",
-      "search_keyword": "Unove 실크 헤어 오일 에센스",
-      "name_th": "",
-      "category": "haircare",
-      "scores": {
-        "oliveyoung": 36,
-        "naver_search": 22,
-        "youtube": 0,
-        "total": 30
-      },
-      "naver_change_rate": 46.0,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000171422",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000171422&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=33",
-      "shopee_url": "https://shopee.co.th/search?keyword=Unove%20%EC%8B%A4%ED%81%AC%20%ED%97%A4%EC%96%B4%20%EC%98%A4%EC%9D%BC%20%EC%97%90%EC%84%BC%EC%8A%A4&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Unove%20%EC%8B%A4%ED%81%AC%20%ED%97%A4%EC%96%B4%20%EC%98%A4%EC%9D%BC%20%EC%97%90%EC%84%BC%EC%8A%A4",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Unove%20%EC%8B%A4%ED%81%AC%20%ED%97%A4%EC%96%B4%20%EC%98%A4%EC%9D%BC%20%EC%97%90%EC%84%BC%EC%8A%A4&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Unove%20%EC%8B%A4%ED%81%AC%20%ED%97%A4%EC%96%B4%20%EC%98%A4%EC%9D%BC%20%EC%97%90%EC%84%BC%EC%8A%A4",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": false,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 38,
+      "rank": 36,
       "oliveyoung_rank": 44,
       "brand": "구달",
       "brand_en": "Goodal",
@@ -1318,10 +1283,10 @@
       "name_th": "",
       "category": "suncare",
       "scores": {
+        "total": 30,
         "oliveyoung": 14,
         "naver_search": 55,
-        "youtube": 0,
-        "total": 30
+        "youtube": 0
       },
       "naver_change_rate": 3.1,
       "youtube_change_rate": null,
@@ -1339,10 +1304,46 @@
       "seller_note": "",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 39,
+      "rank": 37,
+      "oliveyoung_rank": 33,
+      "brand": "어노브",
+      "brand_en": "Unove",
+      "name_ko": "어노브 실크 헤어 오일 에센스",
+      "name_en": "Unove 실크 헤어 오일 에센스",
+      "search_keyword": "Unove 실크 헤어 오일 에센스",
+      "name_th": "",
+      "category": "haircare",
+      "scores": {
+        "total": 30,
+        "oliveyoung": 36,
+        "naver_search": 22,
+        "youtube": 0
+      },
+      "naver_change_rate": 46.0,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000171422",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000171422&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=33",
+      "shopee_url": "https://shopee.co.th/search?keyword=Unove%20%EC%8B%A4%ED%81%AC%20%ED%97%A4%EC%96%B4%20%EC%98%A4%EC%9D%BC%20%EC%97%90%EC%84%BC%EC%8A%A4&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Unove%20%EC%8B%A4%ED%81%AC%20%ED%97%A4%EC%96%B4%20%EC%98%A4%EC%9D%BC%20%EC%97%90%EC%84%BC%EC%8A%A4",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Unove%20%EC%8B%A4%ED%81%AC%20%ED%97%A4%EC%96%B4%20%EC%98%A4%EC%9D%BC%20%EC%97%90%EC%84%BC%EC%8A%A4&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Unove%20%EC%8B%A4%ED%81%AC%20%ED%97%A4%EC%96%B4%20%EC%98%A4%EC%9D%BC%20%EC%97%90%EC%84%BC%EC%8A%A4",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": false,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 38,
       "oliveyoung_rank": 53,
       "brand": "VDL",
       "brand_en": "VDL",
@@ -1352,10 +1353,10 @@
       "name_th": "",
       "category": "makeup",
       "scores": {
+        "total": 30,
         "oliveyoung": 0,
         "naver_search": 74,
-        "youtube": 0,
-        "total": 30
+        "youtube": 0
       },
       "naver_change_rate": 44.1,
       "youtube_change_rate": null,
@@ -1375,112 +1376,11 @@
       "seller_note": "BUZZ TRAP",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 40,
-      "oliveyoung_rank": 35,
-      "brand": "이지덤뷰티",
-      "brand_en": "Easyderm",
-      "name_ko": "이지덤뷰티 대웅제약 이지덤 스팟패치",
-      "name_en": "Easyderm 대웅제약 이지덤 스팟패치",
-      "search_keyword": "Easyderm 대웅제약 이지덤 스팟패치",
-      "name_th": "",
-      "category": "maskpack",
-      "scores": {
-        "oliveyoung": 32,
-        "naver_search": 22,
-        "youtube": 0,
-        "total": 28
-      },
-      "naver_change_rate": 100.0,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000110505",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000110505&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=35",
-      "shopee_url": "https://shopee.co.th/search?keyword=Easyderm%20%EB%8C%80%EC%9B%85%EC%A0%9C%EC%95%BD%20%EC%9D%B4%EC%A7%80%EB%8D%A4%20%EC%8A%A4%ED%8C%9F%ED%8C%A8%EC%B9%98&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Easyderm%20%EB%8C%80%EC%9B%85%EC%A0%9C%EC%95%BD%20%EC%9D%B4%EC%A7%80%EB%8D%A4%20%EC%8A%A4%ED%8C%9F%ED%8C%A8%EC%B9%98",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Easyderm%20%EB%8C%80%EC%9B%85%EC%A0%9C%EC%95%BD%20%EC%9D%B4%EC%A7%80%EB%8D%A4%20%EC%8A%A4%ED%8C%9F%ED%8C%A8%EC%B9%98&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Easyderm%20%EB%8C%80%EC%9B%85%EC%A0%9C%EC%95%BD%20%EC%9D%B4%EC%A7%80%EB%8D%A4%20%EC%8A%A4%ED%8C%9F%ED%8C%A8%EC%B9%98",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": false,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 41,
-      "oliveyoung_rank": 38,
-      "brand": "주미소",
-      "brand_en": "Jumiso",
-      "name_ko": "주미소 디 판테놀 베리어 수딩 클렌징밀크",
-      "name_en": "Jumiso 디 판테놀 베리어 수딩 클렌징밀크",
-      "search_keyword": "Jumiso 디 판테놀 베리어 수딩 클렌징밀크",
-      "name_th": "",
-      "category": "cleansing",
-      "scores": {
-        "oliveyoung": 26,
-        "naver_search": 30,
-        "youtube": 0,
-        "total": 28
-      },
-      "naver_change_rate": -53.9,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000246775",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000246775&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=38",
-      "shopee_url": "https://shopee.co.th/search?keyword=Jumiso%20%EB%94%94%20%ED%8C%90%ED%85%8C%EB%86%80%20%EB%B2%A0%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Jumiso%20%EB%94%94%20%ED%8C%90%ED%85%8C%EB%86%80%20%EB%B2%A0%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Jumiso%20%EB%94%94%20%ED%8C%90%ED%85%8C%EB%86%80%20%EB%B2%A0%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Jumiso%20%EB%94%94%20%ED%8C%90%ED%85%8C%EB%86%80%20%EB%B2%A0%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": false,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 42,
-      "oliveyoung_rank": 46,
-      "brand": "바이오가",
-      "brand_en": "Biogaa",
-      "name_ko": "바이오가 글라이신 우유단백질 트리트먼트",
-      "name_en": "Biogaa 글라이신 우유단백질 트리트먼트",
-      "search_keyword": "Biogaa 글라이신 우유단백질 트리트먼트",
-      "name_th": "",
-      "category": "haircare",
-      "scores": {
-        "oliveyoung": 10,
-        "naver_search": 56,
-        "youtube": 0,
-        "total": 28
-      },
-      "naver_change_rate": -49.7,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000209375",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000209375&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=46",
-      "shopee_url": "https://shopee.co.th/search?keyword=Biogaa%20%EA%B8%80%EB%9D%BC%EC%9D%B4%EC%8B%A0%20%EC%9A%B0%EC%9C%A0%EB%8B%A8%EB%B0%B1%EC%A7%88%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Biogaa%20%EA%B8%80%EB%9D%BC%EC%9D%B4%EC%8B%A0%20%EC%9A%B0%EC%9C%A0%EB%8B%A8%EB%B0%B1%EC%A7%88%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Biogaa%20%EA%B8%80%EB%9D%BC%EC%9D%B4%EC%8B%A0%20%EC%9A%B0%EC%9C%A0%EB%8B%A8%EB%B0%B1%EC%A7%88%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Biogaa%20%EA%B8%80%EB%9D%BC%EC%9D%B4%EC%8B%A0%20%EC%9A%B0%EC%9C%A0%EB%8B%A8%EB%B0%B1%EC%A7%88%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8",
-      "oliveyoung_global_url": null,
-      "seller_note": "",
-      "youtube_available": false,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 43,
+      "rank": 39,
       "oliveyoung_rank": 50,
       "brand": "퓌",
       "brand_en": "FWEE",
@@ -1490,10 +1390,10 @@
       "name_th": "fwee ลิปกลอส 3D Voluming 5.3g",
       "category": "makeup",
       "scores": {
+        "total": 28,
         "oliveyoung": 2,
         "naver_search": 22,
-        "youtube": 83,
-        "total": 28
+        "youtube": 83
       },
       "naver_change_rate": -80.1,
       "youtube_change_rate": 659.8,
@@ -1513,10 +1413,81 @@
       "seller_note": "search low / BUZZ TRAP",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 44,
+      "rank": 40,
+      "oliveyoung_rank": 46,
+      "brand": "바이오가",
+      "brand_en": "Biogaa",
+      "name_ko": "바이오가 글라이신 우유단백질 트리트먼트",
+      "name_en": "Biogaa 글라이신 우유단백질 트리트먼트",
+      "search_keyword": "Biogaa 글라이신 우유단백질 트리트먼트",
+      "name_th": "",
+      "category": "haircare",
+      "scores": {
+        "total": 28,
+        "oliveyoung": 10,
+        "naver_search": 56,
+        "youtube": 0
+      },
+      "naver_change_rate": -49.7,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000209375",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000209375&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=46",
+      "shopee_url": "https://shopee.co.th/search?keyword=Biogaa%20%EA%B8%80%EB%9D%BC%EC%9D%B4%EC%8B%A0%20%EC%9A%B0%EC%9C%A0%EB%8B%A8%EB%B0%B1%EC%A7%88%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Biogaa%20%EA%B8%80%EB%9D%BC%EC%9D%B4%EC%8B%A0%20%EC%9A%B0%EC%9C%A0%EB%8B%A8%EB%B0%B1%EC%A7%88%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Biogaa%20%EA%B8%80%EB%9D%BC%EC%9D%B4%EC%8B%A0%20%EC%9A%B0%EC%9C%A0%EB%8B%A8%EB%B0%B1%EC%A7%88%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Biogaa%20%EA%B8%80%EB%9D%BC%EC%9D%B4%EC%8B%A0%20%EC%9A%B0%EC%9C%A0%EB%8B%A8%EB%B0%B1%EC%A7%88%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8",
+      "oliveyoung_global_url": null,
+      "seller_note": "",
+      "youtube_available": false,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 41,
+      "oliveyoung_rank": 38,
+      "brand": "주미소",
+      "brand_en": "Jumiso",
+      "name_ko": "주미소 디 판테놀 베리어 수딩 클렌징밀크",
+      "name_en": "Jumiso 디 판테놀 베리어 수딩 클렌징밀크",
+      "search_keyword": "Jumiso 디 판테놀 베리어 수딩 클렌징밀크",
+      "name_th": "",
+      "category": "cleansing",
+      "scores": {
+        "total": 28,
+        "oliveyoung": 26,
+        "naver_search": 30,
+        "youtube": 0
+      },
+      "naver_change_rate": -53.9,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000246775",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000246775&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=38",
+      "shopee_url": "https://shopee.co.th/search?keyword=Jumiso%20%EB%94%94%20%ED%8C%90%ED%85%8C%EB%86%80%20%EB%B2%A0%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Jumiso%20%EB%94%94%20%ED%8C%90%ED%85%8C%EB%86%80%20%EB%B2%A0%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Jumiso%20%EB%94%94%20%ED%8C%90%ED%85%8C%EB%86%80%20%EB%B2%A0%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Jumiso%20%EB%94%94%20%ED%8C%90%ED%85%8C%EB%86%80%20%EB%B2%A0%EB%A6%AC%EC%96%B4%20%EC%88%98%EB%94%A9%20%ED%81%B4%EB%A0%8C%EC%A7%95%EB%B0%80%ED%81%AC",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": false,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 42,
       "oliveyoung_rank": 49,
       "brand": "에이프릴스킨",
       "brand_en": "April Skin",
@@ -1526,10 +1497,10 @@
       "name_th": "April Skin ชุดคุชชั่น Hero พร้อมแพดแต่งหน้า",
       "category": "makeup",
       "scores": {
+        "total": 25,
         "oliveyoung": 4,
         "naver_search": 56,
-        "youtube": 0,
-        "total": 25
+        "youtube": 0
       },
       "naver_change_rate": -18.2,
       "youtube_change_rate": null,
@@ -1547,10 +1518,46 @@
       "seller_note": "",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 45,
+      "rank": 43,
+      "oliveyoung_rank": 10,
+      "brand": "동아제약",
+      "brand_en": "Dong-A Pharm",
+      "name_ko": "동아제약 아크네 프로 크림제",
+      "name_en": "Dong-A Pharm 아크네 프로 크림제",
+      "search_keyword": "Dong-A Pharm 아크네 프로 크림제",
+      "name_th": "",
+      "category": "skincare",
+      "scores": {
+        "total": 25,
+        "oliveyoung": 41,
+        "naver_search": 0,
+        "youtube": 0
+      },
+      "naver_change_rate": 0.0,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000249651",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000249651&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=10",
+      "shopee_url": "https://shopee.co.th/search?keyword=Dong-A%20Pharm%20%EC%95%84%ED%81%AC%EB%84%A4%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Dong-A%20Pharm%20%EC%95%84%ED%81%AC%EB%84%A4%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Dong-A%20Pharm%20%EC%95%84%ED%81%AC%EB%84%A4%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Dong-A%20Pharm%20%EC%95%84%ED%81%AC%EB%84%A4%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": false,
+      "is_promotion": true,
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 44,
       "oliveyoung_rank": 41,
       "brand": "어노브",
       "brand_en": "Unove",
@@ -1560,10 +1567,10 @@
       "name_th": "",
       "category": "haircare",
       "scores": {
+        "total": 24,
         "oliveyoung": 20,
         "naver_search": 30,
-        "youtube": 0,
-        "total": 24
+        "youtube": 0
       },
       "naver_change_rate": -73.5,
       "youtube_change_rate": null,
@@ -1581,10 +1588,11 @@
       "seller_note": "search low",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 46,
+      "rank": 45,
       "oliveyoung_rank": 47,
       "brand": "디어달리아",
       "brand_en": "Dear Dahlia",
@@ -1594,10 +1602,10 @@
       "name_th": "",
       "category": "makeup",
       "scores": {
+        "total": 21,
         "oliveyoung": 8,
         "naver_search": 40,
-        "youtube": 0,
-        "total": 21
+        "youtube": 0
       },
       "naver_change_rate": 173.7,
       "youtube_change_rate": null,
@@ -1615,10 +1623,11 @@
       "seller_note": "",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
-      "rank": 47,
+      "rank": 46,
       "oliveyoung_rank": 54,
       "brand": "하트퍼센트",
       "brand_en": "Heart Percent",
@@ -1628,10 +1637,10 @@
       "name_th": "",
       "category": "makeup",
       "scores": {
+        "total": 20,
         "oliveyoung": 0,
         "naver_search": 49,
-        "youtube": 0,
-        "total": 20
+        "youtube": 0
       },
       "naver_change_rate": 99.2,
       "youtube_change_rate": null,
@@ -1649,7 +1658,43 @@
       "seller_note": "",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
+    },
+    {
+      "rank": 47,
+      "oliveyoung_rank": 35,
+      "brand": "이지덤뷰티",
+      "brand_en": "Easyderm",
+      "name_ko": "이지덤뷰티 대웅제약 이지덤 스팟패치",
+      "name_en": "Easyderm 대웅제약 이지덤 스팟패치",
+      "search_keyword": "Easyderm 대웅제약 이지덤 스팟패치",
+      "name_th": "",
+      "category": "maskpack",
+      "scores": {
+        "total": 18,
+        "oliveyoung": 16,
+        "naver_search": 22,
+        "youtube": 0
+      },
+      "naver_change_rate": 100.0,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000110505",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000110505&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=35",
+      "shopee_url": "https://shopee.co.th/search?keyword=Easyderm%20%EB%8C%80%EC%9B%85%EC%A0%9C%EC%95%BD%20%EC%9D%B4%EC%A7%80%EB%8D%A4%20%EC%8A%A4%ED%8C%9F%ED%8C%A8%EC%B9%98&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Easyderm%20%EB%8C%80%EC%9B%85%EC%A0%9C%EC%95%BD%20%EC%9D%B4%EC%A7%80%EB%8D%A4%20%EC%8A%A4%ED%8C%9F%ED%8C%A8%EC%B9%98",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Easyderm%20%EB%8C%80%EC%9B%85%EC%A0%9C%EC%95%BD%20%EC%9D%B4%EC%A7%80%EB%8D%A4%20%EC%8A%A4%ED%8C%9F%ED%8C%A8%EC%B9%98&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Easyderm%20%EB%8C%80%EC%9B%85%EC%A0%9C%EC%95%BD%20%EC%9D%B4%EC%A7%80%EB%8D%A4%20%EC%8A%A4%ED%8C%9F%ED%8C%A8%EC%B9%98",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": false,
+      "is_promotion": true,
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 48,
@@ -1662,10 +1707,10 @@
       "name_th": "",
       "category": "cleansing",
       "scores": {
+        "total": 17,
         "oliveyoung": 6,
         "naver_search": 34,
-        "youtube": 0,
-        "total": 17
+        "youtube": 0
       },
       "naver_change_rate": 338.3,
       "youtube_change_rate": null,
@@ -1683,7 +1728,8 @@
       "seller_note": "search low",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 49,
@@ -1696,10 +1742,10 @@
       "name_th": "",
       "category": "skincare",
       "scores": {
+        "total": 16,
         "oliveyoung": 0,
         "naver_search": 40,
-        "youtube": 0,
-        "total": 16
+        "youtube": 0
       },
       "naver_change_rate": 630.4,
       "youtube_change_rate": null,
@@ -1717,7 +1763,8 @@
       "seller_note": "",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 50,
@@ -1730,10 +1777,10 @@
       "name_th": "",
       "category": "skincare",
       "scores": {
+        "total": 15,
         "oliveyoung": 0,
         "naver_search": 38,
-        "youtube": 0,
-        "total": 15
+        "youtube": 0
       },
       "naver_change_rate": -35.1,
       "youtube_change_rate": null,
@@ -1751,180 +1798,11 @@
       "seller_note": "search low",
       "youtube_available": false,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 3
     },
     {
       "rank": 51,
-      "oliveyoung_rank": 55,
-      "brand": "에스트라",
-      "brand_en": "Aestura",
-      "name_ko": "에스트라 아토베리어365 로션",
-      "name_en": "Aestura 아토베리어365 로션",
-      "search_keyword": "Aestura 아토베리어365 로션",
-      "name_th": "",
-      "category": "skincare",
-      "scores": {
-        "oliveyoung": 0,
-        "naver_search": 0,
-        "youtube": 0,
-        "total": 0
-      },
-      "naver_change_rate": null,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000222834",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000222834&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=55",
-      "shopee_url": "https://shopee.co.th/search?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%EB%A1%9C%EC%85%98&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%EB%A1%9C%EC%85%98",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%EB%A1%9C%EC%85%98&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%EB%A1%9C%EC%85%98",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 52,
-      "oliveyoung_rank": 56,
-      "brand": "그로우어스",
-      "brand_en": "Grow Us",
-      "name_ko": "그로우어스 데미지 테라피 리페어 클리닉 헤어팩",
-      "name_en": "Grow Us 데미지 테라피 리페어 클리닉 헤어팩",
-      "search_keyword": "Grow Us 데미지 테라피 리페어 클리닉 헤어팩",
-      "name_th": "",
-      "category": "haircare",
-      "scores": {
-        "oliveyoung": 0,
-        "naver_search": 0,
-        "youtube": 0,
-        "total": 0
-      },
-      "naver_change_rate": null,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000248789",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000248789&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=56",
-      "shopee_url": "https://shopee.co.th/search?keyword=Grow%20Us%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%85%8C%EB%9D%BC%ED%94%BC%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%ED%81%B4%EB%A6%AC%EB%8B%89%20%ED%97%A4%EC%96%B4%ED%8C%A9&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Grow%20Us%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%85%8C%EB%9D%BC%ED%94%BC%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%ED%81%B4%EB%A6%AC%EB%8B%89%20%ED%97%A4%EC%96%B4%ED%8C%A9",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Grow%20Us%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%85%8C%EB%9D%BC%ED%94%BC%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%ED%81%B4%EB%A6%AC%EB%8B%89%20%ED%97%A4%EC%96%B4%ED%8C%A9&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Grow%20Us%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%85%8C%EB%9D%BC%ED%94%BC%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%ED%81%B4%EB%A6%AC%EB%8B%89%20%ED%97%A4%EC%96%B4%ED%8C%A9",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 53,
-      "oliveyoung_rank": 57,
-      "brand": "도브",
-      "brand_en": "Dove",
-      "name_ko": "도브 바디 스크럽",
-      "name_en": "Dove 바디 스크럽",
-      "search_keyword": "Dove 바디 스크럽",
-      "name_th": "",
-      "category": "bodycare",
-      "scores": {
-        "oliveyoung": 0,
-        "naver_search": 0,
-        "youtube": 0,
-        "total": 0
-      },
-      "naver_change_rate": null,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000186792",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000186792&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=57",
-      "shopee_url": "https://shopee.co.th/search?keyword=Dove%20%EB%B0%94%EB%94%94%20%EC%8A%A4%ED%81%AC%EB%9F%BD&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Dove%20%EB%B0%94%EB%94%94%20%EC%8A%A4%ED%81%AC%EB%9F%BD",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Dove%20%EB%B0%94%EB%94%94%20%EC%8A%A4%ED%81%AC%EB%9F%BD&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Dove%20%EB%B0%94%EB%94%94%20%EC%8A%A4%ED%81%AC%EB%9F%BD",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 54,
-      "oliveyoung_rank": 58,
-      "brand": "토리든",
-      "brand_en": "Torriden",
-      "name_ko": "토리든 다이브인 히알루론산 수딩 크림",
-      "name_en": "Torriden 다이브인 히알루론산 수딩 크림",
-      "search_keyword": "Torriden 다이브인 히알루론산 수딩 크림",
-      "name_th": "",
-      "category": "skincare",
-      "scores": {
-        "oliveyoung": 0,
-        "naver_search": 0,
-        "youtube": 0,
-        "total": 0
-      },
-      "naver_change_rate": null,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000165598",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000165598&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=58",
-      "shopee_url": "https://shopee.co.th/search?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%94%A9%20%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%94%A9%20%ED%81%AC%EB%A6%BC",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%94%A9%20%ED%81%AC%EB%A6%BC&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%94%A9%20%ED%81%AC%EB%A6%BC",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 55,
-      "oliveyoung_rank": 59,
-      "brand": "유리아쥬",
-      "brand_en": "Uriage",
-      "name_ko": "유리아쥬 스틱레브르 컬러드",
-      "name_en": "Uriage 스틱레브르 컬러드",
-      "search_keyword": "Uriage 스틱레브르 컬러드",
-      "name_th": "",
-      "category": "makeup",
-      "scores": {
-        "oliveyoung": 0,
-        "naver_search": 0,
-        "youtube": 0,
-        "total": 0
-      },
-      "naver_change_rate": null,
-      "youtube_change_rate": null,
-      "signal": "",
-      "flags": [],
-      "seller_grade": "",
-      "rank_change": "0",
-      "product_code": "A000000235485",
-      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000235485&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=59",
-      "shopee_url": "https://shopee.co.th/search?keyword=Uriage%20%EC%8A%A4%ED%8B%B1%EB%A0%88%EB%B8%8C%EB%A5%B4%20%EC%BB%AC%EB%9F%AC%EB%93%9C&af_id=kbeautyth",
-      "lazada_url": "https://www.lazada.co.th/catalog/?q=Uriage%20%EC%8A%A4%ED%8B%B1%EB%A0%88%EB%B8%8C%EB%A5%B4%20%EC%BB%AC%EB%9F%AC%EB%93%9C",
-      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Uriage%20%EC%8A%A4%ED%8B%B1%EB%A0%88%EB%B8%8C%EB%A5%B4%20%EC%BB%AC%EB%9F%AC%EB%93%9C&ref=kbeautyth",
-      "amazon_url": "https://www.amazon.com/s?k=Uriage%20%EC%8A%A4%ED%8B%B1%EB%A0%88%EB%B8%8C%EB%A5%B4%20%EC%BB%AC%EB%9F%AC%EB%93%9C",
-      "oliveyoung_global_url": null,
-      "seller_note": "search low",
-      "youtube_available": true,
-      "is_promotion": false,
-      "consecutive_periods": 0
-    },
-    {
-      "rank": 56,
       "oliveyoung_rank": 60,
       "brand": "홀리카홀리카",
       "brand_en": "Holika Holika",
@@ -1934,10 +1812,10 @@
       "name_th": "Holika Holika อายแชโดว์ My Fave Piece / Gel Tail",
       "category": "makeup",
       "scores": {
+        "total": 0,
         "oliveyoung": 0,
         "naver_search": 0,
-        "youtube": 0,
-        "total": 0
+        "youtube": 0
       },
       "naver_change_rate": null,
       "youtube_change_rate": null,
@@ -1955,7 +1833,183 @@
       "seller_note": "search low",
       "youtube_available": true,
       "is_promotion": false,
-      "consecutive_periods": 0
+      "consecutive_periods": 0,
+      "days_appeared": 0
+    },
+    {
+      "rank": 52,
+      "oliveyoung_rank": 55,
+      "brand": "에스트라",
+      "brand_en": "Aestura",
+      "name_ko": "에스트라 아토베리어365 로션",
+      "name_en": "Aestura 아토베리어365 로션",
+      "search_keyword": "Aestura 아토베리어365 로션",
+      "name_th": "",
+      "category": "skincare",
+      "scores": {
+        "total": 0,
+        "oliveyoung": 0,
+        "naver_search": 0,
+        "youtube": 0
+      },
+      "naver_change_rate": null,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000222834",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000222834&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=55",
+      "shopee_url": "https://shopee.co.th/search?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%EB%A1%9C%EC%85%98&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%EB%A1%9C%EC%85%98",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%EB%A1%9C%EC%85%98&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Aestura%20%EC%95%84%ED%86%A0%EB%B2%A0%EB%A6%AC%EC%96%B4365%20%EB%A1%9C%EC%85%98",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 0
+    },
+    {
+      "rank": 53,
+      "oliveyoung_rank": 59,
+      "brand": "유리아쥬",
+      "brand_en": "Uriage",
+      "name_ko": "유리아쥬 스틱레브르 컬러드",
+      "name_en": "Uriage 스틱레브르 컬러드",
+      "search_keyword": "Uriage 스틱레브르 컬러드",
+      "name_th": "",
+      "category": "makeup",
+      "scores": {
+        "total": 0,
+        "oliveyoung": 0,
+        "naver_search": 0,
+        "youtube": 0
+      },
+      "naver_change_rate": null,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000235485",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000235485&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=59",
+      "shopee_url": "https://shopee.co.th/search?keyword=Uriage%20%EC%8A%A4%ED%8B%B1%EB%A0%88%EB%B8%8C%EB%A5%B4%20%EC%BB%AC%EB%9F%AC%EB%93%9C&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Uriage%20%EC%8A%A4%ED%8B%B1%EB%A0%88%EB%B8%8C%EB%A5%B4%20%EC%BB%AC%EB%9F%AC%EB%93%9C",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Uriage%20%EC%8A%A4%ED%8B%B1%EB%A0%88%EB%B8%8C%EB%A5%B4%20%EC%BB%AC%EB%9F%AC%EB%93%9C&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Uriage%20%EC%8A%A4%ED%8B%B1%EB%A0%88%EB%B8%8C%EB%A5%B4%20%EC%BB%AC%EB%9F%AC%EB%93%9C",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 0
+    },
+    {
+      "rank": 54,
+      "oliveyoung_rank": 56,
+      "brand": "그로우어스",
+      "brand_en": "Grow Us",
+      "name_ko": "그로우어스 데미지 테라피 리페어 클리닉 헤어팩",
+      "name_en": "Grow Us 데미지 테라피 리페어 클리닉 헤어팩",
+      "search_keyword": "Grow Us 데미지 테라피 리페어 클리닉 헤어팩",
+      "name_th": "",
+      "category": "haircare",
+      "scores": {
+        "total": 0,
+        "oliveyoung": 0,
+        "naver_search": 0,
+        "youtube": 0
+      },
+      "naver_change_rate": null,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000248789",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000248789&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=56",
+      "shopee_url": "https://shopee.co.th/search?keyword=Grow%20Us%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%85%8C%EB%9D%BC%ED%94%BC%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%ED%81%B4%EB%A6%AC%EB%8B%89%20%ED%97%A4%EC%96%B4%ED%8C%A9&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Grow%20Us%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%85%8C%EB%9D%BC%ED%94%BC%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%ED%81%B4%EB%A6%AC%EB%8B%89%20%ED%97%A4%EC%96%B4%ED%8C%A9",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Grow%20Us%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%85%8C%EB%9D%BC%ED%94%BC%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%ED%81%B4%EB%A6%AC%EB%8B%89%20%ED%97%A4%EC%96%B4%ED%8C%A9&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Grow%20Us%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%85%8C%EB%9D%BC%ED%94%BC%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%ED%81%B4%EB%A6%AC%EB%8B%89%20%ED%97%A4%EC%96%B4%ED%8C%A9",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": true,
+      "is_promotion": true,
+      "consecutive_periods": 0,
+      "days_appeared": 0
+    },
+    {
+      "rank": 55,
+      "oliveyoung_rank": 57,
+      "brand": "도브",
+      "brand_en": "Dove",
+      "name_ko": "도브 바디 스크럽",
+      "name_en": "Dove 바디 스크럽",
+      "search_keyword": "Dove 바디 스크럽",
+      "name_th": "",
+      "category": "bodycare",
+      "scores": {
+        "total": 0,
+        "oliveyoung": 0,
+        "naver_search": 0,
+        "youtube": 0
+      },
+      "naver_change_rate": null,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000186792",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000186792&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=57",
+      "shopee_url": "https://shopee.co.th/search?keyword=Dove%20%EB%B0%94%EB%94%94%20%EC%8A%A4%ED%81%AC%EB%9F%BD&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Dove%20%EB%B0%94%EB%94%94%20%EC%8A%A4%ED%81%AC%EB%9F%BD",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Dove%20%EB%B0%94%EB%94%94%20%EC%8A%A4%ED%81%AC%EB%9F%BD&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Dove%20%EB%B0%94%EB%94%94%20%EC%8A%A4%ED%81%AC%EB%9F%BD",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 0
+    },
+    {
+      "rank": 56,
+      "oliveyoung_rank": 58,
+      "brand": "토리든",
+      "brand_en": "Torriden",
+      "name_ko": "토리든 다이브인 히알루론산 수딩 크림",
+      "name_en": "Torriden 다이브인 히알루론산 수딩 크림",
+      "search_keyword": "Torriden 다이브인 히알루론산 수딩 크림",
+      "name_th": "",
+      "category": "skincare",
+      "scores": {
+        "total": 0,
+        "oliveyoung": 0,
+        "naver_search": 0,
+        "youtube": 0
+      },
+      "naver_change_rate": null,
+      "youtube_change_rate": null,
+      "signal": "",
+      "flags": [],
+      "seller_grade": "",
+      "rank_change": "0",
+      "product_code": "A000000165598",
+      "oliveyoung_url": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000165598&dispCatNo=90000010009&trackingCd=Best_Sellingbest&t_page=%EB%9E%AD%ED%82%B9&t_click=%ED%8C%90%EB%A7%A4%EB%9E%AD%ED%82%B9_%EC%A0%84%EC%B2%B4_%EC%83%81%ED%92%88%EC%83%81%EC%84%B8&t_number=58",
+      "shopee_url": "https://shopee.co.th/search?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%94%A9%20%ED%81%AC%EB%A6%BC&af_id=kbeautyth",
+      "lazada_url": "https://www.lazada.co.th/catalog/?q=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%94%A9%20%ED%81%AC%EB%A6%BC",
+      "yesstyle_url": "https://www.yesstyle.com/en/search.html?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%94%A9%20%ED%81%AC%EB%A6%BC&ref=kbeautyth",
+      "amazon_url": "https://www.amazon.com/s?k=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%88%98%EB%94%A9%20%ED%81%AC%EB%A6%BC",
+      "oliveyoung_global_url": null,
+      "seller_note": "search low",
+      "youtube_available": true,
+      "is_promotion": false,
+      "consecutive_periods": 0,
+      "days_appeared": 0
     }
   ],
   "dropped_products": [
@@ -1988,16 +2042,30 @@
   ],
   "buzz_traps": [
     {
-      "rank": 26,
+      "rank": 25,
       "brand": "마녀공장",
       "brand_en": "Manyo",
       "name_ko": "마녀공장 퓨어 클렌징오일",
       "name_en": "Manyo 퓨어 클렌징오일",
       "scores": {
+        "total": 52,
         "oliveyoung": 28,
         "naver_search": 76,
-        "youtube": 68,
-        "total": 52
+        "youtube": 68
+      },
+      "reason": "social buzz high but OY sales rank low"
+    },
+    {
+      "rank": 27,
+      "brand": "에스티로더",
+      "brand_en": "Estee Lauder",
+      "name_ko": "에스티로더 갈색병",
+      "name_en": "Estee Lauder 갈색병",
+      "scores": {
+        "total": 50,
+        "oliveyoung": 18,
+        "naver_search": 86,
+        "youtube": 65
       },
       "reason": "social buzz high but OY sales rank low"
     },
@@ -2008,96 +2076,68 @@
       "name_ko": "달바 핑크 톤업 선크림",
       "name_en": "d'Alba 핑크 톤업 선크림",
       "scores": {
+        "total": 50,
         "oliveyoung": 30,
         "naver_search": 79,
-        "youtube": 0,
-        "total": 50
+        "youtube": 0
       },
       "reason": "social buzz high but OY sales rank low"
     },
     {
-      "rank": 30,
-      "brand": "에스티로더",
-      "brand_en": "Estee Lauder",
-      "name_ko": "에스티로더 갈색병",
-      "name_en": "Estee Lauder 갈색병",
-      "scores": {
-        "oliveyoung": 18,
-        "naver_search": 86,
-        "youtube": 65,
-        "total": 50
-      },
-      "reason": "social buzz high but OY sales rank low"
-    },
-    {
-      "rank": 36,
+      "rank": 35,
       "brand": "메디큐브",
       "brand_en": "Medicube",
       "name_ko": "메디큐브 PDRN 핑크 앰플",
       "name_en": "Medicube PDRN 핑크 앰플",
       "scores": {
+        "total": 34,
         "oliveyoung": 16,
         "naver_search": 30,
-        "youtube": 71,
-        "total": 34
+        "youtube": 71
       },
       "reason": "social buzz high but OY sales rank low"
     },
     {
-      "rank": 39,
+      "rank": 38,
       "brand": "VDL",
       "brand_en": "VDL",
       "name_ko": "VDL 커버스테인 퍼펙팅 파운데이션",
       "name_en": "VDL 커버스테인 퍼펙팅 파운데이션",
       "scores": {
+        "total": 30,
         "oliveyoung": 0,
         "naver_search": 74,
-        "youtube": 0,
-        "total": 30
+        "youtube": 0
       },
       "reason": "social buzz high but OY sales rank low"
     },
     {
-      "rank": 43,
+      "rank": 39,
       "brand": "퓌",
       "brand_en": "FWEE",
       "name_ko": "퓌 3D 볼류밍 글로스",
       "name_en": "FWEE 3D 볼류밍 글로스",
       "scores": {
+        "total": 28,
         "oliveyoung": 2,
         "naver_search": 22,
-        "youtube": 83,
-        "total": 28
+        "youtube": 83
       },
       "reason": "social buzz high but OY sales rank low"
     }
   ],
   "hidden_gems": [
     {
-      "rank": 16,
+      "rank": 15,
       "brand": "메디힐",
       "brand_en": "Mediheal",
       "name_ko": "메디힐 PDRN 모공 탄력 세럼",
       "name_en": "Mediheal PDRN 모공 탄력 세럼",
       "scores": {
+        "total": 62,
         "oliveyoung": 88,
         "naver_search": 22,
-        "youtube": 0,
-        "total": 62
-      },
-      "reason": "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล"
-    },
-    {
-      "rank": 31,
-      "brand": "동아제약",
-      "brand_en": "Dong-A Pharm",
-      "name_ko": "동아제약 아크네 프로 크림제",
-      "name_en": "Dong-A Pharm 아크네 프로 크림제",
-      "scores": {
-        "oliveyoung": 82,
-        "naver_search": 0,
-        "youtube": 0,
-        "total": 49
+        "youtube": 0
       },
       "reason": "สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล"
     }
@@ -2108,104 +2148,144 @@
       {
         "keyword": "브링그린 시카 수딩크림",
         "keyword_en": "Bring Green Tea Tree Cica Soothing Cream",
-        "change_rate": 630.4
-      },
-      {
-        "keyword": "블랑네이처 클렌징폼",
-        "keyword_en": "Blanc Nature Acne Cleansing Foam",
-        "change_rate": 338.3
-      },
-      {
-        "keyword": "디어달리아 리퀴드 블러쉬",
-        "keyword_en": "Dear Dahlia Petal Drop Liquid Blush",
-        "change_rate": 173.7
+        "change_rate": 12,
+        "this_rank": 35,
+        "last_rank": 47
       },
       {
         "keyword": "메노킨 버블 마스크",
         "keyword_en": "Menokin Quick Bubble Mask",
-        "change_rate": 153.7
+        "change_rate": 10,
+        "this_rank": 30,
+        "last_rank": 40
       },
       {
-        "keyword": "이지덤 스팟패치",
-        "keyword_en": "Easyderm Beauty Patch",
-        "change_rate": 100.0
+        "keyword": "디어달리아 리퀴드 블러쉬",
+        "keyword_en": "Dear Dahlia Petal Drop Liquid Blush",
+        "change_rate": 9,
+        "this_rank": 34,
+        "last_rank": 43
       },
       {
-        "keyword": "하트퍼센트 틴트",
-        "keyword_en": "Heart Percent Dote On Mood Glowy Tint",
-        "change_rate": 99.2
+        "keyword": "VDL 파운데이션",
+        "keyword_en": "VDL Cover Stain Perfecting Foundation",
+        "change_rate": 8,
+        "this_rank": 8,
+        "last_rank": 16
       },
       {
-        "keyword": "클리오 펜슬라이너",
-        "keyword_en": "CLIO Sharp So Simple Waterproof Pencil Liner",
-        "change_rate": 75.2
+        "keyword": "블랑네이처 클렌징폼",
+        "keyword_en": "Blanc Nature Acne Cleansing Foam",
+        "change_rate": 7,
+        "this_rank": 39,
+        "last_rank": 46
       },
       {
         "keyword": "라운드랩 자작나무 선크림",
         "keyword_en": "Round Lab Birch Juice Moisturizing Sunscreen",
-        "change_rate": 58.6
+        "change_rate": 6,
+        "this_rank": 23,
+        "last_rank": 29
+      },
+      {
+        "keyword": "하트퍼센트 틴트",
+        "keyword_en": "Heart Percent Dote On Mood Glowy Tint",
+        "change_rate": 6,
+        "this_rank": 32,
+        "last_rank": 38
+      },
+      {
+        "keyword": "토리든 다이브인 세럼",
+        "keyword_en": "Torriden Dive In Serum",
+        "change_rate": 5,
+        "this_rank": 20,
+        "last_rank": 25
+      },
+      {
+        "keyword": "클리오 펜슬라이너",
+        "keyword_en": "CLIO Sharp So Simple Waterproof Pencil Liner",
+        "change_rate": 5,
+        "this_rank": 29,
+        "last_rank": 34
       },
       {
         "keyword": "메디힐 더마 패드",
         "keyword_en": "MEDIHEAL Pad",
-        "change_rate": 51.7
-      },
-      {
-        "keyword": "어노브 헤어오일",
-        "keyword_en": "Unove Silk Hair Oil Essence",
-        "change_rate": 46.0
+        "change_rate": 3,
+        "this_rank": 33,
+        "last_rank": 36
       }
     ],
     "youtube_rising": [
       {
-        "keyword": "Jung Saem Mool Essential Skin Nuder Cushion",
-        "change_rate": 17535.9,
-        "video_count": 5
+        "keyword": "Parnell Cicamanu 92 Serum",
+        "change_rate": 15,
+        "video_count": 5,
+        "this_rank": 8,
+        "last_rank": 23
       },
       {
-        "keyword": "MEDIHEAL Pad",
-        "change_rate": 6191.7,
-        "video_count": 19
+        "keyword": "Biodance Bio-Collagen Real Deep Mask",
+        "change_rate": 10,
+        "video_count": 20,
+        "this_rank": 9,
+        "last_rank": 19
       },
       {
-        "keyword": "Torriden Mask Sheet",
-        "change_rate": 4287.4,
-        "video_count": 9
-      },
-      {
-        "keyword": "Mediheal Madecassoside Blemish Repair Serum",
-        "change_rate": 2872.2,
-        "video_count": 8
-      },
-      {
-        "keyword": "FWEE 3D Voluming Gloss",
-        "change_rate": 659.8,
-        "video_count": 13
-      },
-      {
-        "keyword": "S.Nature Aqua Squalane Moisturizing Cream",
-        "change_rate": 567.8,
-        "video_count": 7
+        "keyword": "Estee Lauder Advanced Night Repair",
+        "change_rate": 10,
+        "video_count": 20,
+        "this_rank": 14,
+        "last_rank": 24
       },
       {
         "keyword": "Laneige Neo Cushion Matte",
-        "change_rate": 100.0,
-        "video_count": 20
+        "change_rate": 8,
+        "video_count": 20,
+        "this_rank": 5,
+        "last_rank": 13
       },
       {
-        "keyword": "Round Lab Birch Juice Moisturizing Sunscreen",
-        "change_rate": 100.0,
-        "video_count": 20
+        "keyword": "Jung Saem Mool Essential Skin Nuder Cushion",
+        "change_rate": 8,
+        "video_count": 5,
+        "this_rank": 3,
+        "last_rank": 11
+      },
+      {
+        "keyword": "Mediheal Madecassoside Blemish Repair Serum",
+        "change_rate": 7,
+        "video_count": 8,
+        "this_rank": 1,
+        "last_rank": 8
       },
       {
         "keyword": "Anua PDRN Hyaluronic Acid Serum",
-        "change_rate": 100.0,
-        "video_count": 20
+        "change_rate": 4,
+        "video_count": 20,
+        "this_rank": 11,
+        "last_rank": 15
+      },
+      {
+        "keyword": "Torriden Mask Sheet",
+        "change_rate": 4,
+        "video_count": 9,
+        "this_rank": 6,
+        "last_rank": 10
       },
       {
         "keyword": "Anua PDRN Hyaluronic Acid Mist",
-        "change_rate": 100.0,
-        "video_count": 20
+        "change_rate": 3,
+        "video_count": 20,
+        "this_rank": 13,
+        "last_rank": 16
+      },
+      {
+        "keyword": "d'Alba White Truffle First Spray Serum",
+        "change_rate": 3,
+        "video_count": 20,
+        "this_rank": 15,
+        "last_rank": 18
       }
     ]
   },
@@ -2218,7 +2298,7 @@
     "total_analyzed": 56,
     "new_entries": 2,
     "buzz_trap_count": 6,
-    "hidden_gem_count": 2,
+    "hidden_gem_count": 1,
     "steady_seller_count": 0,
     "dropped_count": 2
   }

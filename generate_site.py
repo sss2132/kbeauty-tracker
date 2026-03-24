@@ -241,9 +241,9 @@ def build_keywords_html(data):
             items += f'''<div class="kw-item">
   <span class="kw-rank">#{i}</span><span class="kw-text">{esc(display_kw)}</span>
   <div class="kw-bar-wrap"><div class="kw-bar" style="width:{w:.0f}%"></div></div>
-  <span class="kw-rate">+{kw["change_rate"]:.0f}%</span>
+  <span class="kw-rate">+{kw["change_rate"]:.0f}</span>
 </div>'''
-        html += f'<div class="kw-section"><h3>&#128269; Naver Shopping คีย์เวิร์ดยอดนิยม</h3>{items}</div>'
+        html += f'<div class="kw-section"><h3>&#128269; Naver Shopping Rising</h3>{items}</div>'
 
     yt_rising = keywords.get("youtube_rising", [])
     if yt_rising:
@@ -254,9 +254,9 @@ def build_keywords_html(data):
             items += f'''<div class="kw-item">
   <span class="kw-rank">#{i}</span><span class="kw-text">{esc(kw["keyword"])}</span>
   <div class="kw-bar-wrap"><div class="kw-bar kw-bar-yt" style="width:{w:.0f}%"></div></div>
-  <span class="kw-rate">+{kw["change_rate"]:.0f}%</span>
+  <span class="kw-rate">+{kw["change_rate"]:.0f}</span>
 </div>'''
-        html += f'<div class="kw-section" style="margin-top:20px"><h3>&#9654; YouTube คีย์เวิร์ดยอดนิยม</h3>{items}</div>'
+        html += f'<div class="kw-section" style="margin-top:20px"><h3>&#9654; YouTube Rising</h3>{items}</div>'
 
     if not html:
         html = '<p class="empty-msg">ยังไม่มีข้อมูลคีย์เวิร์ด</p>'
