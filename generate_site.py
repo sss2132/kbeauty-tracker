@@ -19,7 +19,7 @@ TH_MONTHS = {
 
 def get_thai_date():
     now = datetime.now()
-    return f"อัปเดต: {now.day} {TH_MONTHS[now.month]} {now.year}"
+    return f"{now.day} {TH_MONTHS[now.month]} {now.year}"
 
 DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -164,6 +164,12 @@ def build_discover_html(products):
         used.add(p["rank"])
     sections.append(("rising", "&#128640; Rising", "สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน", rising))
 
+    # 1.5) Buzz Trap (รอติดตาม)
+    buzzes = [p for p in products if "buzz_trap" in p.get("flags", []) and p["rank"] not in used]
+    for p in buzzes:
+        used.add(p["rank"])
+    sections.append(("buzz", "&#9203; รอติดตาม", "เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม", buzzes))
+
     # 2) Hidden Gem
     gems = [p for p in products if "hidden_gem" in p.get("flags", []) and p["rank"] not in used]
     for p in gems:
@@ -202,7 +208,9 @@ def build_discover_html(products):
             if p.get("signal") == "rising":
                 badges += '<span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span>'
             for f in p.get("flags", []):
-                if f == "hidden_gem":
+                if f == "buzz_trap":
+                    badges += '<span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span>'
+                elif f == "hidden_gem":
                     badges += '<span class="badge badge-gem" title="สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล">HIDDEN GEM</span><span class="badge-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</span>'
                 elif f == "steady_seller":
                     badges += '<span class="badge badge-steady" title="สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย">STEADY SELLER</span><span class="badge-desc">สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย</span>'
@@ -425,13 +433,13 @@ def generate_html(data):
 .tab-btn.active{{color:#e8547a;border-bottom-color:#e8547a}}
 
 /* Stats */
-.stats{{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 16px}}
-.st{{background:#fff;border-radius:10px;padding:10px 6px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}}
-.st-v{{font-size:20px;font-weight:700;color:#e8547a}}.st-l{{font-size:11px;color:#999;margin-top:2px}}
+.stats{{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:12px 12px}}
+.st{{background:#fff;border-radius:10px;padding:8px 4px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}}
+.st-v{{font-size:18px;font-weight:700;color:#e8547a}}.st-l{{font-size:9px;color:#999;margin-top:2px}}
 
 /* Filter */
-.fbar{{display:flex;gap:6px;padding:8px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}}.fbar::-webkit-scrollbar{{display:none}}
-.fbtn{{padding:7px 14px;border-radius:20px;border:1.5px solid #ddd;background:#fff;font-size:12px;font-weight:600;color:#666;cursor:pointer;white-space:nowrap;transition:.2s;font-family:inherit}}
+.fbar{{display:flex;gap:4px;padding:8px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}}.fbar::-webkit-scrollbar{{display:none}}
+.fbtn{{padding:6px 10px;border-radius:16px;border:1.5px solid #ddd;background:#fff;font-size:11px;font-weight:600;color:#666;cursor:pointer;white-space:nowrap;transition:.2s;font-family:inherit}}
 .fbtn.active{{background:#e8547a;color:#fff;border-color:#e8547a}}
 
 /* Rank change */
@@ -577,6 +585,7 @@ def generate_html(data):
 .discover-view{{padding:8px 16px}}
 .disc-section{{border-radius:12px;padding:14px;margin-bottom:12px}}
 .disc-rising{{background:#f3eeff;border-left:4px solid #8854d0}}
+.disc-buzz{{background:#fff8ef;border-left:4px solid #ffa502}}
 .disc-gem{{background:#f0fff8;border-left:4px solid #2ed573}}
 .disc-new{{background:#eef6ff;border-left:4px solid #0984e3}}
 .disc-steady{{background:#f0f0ff;border-left:4px solid #5352ed}}
@@ -593,7 +602,7 @@ def generate_html(data):
 .disc-empty-sec{{text-align:center;color:#aaa;padding:16px 0;font-size:13px}}
 /* Mobile */
 @media(max-width:380px){{
-  .stats{{grid-template-columns:repeat(2,1fr)}}
+  .stats{{grid-template-columns:repeat(3,1fr)}}
   .product-card{{gap:6px;padding:10px}}.product-emoji{{width:30px;height:30px;font-size:18px}}.rank-big{{font-size:18px}}
   .tab-btn{{font-size:11px;padding:9px 1px}}
   .product-name{{font-size:13px}}.product-brand{{font-size:11px}}.product-name-ko{{font-size:10px}}
@@ -607,7 +616,7 @@ def generate_html(data):
 {warning_html}
 
 <div class="hdr">
-  <h1>K-Beauty Trend Tracker</h1>
+  <div class="hdr-top"><h1>K-Beauty Trend Tracker</h1><a href="en.html" class="lang-toggle">&#127468;&#127463; EN</a></div>
   <div class="sub">เทรนด์ความงามเกาหลี | {date_th}</div>
   <div class="tagline">จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา</div>
   <div class="update-cycle">อัปเดตทุก 3 วัน | ข้อมูลจาก 3 วัน เพื่อความแม่นยำของอันดับ</div>
@@ -629,15 +638,16 @@ def generate_html(data):
     <div class="st"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">&#9203; รอติดตาม</div></div>
     <div class="st"><div class="st-v">{stats["hidden_gem_count"]}</div><div class="st-l">Hidden Gem</div></div>
     <div class="st"><div class="st-v">{stats.get("steady_seller_count", 0)}</div><div class="st-l">Steady Seller</div></div>
+    <div class="st"><div class="st-v">{stats.get("new_entries", 0)}</div><div class="st-l">&#127381; New Entry</div></div>
   </div>
   <div class="fbar">
-    <button class="fbtn active" data-cat="all">All</button>
-    <button class="fbtn" data-cat="skincare">Skincare</button>
-    <button class="fbtn" data-cat="makeup">Makeup</button>
-    <button class="fbtn" data-cat="suncare">Suncare</button>
-    <button class="fbtn" data-cat="maskpack">Mask</button>
-    <button class="fbtn" data-cat="haircare">Hair</button>
-    <button class="fbtn" data-cat="bodycare">Body</button>
+    <button class="fbtn active" data-cat="all">ทั้งหมด</button>
+    <button class="fbtn" data-cat="skincare">สกินแคร์</button>
+    <button class="fbtn" data-cat="makeup">เมกอัพ</button>
+    <button class="fbtn" data-cat="suncare">กันแดด</button>
+    <button class="fbtn" data-cat="maskpack">มาสก์แพ็ค</button>
+    <button class="fbtn" data-cat="haircare">แฮร์แคร์</button>
+    <button class="fbtn" data-cat="bodycare">บอดี้แคร์</button>
   </div>
   <div class="view-toggle">
     <button class="vt-btn vt-active" data-view="discover">&#128293; น่าจับตา</button>
@@ -847,20 +857,43 @@ TH_TO_EN = [
     ("&#127381; สินค้าใหม่ประจำครั้งนี้", "&#127381; New Entry"),
     # Section descriptions
     ("สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน", "Products that rose significantly in ranking"),
+    ("สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล -- โอกาสเข้าตลาดก่อนคู่แข่ง", "Sells well in Korea but low social buzz — enter market before competitors"),
     ("สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล", "Sells well in Korea but low social buzz — opportunity to enter market early"),
     ("สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย เชื่อถือได้", "Consistently selling well with many reviews — proven product"),
     ("สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย -- เหมาะสำหรับสต็อกระยะยาว", "Consistently selling well — suitable for long-term stocking"),
+    ("สินค้าที่ได้รับการพิสูจน์แล้วว่าขายดีต่อเนื่อง", "Products proven to sell consistently"),
     ("เพิ่งเข้า TOP 30 เป็นครั้งแรก!", "First time entering TOP 30!"),
     # Badge descriptions
+    ("สินค้าขายดีและเป็นกระแสบนโซเชียล", "Best seller with high social buzz"),
     ("อันดับสูงขึ้นมากจากครั้งก่อน", "Rose significantly from last period"),
     ("สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย", "Consistently selling well with many reviews"),
     ("เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม", "Social buzz high but sales data still uncertain"),
-    # Tabs
+    # Buy buttons
+    ("ซื้อสินค้า", "Buy"),
+    ("ซื้อ", "Buy"),
+    # Tabs (keep Thai for index.html, these translate for en.html)
     ("คีย์เวิร์ดยอดนิยม", "Rising Keywords"),
-    ("คีย์เวิร์ด", "Keywords"),
     ("สำหรับเซลเลอร์", "For Sellers"),
+    ("วิธีคำนวณ", "Method"),
+    ("รายงาน Pro", "Pro Report"),
+    ("คีย์เวิร์ด", "Keywords"),
+    ("อันดับ", "Ranking"),
     ("วิธีการ", "Method"),
     ("&#128293; น่าจับตา", "&#128293; Discover"),
+    # Header
+    ("เทรนด์ความงามเกาหลี", "Korean Beauty Trends"),
+    ("จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา", "Real data-driven K-Beauty rankings, not ads"),
+    ("อัปเดตทุก 3 วัน | ข้อมูลจาก 3 วัน เพื่อความแม่นยำของอันดับ", "Updated every 3 days | 3-day data for ranking accuracy"),
+    ("อัปเดตล่าสุด:", "Last updated:"),
+    ("เทรนด์ K-Beauty อัปเดตทุก 3 วัน", "K-Beauty trends updated every 3 days"),
+    ("เครื่องสำอางเกาหลีที่น่าจับตามอง", "Korean cosmetics worth watching"),
+    # Seller tab
+    ("สินค้าที่ยังต้องรอดูข้อมูลเพิ่มเติม ดูรายละเอียดใน Pro", "Products needing more data — see details in Pro"),
+    ("&#128274; ดูรายชื่อทั้งหมดได้ที่แท็บ", "&#128274; See full list in"),
+    ("Hidden Gem - โอกาส", "Hidden Gem — Opportunity"),
+    ("สินค้าที่หลุดจาก TOP 30 ครั้งนี้", "Dropped from TOP 30 this period"),
+    ("สินค้าที่อยู่ใน TOP 30 ครั้งก่อนแต่หลุดออกแล้ว", "Was in TOP 30 last period but dropped out"),
+    ("แนะนำซื้อขาย TOP 5", "TOP 5 Recommended to Source"),
     # Seller grades
     ("ซื้อเลย", "Source Now"),
     ("จับตา", "Watch"),
@@ -870,48 +903,118 @@ TH_TO_EN = [
     ("จัดส่งในไทย", "Ships to Thailand"),
     ("จัดส่งทั่วโลก", "Ships worldwide"),
     ("อาจไม่มีสินค้าในบางแพลตฟอร์ม", "May not be available on all platforms"),
+    # Pro report
+    ("รายงานเทรนด์ K-Beauty", "K-Beauty Trend Report"),
+    ("สำหรับเซลเลอร์และอินฟลูเอนเซอร์", "For sellers and influencers"),
+    ("ฟีเจอร์", "Feature"),
+    ("ฟรี", "Free"),
+    ("TOP 10 อันดับ", "TOP 10 Rankings"),
+    ("คะแนนรายแหล่ง (OY/NS/YT)", "Score by source (OY/NS/YT)"),
+    ("TOP 30 รายละเอียด", "TOP 30 Details"),
+    ("&#9203; รอติดตาม ทั้งหมด", "&#9203; Buzz Trap (All)"),
+    ("Hidden Gem ทั้งหมด", "Hidden Gem (All)"),
+    ("Outside OY โอกาส", "Outside OY Opportunity"),
+    ("คู่มือสำหรับเซลเลอร์", "Seller Guide"),
+    ("วิเคราะห์ Shopee TH", "Shopee TH Analysis"),
+    ("รายงานทางอีเมลทุก 3 วัน", "Email report every 3 days"),
+    ("บางส่วน", "Partial"),
+    ("เร็วๆ นี้", "Coming Soon"),
+    ("กำลังเตรียมแพ็กเกจราคาพิเศษ", "Special pricing coming soon"),
+    ("&#128233; ลงทะเบียนรับรายงานฟรีฉบับแรก", "&#128233; Sign up for the first free report"),
+    ("ใส่อีเมลเพื่อรับรายงานเทรนด์ K-Beauty ฟรี 1 ฉบับ", "Enter your email to receive 1 free K-Beauty trend report"),
+    ("ขอบคุณ! เราจะส่งรายงานให้คุณเร็วๆ นี้", "Thank you! We will send you the report soon"),
+    ("ข้อมูลจาก Olive Young Korea, Naver Shopping, YouTube", "Data from Olive Young Korea, Naver Shopping, YouTube"),
+    ("อัปเดตทุก 3 วัน โดยทีมผู้เชี่ยวชาญ K-Beauty", "Updated every 3 days by K-Beauty experts"),
+    ("รายการ", "items"),
+    # Method tab
+    ("วิธีคำนวณคะแนน", "How Scores Are Calculated"),
+    ("คะแนนรวมคำนวณจาก", "Total score calculated from"),
+    ("อัลกอริทึมเฉพาะ", "proprietary algorithm"),
+    ("ที่วิเคราะห์ข้อมูลจาก", "analyzing data from"),
+    ("แหล่งข้อมูล:", "sources:"),
+    ("&#128722; ยอดขายจริงจาก Olive Young Korea", "&#128722; Actual sales from Olive Young Korea"),
+    ("&#128202; อันดับสินค้ายอดนิยมจาก Naver Shopping", "&#128202; Popular product rankings from Naver Shopping"),
+    ("&#128269; ปริมาณการค้นหาจาก Naver Shopping", "&#128269; Search volume from Naver Shopping"),
+    ("&#128250; กระแสรีวิวจาก YouTube", "&#128250; Review buzz from YouTube"),
+    ("สัดส่วนและเกณฑ์คะแนนเป็นสูตรเฉพาะของ K-Beauty Trend Tracker", "Scoring weights and criteria are proprietary to K-Beauty Trend Tracker"),
+    ("คืออะไร?", "— What is it?"),
+    ("สินค้าที่คนค้นหาและรีวิวมากในโซเชียล แต่ยอดขายจริงยังไม่สูง -- อาจเป็นแค่กระแสชั่วคราว ควรระวังในการสต็อก",
+     "Products with high search and review buzz but low actual sales — may be temporary hype, stock with caution"),
+    ("สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล -- โอกาสทองสำหรับเซลเลอร์เข้าตลาดก่อนคู่แข่ง",
+     "Sells well in Korea but low social buzz — golden opportunity for sellers to enter before competitors"),
+    ("สินค้าที่ขายดีต่อเนื่องและมีรีวิวมากมายในช่วง 3 เดือนที่ผ่านมา -- สินค้าที่ได้รับการพิสูจน์แล้วว่าขายดีจริง เหมาะสำหรับสต็อกระยะยาว",
+     "Products consistently selling well with many reviews over the past 3 months — proven sellers suitable for long-term stocking"),
+    ("สินค้าที่อันดับรวมสูงขึ้นมากจากครั้งก่อน (10 อันดับขึ้นไป) -- สินค้ากำลังจะมาแรง!",
+     "Products that jumped 10+ ranks from last period — trending up fast!"),
+    ("สินค้าที่กำลังเป็นกระแส ค้นหาเยอะ มีรีวิวเยอะ แต่ยังไม่ติดอันดับขายดีใน Olive Young — อาจเป็นเทรนด์ที่ยังมาไม่ถึง หรืออาจเป็นแค่กระแสชั่วคราว ต้องรอดูก่อน",
+     "Products trending in search and reviews but not yet in Olive Young top sellers — may be upcoming trends or temporary hype"),
     # Misc
-    ("รอติดตาม", "Buzz Trap"),
     ("ยังไม่มีในครั้งนี้", "None this period"),
     ("ยังไม่มีข้อมูลคีย์เวิร์ด", "No keyword data yet"),
     ("สมัคร", "Subscribe"),
     ("ขอบคุณ!", "Thank you!"),
+    ("&#128233; รับเทรนด์ K-Beauty ทุกครั้งที่อัปเดต", "&#128233; Get K-Beauty trends every update"),
     ("รับเทรนด์ K-Beauty ทุกครั้งที่อัปเดต", "Get K-Beauty trends every update"),
     ("คัดลอกลิงก์แล้ว!", "Link copied!"),
     # Footer
     ("ข้อมูลเพื่อการอ้างอิงเท่านั้น ไม่ใช่คำแนะนำการลงทุนหรือการซื้อขาย", "For reference only. Not investment or purchasing advice."),
     ("แหล่งข้อมูล: Olive Young Korea, Naver Shopping, YouTube | อัปเดตทุก 3 วัน", "Sources: Olive Young Korea, Naver Shopping, YouTube | Updated every 3 days"),
     ("ลิงก์บางส่วนเป็นลิงก์พันธมิตร — รายได้จากการซื้อผ่านลิงก์ช่วยสนับสนุนการดำเนินงานของเว็บไซต์นี้", "Some links are affiliate links — purchases help support this site"),
-    # Header
-    ("เทรนด์ K-Beauty อัปเดตทุก 3 วัน", "K-Beauty trends updated every 3 days"),
-    ("เครื่องสำอางเกาหลีที่น่าจับตามอง", "Korean cosmetics worth watching"),
-    # Pro report
-    ("สำหรับเซลเลอร์และอินฟลูเอนเซอร์", "For sellers and influencers"),
-    ("รายการ", "items"),
-    # Method tab explanations
-    ("คืออะไร?", "— What is it?"),
-    ("สินค้าที่กำลังเป็นกระแส ค้นหาเยอะ มีรีวิวเยอะ แต่ยังไม่ติดอันดับขายดีใน Olive Young — อาจเป็นเทรนด์ที่ยังมาไม่ถึง หรืออาจเป็นแค่กระแสชั่วคราว ต้องรอดูก่อน",
-     "Products trending in search and reviews but not yet in Olive Young top sellers — may be upcoming trends or temporary hype"),
-    ("สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล -- โอกาสทองสำหรับเซลเลอร์เข้าตลาดก่อนคู่แข่ง",
-     "Sells well in Korea but low social buzz — golden opportunity for sellers to enter before competitors"),
-    ("สินค้าที่ขายดีต่อเนื่องและมีรีวิวมากมายในช่วง 3 เดือนที่ผ่านมา -- สินค้าที่ได้รับการพิสูจน์แล้วว่าขายดีจริง เหมาะสำหรับสต็อกระยะยาว",
-     "Products consistently selling well with many reviews over the past 3 months — proven sellers suitable for long-term stocking"),
+    # Share text
+    ("&#127472;&#127479; อันดับเทรนด์ K-Beauty อัปเดตล่าสุด จากข้อมูลจริง #KBeautyTH", "&#127472;&#127479; K-Beauty Trend Rankings — updated with real data #KBeautyTH"),
+    # Unlock button
+    ("&#128275; ปลดล็อกดูรายชื่อ", "&#128275; Unlock full list"),
+    # Meta description
+    ("ติดตามเทรนด์เครื่องสำอางเกาหลียอดนิยม อัปเดตทุก 3 วัน พร้อมคะแนนจาก Olive Young, Naver Shopping และ YouTube",
+     "Track popular Korean beauty trends updated every 3 days with scores from Olive Young, Naver Shopping and YouTube"),
+    # Title
+    ("K-Beauty Trend Tracker Thailand", "K-Beauty Trend Tracker"),
+    # Buzz trap descriptions
+    ("สินค้าที่ยังต้องรอดูข้อมูลเพิ่มเติม</p>", "Products needing more data</p>"),
+    ("รอดูข้อมูลเพิ่มเติม", "Awaiting more data"),
+    # Date prefix
+    ("อัปเดตล่าสุด:", "Last updated:"),
+    # Category filter buttons
+    ("ทั้งหมด", "All"),
+    ("สกินแคร์", "Skincare"),
+    ("เมกอัพ", "Makeup"),
+    ("กันแดด", "Suncare"),
+    ("มาสก์แพ็ค", "Mask"),
+    ("แฮร์แคร์", "Hair"),
+    ("บอดี้แคร์", "Body"),
+    # Buzz Trap (en version uses English)
+    ("รอติดตาม", "Buzz Trap"),
 ]
 
-LANG_TOGGLE_TH = '<a href="en.html" class="lang-toggle" title="English">&#127468;&#127463; EN</a>'
-LANG_TOGGLE_EN = '<a href="index.html" class="lang-toggle" title="ไทย">&#127481;&#127469; TH</a>'
-LANG_TOGGLE_CSS = ".lang-toggle{position:fixed;top:12px;right:12px;z-index:9999;background:#fff;color:#333;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.25);border:1px solid #ddd}"
+LANG_TOGGLE_TH = '<a href="en.html" class="lang-toggle">&#127468;&#127463; EN</a>'
+LANG_TOGGLE_EN = '<a href="index.html" class="lang-toggle">&#127481;&#127469; TH</a>'
+LANG_TOGGLE_CSS = ".lang-toggle{background:rgba(255,255,255,.25);color:#fff;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.4)}.hdr-top{display:flex;justify-content:space-between;align-items:center;padding:0 4px}"
 
+
+EN_MONTHS = {
+    1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr",
+    5: "May", 6: "Jun", 7: "Jul", 8: "Aug",
+    9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
+}
 
 def make_english_version(html_th):
     """태국어 HTML에서 UI 텍스트만 영어로 치환."""
     html_en = html_th
-    for th, en in TH_TO_EN:
+    # 긴 문자열부터 먼저 치환하여 부분 매칭 방지
+    sorted_pairs = sorted(TH_TO_EN, key=lambda x: len(x[0]), reverse=True)
+    for th, en in sorted_pairs:
         html_en = html_en.replace(th, en)
+    # 태국어 날짜 → 영어 날짜
+    for m, th_m in TH_MONTHS.items():
+        html_en = html_en.replace(th_m, EN_MONTHS[m])
     # lang attribute
     html_en = html_en.replace('lang="th"', 'lang="en"')
     # Toggle button: TH→EN 버튼을 EN→TH 버튼으로
     html_en = html_en.replace(LANG_TOGGLE_TH, LANG_TOGGLE_EN)
+    # JavaScript 내 unicode-escaped 태국어 → 영어
+    html_en = html_en.replace(
+        '\\u0e25\\u0e34\\u0e07\\u0e01\\u0e4c\\u0e16\\u0e39\\u0e01\\u0e04\\u0e31\\u0e14\\u0e25\\u0e2d\\u0e01\\u0e41\\u0e25\\u0e49\\u0e27!',
+        'Link copied!')
     return html_en
 
 
@@ -924,7 +1027,7 @@ def main():
 
     # 태국어 버전에 토글 버튼 + CSS 삽입
     html_th = html_th.replace('</head>', f'<style>{LANG_TOGGLE_CSS}</style>\n</head>')
-    html_th = html_th.replace('<div id="kbeauty-app">', f'{LANG_TOGGLE_TH}\n<div id="kbeauty-app">')
+    # 토글 버튼은 이미 헤더 안에 있음
 
     # 태국어 저장
     out_th = os.path.join(DOCS_DIR, "index.html")

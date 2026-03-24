@@ -27,13 +27,13 @@
 .tab-btn.active{color:#e8547a;border-bottom-color:#e8547a}
 
 /* Stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 16px}
-.st{background:#fff;border-radius:10px;padding:10px 6px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.st-v{font-size:20px;font-weight:700;color:#e8547a}.st-l{font-size:11px;color:#999;margin-top:2px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:12px 12px}
+.st{background:#fff;border-radius:10px;padding:8px 4px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.st-v{font-size:18px;font-weight:700;color:#e8547a}.st-l{font-size:9px;color:#999;margin-top:2px}
 
 /* Filter */
-.fbar{display:flex;gap:6px;padding:8px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}.fbar::-webkit-scrollbar{display:none}
-.fbtn{padding:7px 14px;border-radius:20px;border:1.5px solid #ddd;background:#fff;font-size:12px;font-weight:600;color:#666;cursor:pointer;white-space:nowrap;transition:.2s;font-family:inherit}
+.fbar{display:flex;gap:4px;padding:8px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}.fbar::-webkit-scrollbar{display:none}
+.fbtn{padding:6px 10px;border-radius:16px;border:1.5px solid #ddd;background:#fff;font-size:11px;font-weight:600;color:#666;cursor:pointer;white-space:nowrap;transition:.2s;font-family:inherit}
 .fbtn.active{background:#e8547a;color:#fff;border-color:#e8547a}
 
 /* Rank change */
@@ -179,6 +179,7 @@
 .discover-view{padding:8px 16px}
 .disc-section{border-radius:12px;padding:14px;margin-bottom:12px}
 .disc-rising{background:#f3eeff;border-left:4px solid #8854d0}
+.disc-buzz{background:#fff8ef;border-left:4px solid #ffa502}
 .disc-gem{background:#f0fff8;border-left:4px solid #2ed573}
 .disc-new{background:#eef6ff;border-left:4px solid #0984e3}
 .disc-steady{background:#f0f0ff;border-left:4px solid #5352ed}
@@ -195,27 +196,26 @@
 .disc-empty-sec{text-align:center;color:#aaa;padding:16px 0;font-size:13px}
 /* Mobile */
 @media(max-width:380px){
-  .stats{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(3,1fr)}
   .product-card{gap:6px;padding:10px}.product-emoji{width:30px;height:30px;font-size:18px}.rank-big{font-size:18px}
   .tab-btn{font-size:11px;padding:9px 1px}
   .product-name{font-size:13px}.product-brand{font-size:11px}.product-name-ko{font-size:10px}
   .sb{font-size:9px}.badge{font-size:8px}
 }
 </style>
-<style>.lang-toggle{position:fixed;top:12px;right:12px;z-index:9999;background:#fff;color:#333;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.25);border:1px solid #ddd}</style>
+<style>.lang-toggle{background:rgba(255,255,255,.25);color:#fff;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.4)}.hdr-top{display:flex;justify-content:space-between;align-items:center;padding:0 4px}</style>
 </head>
 <body>
-<a href="en.html" class="lang-toggle" title="English">&#127468;&#127463; EN</a>
 <div id="kbeauty-app">
 
 
 
 <div class="hdr">
-  <h1>K-Beauty Trend Tracker</h1>
-  <div class="sub">เทรนด์ความงามเกาหลี | อัปเดต: 24 มี.ค. 2026</div>
+  <div class="hdr-top"><h1>K-Beauty Trend Tracker</h1><a href="en.html" class="lang-toggle">&#127468;&#127463; EN</a></div>
+  <div class="sub">เทรนด์ความงามเกาหลี | 25 มี.ค. 2026</div>
   <div class="tagline">จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา</div>
   <div class="update-cycle">อัปเดตทุก 3 วัน | ข้อมูลจาก 3 วัน เพื่อความแม่นยำของอันดับ</div>
-  <div class="update-date">อัปเดตล่าสุด: อัปเดต: 24 มี.ค. 2026</div>
+  <div class="update-date">อัปเดตล่าสุด: 25 มี.ค. 2026</div>
 </div>
 
 <div class="tab-bar">
@@ -233,15 +233,16 @@
     <div class="st"><div class="st-v">6</div><div class="st-l">&#9203; รอติดตาม</div></div>
     <div class="st"><div class="st-v">1</div><div class="st-l">Hidden Gem</div></div>
     <div class="st"><div class="st-v">0</div><div class="st-l">Steady Seller</div></div>
+    <div class="st"><div class="st-v">2</div><div class="st-l">&#127381; New Entry</div></div>
   </div>
   <div class="fbar">
-    <button class="fbtn active" data-cat="all">All</button>
-    <button class="fbtn" data-cat="skincare">Skincare</button>
-    <button class="fbtn" data-cat="makeup">Makeup</button>
-    <button class="fbtn" data-cat="suncare">Suncare</button>
-    <button class="fbtn" data-cat="maskpack">Mask</button>
-    <button class="fbtn" data-cat="haircare">Hair</button>
-    <button class="fbtn" data-cat="bodycare">Body</button>
+    <button class="fbtn active" data-cat="all">ทั้งหมด</button>
+    <button class="fbtn" data-cat="skincare">สกินแคร์</button>
+    <button class="fbtn" data-cat="makeup">เมกอัพ</button>
+    <button class="fbtn" data-cat="suncare">กันแดด</button>
+    <button class="fbtn" data-cat="maskpack">มาสก์แพ็ค</button>
+    <button class="fbtn" data-cat="haircare">แฮร์แคร์</button>
+    <button class="fbtn" data-cat="bodycare">บอดี้แคร์</button>
   </div>
   <div class="view-toggle">
     <button class="vt-btn vt-active" data-view="discover">&#128293; น่าจับตา</button>
@@ -866,6 +867,37 @@
     <div class="product-name">JUNGSAEMMOOL Essential Skin Nuder Cushion</div>
     <div class="product-name-ko">정샘물 에센셜 스킨 누더 쿠션</div>
     <div class="product-badges"><span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span></div>
+  </div>
+</div>
+</div><div class="disc-section disc-buzz">
+  <div class="disc-title">&#9203; รอติดตาม</div>
+  <div class="disc-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</div>
+  <div class="disc-card" data-category="cleansing">
+  <div class="disc-rank">#26 <span class="rc rc-up">&#9650;3</span></div>
+  <div class="disc-emoji">&#10024;</div>
+  <div class="disc-info">
+    <div class="product-brand">Manyo</div>
+    <div class="product-name">Manyo Pure Cleansing Oil</div>
+    <div class="product-name-ko">마녀공장 퓨어 클렌징오일</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span></div>
+  </div>
+</div><div class="disc-card" data-category="suncare">
+  <div class="disc-rank">#29 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-emoji">&#9728;&#65039;</div>
+  <div class="disc-info">
+    <div class="product-brand">d'Alba</div>
+    <div class="product-name">d'Alba [PINK CORRECTING] Waterfull Tone-Up Sun Cream Duo Set (</div>
+    <div class="product-name-ko">달바 핑크 톤업 선크림</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span></div>
+  </div>
+</div><div class="disc-card" data-category="skincare">
+  <div class="disc-rank">#30 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-emoji">&#128167;</div>
+  <div class="disc-info">
+    <div class="product-brand">Estee Lauder</div>
+    <div class="product-name">Estee Lauder Advanced Night Repair</div>
+    <div class="product-name-ko">에스티로더 갈색병</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span></div>
   </div>
 </div>
 </div><div class="disc-section disc-gem">
