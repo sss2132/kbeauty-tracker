@@ -733,9 +733,13 @@ def main(use_period=True):
 
             if nv.get("change_rate", 0) >= 20:
                 yt_kw = yt.get("keyword", "")
-                naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv.get("change_rate", 0)})
-            if (yt.get("change_rate", yt.get("view_change_rate", 0)) or 0) >= 30:
-                youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt.get("change_rate", yt.get("view_change_rate", 0)), "video_count": yt.get("video_count", 0)})
+                nv_cr = min(nv.get("change_rate", 0), 500)
+                naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv_cr})
+            yt_cr = yt.get("change_rate", yt.get("view_change_rate", 0)) or 0
+            yt_lw_views = yt.get("total_views_last_week", 0) or 0
+            if yt_cr >= 30 and yt_lw_views >= 100:
+                yt_cr_capped = min(yt_cr, 500)
+                youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt_cr_capped, "video_count": yt.get("video_count", 0)})
 
     else:
         # fallback: 기존 단일 데이터 방식 (daily 폴더 없을 때)
@@ -844,9 +848,13 @@ def main(use_period=True):
 
             if nv.get("change_rate", 0) >= 20:
                 yt_kw = yt.get("keyword", "")
-                naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv.get("change_rate", 0)})
-            if (yt.get("change_rate", yt.get("view_change_rate", 0)) or 0) >= 30:
-                youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt.get("change_rate", yt.get("view_change_rate", 0)), "video_count": yt.get("video_count", 0)})
+                nv_cr = min(nv.get("change_rate", 0), 500)
+                naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv_cr})
+            yt_cr = yt.get("change_rate", yt.get("view_change_rate", 0)) or 0
+            yt_lw_views = yt.get("total_views_last_week", 0) or 0
+            if yt_cr >= 30 and yt_lw_views >= 100:
+                yt_cr_capped = min(yt_cr, 500)
+                youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt_cr_capped, "video_count": yt.get("video_count", 0)})
 
     # Sort by total score
     all_products.sort(key=lambda p: p["scores"]["total"], reverse=True)
