@@ -866,39 +866,80 @@ def run_step5():
             safe_print(f"  {day}: {', '.join(missing)} 누락")
 
     if complete_count >= PERIOD_DAYS:
-        safe_print(f"\n{complete_count}일치 완전 데이터 -> 사이트 갱신 시작")
+        # 마지막 사이트 갱신 이후 새 데이터가 3일 이상 쌓였는지 확인
+        site_update_path = os.path.join(DATA_DIR, "_last_site_update.json")
+        should_update_site = True  # 기본값: 갱신 진행
 
-        # score_calculator
-        calc_script = os.path.join(BASE_DIR, "score_calculator.py")
-        calc = subprocess.run(
-            [sys.executable, calc_script],
-            capture_output=True, text=True, timeout=60,
-            encoding="utf-8", errors="replace"
-        )
-        if calc.returncode == 0:
-            safe_print("[CALC] OK")
-            for line in calc.stdout.split("\n"):
-                if line.strip():
-                    safe_print(f"  {line.strip()}")
+        if os.path.exists(site_update_path):
+            try:
+                with open(site_update_path, "r", encoding="utf-8") as f:
+                    site_update_info = json.load(f)
+                last_update_date = site_update_info.get("last_update_date", "")
+
+                # 마지막 갱신 이후 새로 쌓인 daily 날짜 수 계산
+                new_days = _count_daily_since(last_update_date)
+                if new_days < PERIOD_DAYS:
+                    safe_print(f"\n[SKIP] 사이트 갱신 스킵 ({new_days}일/{PERIOD_DAYS}일 수집됨)")
+                    safe_print(f"  마지막 갱신: {last_update_date}")
+                    safe_print(f"  {PERIOD_DAYS - new_days}일 더 수집되면 갱신합니다.")
+                    should_update_site = False
+                else:
+                    safe_print(f"\n마지막 갱신({last_update_date}) 이후 {new_days}일 새 데이터 -> 사이트 갱신 시작")
+            except (json.JSONDecodeError, KeyError):
+                safe_print("\n[WARN] _last_site_update.json 손상 — 갱신 진행")
         else:
-            safe_print(f"[CALC] FAIL - {calc.stderr[:200]}")
-            return False
+            safe_print(f"\n{complete_count}일치 완전 데이터 (첫 갱신) -> 사이트 갱신 시작")
 
-        # generate_site
-        site_script = os.path.join(BASE_DIR, "generate_site.py")
-        if os.path.exists(site_script):
-            site = subprocess.run(
-                [sys.executable, site_script],
-                capture_output=True, text=True, timeout=30,
+        if should_update_site:
+            # score_calculator
+            calc_script = os.path.join(BASE_DIR, "score_calculator.py")
+            calc = subprocess.run(
+                [sys.executable, calc_script],
+                capture_output=True, text=True, timeout=60,
                 encoding="utf-8", errors="replace"
             )
-            if site.returncode == 0:
-                safe_print("[SITE] OK")
+            if calc.returncode == 0:
+                safe_print("[CALC] OK")
+                for line in calc.stdout.split("\n"):
+                    if line.strip():
+                        safe_print(f"  {line.strip()}")
             else:
-                safe_print(f"[SITE] FAIL - {site.stderr[:200]}")
+                safe_print(f"[CALC] FAIL - {calc.stderr[:200]}")
                 return False
 
-        safe_print("\n[GIT] 커밋 + 푸시는 수동 또는 Claude Code에서 실행하세요.")
+            # generate_site
+            site_script = os.path.join(BASE_DIR, "generate_site.py")
+            if os.path.exists(site_script):
+                site = subprocess.run(
+                    [sys.executable, site_script],
+                    capture_output=True, text=True, timeout=30,
+                    encoding="utf-8", errors="replace"
+                )
+                if site.returncode == 0:
+                    safe_print("[SITE] OK")
+                else:
+                    safe_print(f"[SITE] FAIL - {site.stderr[:200]}")
+                    return False
+
+            # 갱신 완료 후 _last_site_update.json 기록
+            complete_folders = _get_complete_daily_folders()
+            if complete_folders:
+                period_start = complete_folders[0]
+                period_end = complete_folders[-1]
+                period_str = f"{period_start} ~ {period_end}"
+            else:
+                period_str = today.strftime("%Y-%m-%d")
+
+            site_update_record = {
+                "last_update_date": today_str,
+                "period": period_str,
+                "updated_at": today.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            with open(site_update_path, "w", encoding="utf-8") as f:
+                json.dump(site_update_record, f, ensure_ascii=False, indent=2)
+            safe_print(f"[RECORD] 사이트 갱신 기록: {today_str} (구간: {period_str})")
+
+            safe_print("\n[GIT] 커밋 + 푸시는 수동 또는 Claude Code에서 실행하세요.")
     else:
         remaining = PERIOD_DAYS - complete_count
         safe_print(f"\n사이트 갱신 불가: 네이버/유튜브 데이터 누락 "
@@ -929,6 +970,53 @@ def run_step5():
 # ================================================================
 #  유틸리티
 # ================================================================
+
+def _count_daily_since(last_update_date_str):
+    """마지막 갱신일(YYYYMMDD) 이후 새로 완전 수집된 daily 날짜 수."""
+    if not os.path.isdir(DAILY_DIR):
+        return 0
+    # last_update_date_str -> YYYY-MM-DD 폴더명 비교용
+    if len(last_update_date_str) == 8:
+        cutoff = f"{last_update_date_str[:4]}-{last_update_date_str[4:6]}-{last_update_date_str[6:8]}"
+    else:
+        cutoff = last_update_date_str
+    count = 0
+    for folder in sorted(os.listdir(DAILY_DIR)):
+        folder_path = os.path.join(DAILY_DIR, folder)
+        if not os.path.isdir(folder_path) or folder <= cutoff:
+            continue
+        meta = os.path.exists(os.path.join(folder_path, "_collection_meta.json"))
+        oy = [f for f in glob.glob(os.path.join(folder_path, "oliveyoung_*.json"))
+              if "sample" not in os.path.basename(f)]
+        nv = [f for f in glob.glob(os.path.join(folder_path, "naver_*.json"))
+              if "sample" not in os.path.basename(f)]
+        yt = [f for f in glob.glob(os.path.join(folder_path, "youtube_*.json"))
+              if "sample" not in os.path.basename(f)]
+        if oy and nv and yt and meta:
+            count += 1
+    return count
+
+
+def _get_complete_daily_folders():
+    """완전 수집된 daily 폴더명(YYYY-MM-DD) 목록을 정렬하여 반환."""
+    if not os.path.isdir(DAILY_DIR):
+        return []
+    folders = []
+    for folder in sorted(os.listdir(DAILY_DIR)):
+        folder_path = os.path.join(DAILY_DIR, folder)
+        if not os.path.isdir(folder_path):
+            continue
+        meta = os.path.exists(os.path.join(folder_path, "_collection_meta.json"))
+        oy = [f for f in glob.glob(os.path.join(folder_path, "oliveyoung_*.json"))
+              if "sample" not in os.path.basename(f)]
+        nv = [f for f in glob.glob(os.path.join(folder_path, "naver_*.json"))
+              if "sample" not in os.path.basename(f)]
+        yt = [f for f in glob.glob(os.path.join(folder_path, "youtube_*.json"))
+              if "sample" not in os.path.basename(f)]
+        if oy and nv and yt and meta:
+            folders.append(folder)
+    return folders
+
 
 def count_daily_data():
     """data/daily/에서 oliveyoung 데이터가 있는 날짜 수."""

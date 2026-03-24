@@ -1,0 +1,352 @@
+[
+  {
+    "product_code": "A000000246780",
+    "keyword": "라운드랩 자작나무 선크림",
+    "search_volume": 100.0,
+    "search_volume_last_week": 63.04,
+    "change_rate": 58.6
+  },
+  {
+    "product_code": "A000000219609",
+    "keyword": "파티온 노스카나인 세럼",
+    "search_volume": 66.67,
+    "search_volume_last_week": 13.04,
+    "change_rate": 411.3
+  },
+  {
+    "product_code": "A000000223414",
+    "keyword": "메디힐 마스크팩",
+    "search_volume": 338.09,
+    "search_volume_last_week": 484.78,
+    "change_rate": -30.3
+  },
+  {
+    "product_code": "A000000249613",
+    "keyword": "디어달리아 글로우 틴트",
+    "search_volume": 4.76,
+    "search_volume_last_week": 0.0,
+    "change_rate": 100.0
+  },
+  {
+    "product_code": "A000000226498",
+    "keyword": "메디큐브 PDRN 앰플",
+    "search_volume": 9.52,
+    "search_volume_last_week": 55.43,
+    "change_rate": -82.8
+  },
+  {
+    "product_code": "A000000171427",
+    "keyword": "메디힐 더마 패드",
+    "search_volume": 42.86,
+    "search_volume_last_week": 28.26,
+    "change_rate": 51.7
+  },
+  {
+    "product_code": "A000000232724",
+    "keyword": "달바 스프레이 세럼",
+    "search_volume": 9.52,
+    "search_volume_last_week": 22.83,
+    "change_rate": -58.3
+  },
+  {
+    "product_code": "A000000247182",
+    "keyword": "메이크프렘 클렌징밀크",
+    "search_volume": 390.48,
+    "search_volume_last_week": 421.74,
+    "change_rate": -7.4
+  },
+  {
+    "product_code": "A000000219553",
+    "keyword": "구달 어성초 선크림",
+    "search_volume": 76.19,
+    "search_volume_last_week": 73.91,
+    "change_rate": 3.1
+  },
+  {
+    "product_code": "A000000217620",
+    "keyword": "메디힐 마스크팩",
+    "search_volume": 338.09,
+    "search_volume_last_week": 484.78,
+    "change_rate": -30.3
+  },
+  {
+    "product_code": "A000000235247",
+    "keyword": "웰라쥬 블루 앰플",
+    "search_volume": 4.76,
+    "search_volume_last_week": 21.74,
+    "change_rate": -78.1
+  },
+  {
+    "product_code": "A000000249348",
+    "keyword": "바이오던스 콜라겐 마스크",
+    "search_volume": 33.33,
+    "search_volume_last_week": 3.26,
+    "change_rate": 922.4
+  },
+  {
+    "product_code": "A000000139063",
+    "keyword": "정샘물 누더 쿠션",
+    "search_volume": 42.86,
+    "search_volume_last_week": 33.7,
+    "change_rate": 27.2
+  },
+  {
+    "product_code": "A000000247689",
+    "keyword": "라로슈포제 시카밤",
+    "search_volume": 176.19,
+    "search_volume_last_week": 207.61,
+    "change_rate": -15.1
+  },
+  {
+    "product_code": "A000000234422",
+    "keyword": "메노킨 버블 마스크",
+    "search_volume": 52.38,
+    "search_volume_last_week": 20.65,
+    "change_rate": 153.7
+  },
+  {
+    "product_code": "A000000249162",
+    "keyword": "라네즈 네오 쿠션",
+    "search_volume": 266.67,
+    "search_volume_last_week": 427.17,
+    "change_rate": -37.6
+  },
+  {
+    "product_code": "A000000249619",
+    "keyword": "디어달리아 립젤",
+    "search_volume": 4.76,
+    "search_volume_last_week": 0.0,
+    "change_rate": 100.0
+  },
+  {
+    "product_code": "A000000189261",
+    "keyword": "토리든 다이브인 세럼",
+    "search_volume": 142.86,
+    "search_volume_last_week": 119.57,
+    "change_rate": 19.5
+  },
+  {
+    "product_code": "A000000171423",
+    "keyword": "어노브 트리트먼트",
+    "search_volume": 242.86,
+    "search_volume_last_week": 221.74,
+    "change_rate": 9.5
+  },
+  {
+    "product_code": "A000000218592",
+    "keyword": "닥터자르트 시카페어 크림",
+    "search_volume": 28.57,
+    "search_volume_last_week": 39.13,
+    "change_rate": -27.0
+  },
+  {
+    "product_code": "A000000158752",
+    "keyword": "토리든 시트 마스크",
+    "search_volume": 14.29,
+    "search_volume_last_week": 5.43,
+    "change_rate": 163.2
+  },
+  {
+    "product_code": "A000000192782",
+    "keyword": "에스네이처 수분크림",
+    "search_volume": 328.57,
+    "search_volume_last_week": 384.78,
+    "change_rate": -14.6
+  },
+  {
+    "product_code": "A000000213569",
+    "keyword": "코링코 속눈썹",
+    "search_volume": 152.38,
+    "search_volume_last_week": 178.26,
+    "change_rate": -14.5
+  },
+  {
+    "product_code": "A000000206904",
+    "keyword": "라로슈포제 시카밤",
+    "search_volume": 176.19,
+    "search_volume_last_week": 207.61,
+    "change_rate": -15.1
+  },
+  {
+    "product_code": "A000000238634",
+    "keyword": "에스트라 아토베리어 크림",
+    "search_volume": 47.62,
+    "search_volume_last_week": 118.48,
+    "change_rate": -59.8
+  },
+  {
+    "product_code": "A000000247918",
+    "keyword": "마녀공장 클렌징오일",
+    "search_volume": 409.53,
+    "search_volume_last_week": 515.22,
+    "change_rate": -20.5
+  },
+  {
+    "product_code": "A000000232725",
+    "keyword": "달바 톤업 선크림",
+    "search_volume": 461.91,
+    "search_volume_last_week": 760.87,
+    "change_rate": -39.3
+  },
+  {
+    "product_code": "A000000178635",
+    "keyword": "VDL 파운데이션",
+    "search_volume": 357.14,
+    "search_volume_last_week": 247.83,
+    "change_rate": 44.1
+  },
+  {
+    "product_code": "A000000230208",
+    "keyword": "이니스프리 레티놀 앰플",
+    "search_volume": 23.81,
+    "search_volume_last_week": 14.13,
+    "change_rate": 68.5
+  },
+  {
+    "product_code": "A000000246445",
+    "keyword": "퓌 볼류밍 글로스",
+    "search_volume": 4.76,
+    "search_volume_last_week": 23.91,
+    "change_rate": -80.1
+  },
+  {
+    "product_code": "A000000226201",
+    "keyword": "아누아 흔적 세럼",
+    "search_volume": 4.76,
+    "search_volume_last_week": 10.87,
+    "change_rate": -56.2
+  },
+  {
+    "product_code": "A000000239841",
+    "keyword": "오아드 슬레인",
+    "search_volume": 4.76,
+    "search_volume_last_week": 4.35,
+    "change_rate": 9.4
+  },
+  {
+    "product_code": "A000000211119",
+    "keyword": "메디힐 흔적 리페어 세럼",
+    "search_volume": 9.52,
+    "search_volume_last_week": 4.35,
+    "change_rate": 118.9
+  },
+  {
+    "product_code": "A000000202777",
+    "keyword": "헤라 블랙 쿠션",
+    "search_volume": 1533.34,
+    "search_volume_last_week": 2852.17,
+    "change_rate": -46.2
+  },
+  {
+    "product_code": "A000000165598",
+    "keyword": "토리든 다이브인 크림",
+    "search_volume": 19.05,
+    "search_volume_last_week": 26.09,
+    "change_rate": -27.0
+  },
+  {
+    "product_code": "A000000233470",
+    "keyword": "메디힐 콜라겐 패치",
+    "search_volume": 4.76,
+    "search_volume_last_week": 19.57,
+    "change_rate": -75.7
+  },
+  {
+    "product_code": "A000000164615",
+    "keyword": "닥터지 레드 블레미쉬 크림",
+    "search_volume": 33.33,
+    "search_volume_last_week": 40.22,
+    "change_rate": -17.1
+  },
+  {
+    "product_code": "A000000245446",
+    "keyword": "비플레인 클렌징폼",
+    "search_volume": 95.24,
+    "search_volume_last_week": 206.52,
+    "change_rate": -53.9
+  },
+  {
+    "product_code": "A000000224494",
+    "keyword": "셀라딕스 앰플",
+    "search_volume": 14.29,
+    "search_volume_last_week": 19.57,
+    "change_rate": -27.0
+  },
+  {
+    "product_code": "A000000183059",
+    "keyword": "어노브 샴푸",
+    "search_volume": 14.29,
+    "search_volume_last_week": 48.91,
+    "change_rate": -70.8
+  },
+  {
+    "product_code": "A000000231632",
+    "keyword": "주미소 장벽크림",
+    "search_volume": 9.52,
+    "search_volume_last_week": 3.26,
+    "change_rate": 192.0
+  },
+  {
+    "product_code": "A000000232098",
+    "keyword": "클리오 킬커버 쿠션",
+    "search_volume": 419.05,
+    "search_volume_last_week": 684.78,
+    "change_rate": -38.8
+  },
+  {
+    "product_code": "A000000246775",
+    "keyword": "주미소 클렌징밀크",
+    "search_volume": 9.52,
+    "search_volume_last_week": 20.65,
+    "change_rate": -53.9
+  },
+  {
+    "product_code": "A000000224292",
+    "keyword": "라로슈포제 시카크림",
+    "search_volume": 95.24,
+    "search_volume_last_week": 29.35,
+    "change_rate": 224.5
+  },
+  {
+    "product_code": "A000000202912",
+    "keyword": "힌스 젤 틴트",
+    "search_volume": 4.76,
+    "search_volume_last_week": 6.52,
+    "change_rate": -27.0
+  },
+  {
+    "product_code": "A000000226517",
+    "keyword": "코스노리 브로우 체인저",
+    "search_volume": 9.52,
+    "search_volume_last_week": 1.09,
+    "change_rate": 773.4
+  },
+  {
+    "product_code": "A000000248826",
+    "keyword": "메디큐브 캡슐크림",
+    "search_volume": 23.81,
+    "search_volume_last_week": 33.7,
+    "change_rate": -29.3
+  },
+  {
+    "product_code": "A000000249931",
+    "keyword": "포트레 섀도우",
+    "search_volume": 4.76,
+    "search_volume_last_week": 3.26,
+    "change_rate": 46.0
+  },
+  {
+    "product_code": "A000000249670",
+    "keyword": "디어달리아 립펜슬",
+    "search_volume": 14.29,
+    "search_volume_last_week": 1.09,
+    "change_rate": 1211.0
+  },
+  {
+    "product_code": "A000000235485",
+    "keyword": "유리아쥬 스틱레브르",
+    "search_volume": 19.05,
+    "search_volume_last_week": 36.96,
+    "change_rate": -48.5
+  }
+]

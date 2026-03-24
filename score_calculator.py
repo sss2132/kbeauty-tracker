@@ -92,7 +92,8 @@ def detect_flags(scores, video_count_3month=0, consecutive_periods=0):
         flags.append("buzz_trap")
     if oy > 70 and ns < 30 and yt < 30:
         # steady_seller vs hidden_gem 구분
-        is_steady = (video_count_3month >= 30) or (consecutive_periods >= 10)
+        # TODO: 데이터 축적 후 consecutive_periods 기반으로 steady_seller 판정 추가
+        is_steady = consecutive_periods >= 10
         if is_steady:
             flags.append("steady_seller")
         else:
@@ -426,28 +427,35 @@ def main(use_period=True):
         except (json.JSONDecodeError, KeyError):
             pass
 
-    # Collect absolute values for log normalization
+    # 비화장품 카테고리 제외
+    NON_COSMETIC_CATEGORIES = {"health", "food", "snack", "supplement", "medical", "other"}
+
+    # Collect absolute values for log normalization (비화장품 제외)
     nv_volumes = []
     yt_views = []
     yt_vcounts = []
-    for oy in oy_data:
+    cosmetic_indices = []  # oy_data 내 화장품 인덱스
+    for i, oy in enumerate(oy_data):
+        if oy.get("category", "") in NON_COSMETIC_CATEGORIES:
+            continue
         code = oy["product_code"]
         nv = nv_map.get(code, {})
         yt = yt_map.get(code, {})
         nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
         yt_views.append(yt.get("total_views", 0) or 0)
         yt_vcounts.append(yt.get("video_count", 0) or 0)
+        cosmetic_indices.append(i)
 
-    nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(oy_data)
-    yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(oy_data)
+    nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(cosmetic_indices)
+    yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(cosmetic_indices)
+
+    # 화장품 인덱스 → 정규화 인덱스 매핑
+    norm_idx_map = {oy_i: norm_i for norm_i, oy_i in enumerate(cosmetic_indices)}
 
     all_products = []
     naver_rising = []
     youtube_rising = []
     translation_lines = []
-
-    # 비화장품 카테고리 제외
-    NON_COSMETIC_CATEGORIES = {"health", "food", "snack", "supplement", "medical"}
 
     for i, oy in enumerate(oy_data):
         code = oy["product_code"]
@@ -465,11 +473,12 @@ def main(use_period=True):
             if oy.get("is_promotion", False):
                 oy_score = round(oy_score * PROMOTION_PENALTY)
 
-        nv_score = nv_norm[i] if nv_data else 0
+        ni = norm_idx_map.get(i, 0)
+        nv_score = nv_norm[ni] if nv_data else 0
 
         yt_product_available = yt.get("youtube_available", True) if yt_data else False
         if yt_data and yt_product_available:
-            yt_base = yt_norm[i]
+            yt_base = yt_norm[ni]
             yt_bonus = calc_youtube_bonus(yt.get("video_count", 0))
             yt_score = min(100, yt_base + yt_bonus)
         else:

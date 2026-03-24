@@ -8,8 +8,11 @@ load_dotenv(Path(__file__).parent / ".env")
 NAVER_CLIENT_ID = os.environ.get("NAVER_CLIENT_ID")
 NAVER_CLIENT_SECRET = os.environ.get("NAVER_CLIENT_SECRET")
 YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
+YOUTUBE_API_KEY_2 = os.environ.get("YOUTUBE_API_KEY_2")
+YOUTUBE_API_KEY_3 = os.environ.get("YOUTUBE_API_KEY_3")
+YOUTUBE_API_KEYS = [k for k in [YOUTUBE_API_KEY_3, YOUTUBE_API_KEY, YOUTUBE_API_KEY_2] if k]
 
-# 오톡(오늘의 특가) 프로모션 패널티 계수
+# 오특(오늘의 특가) 프로모션 패널티 계수
 PROMOTION_PENALTY = 0.5
 
 # 제휴 파라미터 (승인 후 실제 값으로 교체)
