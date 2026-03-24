@@ -930,8 +930,14 @@ def run_step5():
             else:
                 period_str = today.strftime("%Y-%m-%d")
 
+            # last_update_date는 갱신에 포함된 마지막 daily 날짜로 기록
+            # (오늘 날짜가 아님 — 다음 주기 카운트 기준점)
+            if complete_folders:
+                last_daily = complete_folders[-1].replace("-", "")
+            else:
+                last_daily = today_str
             site_update_record = {
-                "last_update_date": today_str,
+                "last_update_date": last_daily,
                 "period": period_str,
                 "updated_at": today.strftime("%Y-%m-%d %H:%M:%S"),
             }
