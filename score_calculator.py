@@ -1,20 +1,22 @@
 """
-K-Beauty Trend Tracker - 종합 트렌드 점수 계산기 v5
+K-Beauty Trend Tracker - 종합 트렌드 점수 계산기 v6
 3소스 체계: OY 45% + NS 30% + YT 25%
 로그 스케일 정규화 + 상위 보너스.
 Buzz Trap / Hidden Gem / RISING 감지.
 
-v5 변경:
-- 고정 3일 구간 평균 순위
-- 오특(오늘의 특가) 프로모션 패널티
-- RISING: 현재 구간 vs 직전 구간 종합 순위 비교
-- 연속 유지 보너스 (2구간+ TOP 30)
+v6 변경:
+- 매일 독립 스코어 → 구간 평균 방식
+- 전체 구간에서 한 번이라도 등장한 모든 제품 포함
+- 동일 search_keyword 중복 병합은 하루 내에서만 수행
+- 비화장품 카테고리 필터 전 단계 적용
 """
 
 import glob
 import json
 import math
 import os
+import sys
+from collections import OrderedDict
 from datetime import datetime, timedelta
 
 from config import make_affiliate_url, PROMOTION_PENALTY
@@ -314,6 +316,193 @@ def compute_consistency_bonus(consecutive_periods):
     return 0
 
 
+NON_COSMETIC_CATEGORIES = {"health", "food", "snack", "supplement", "medical", "other"}
+
+
+def safe_print(text):
+    """cp949 등 터미널 인코딩에서 깨지는 문자를 ? 로 대체하여 출력."""
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        print(text.encode(sys.stdout.encoding or "utf-8", errors="replace").decode(
+            sys.stdout.encoding or "utf-8", errors="replace"
+        ))
+
+
+def compute_single_day_scores(date_obj, period_dates):
+    """하루치 데이터로 독립적인 전체 스코어를 계산한다.
+
+    Returns:
+        dict: {search_keyword: {total, oliveyoung, naver_search, youtube,
+               product_code, brand, brand_en, name_ko, search_keyword,
+               category, ...metadata}} or None if no OY data
+    """
+    oy_data = load_daily_oliveyoung(date_obj)
+    if not oy_data:
+        return None
+
+    # NV/YT: 해당 날짜 것 사용, 없으면 구간 내 최신 날짜 것 탐색
+    nv_data = load_daily_data(date_obj, "naver")
+    yt_data = load_daily_data(date_obj, "youtube")
+
+    if not nv_data:
+        for d in reversed(period_dates):
+            if d != date_obj:
+                nv_data = load_daily_data(d, "naver")
+                if nv_data:
+                    break
+    if not yt_data:
+        for d in reversed(period_dates):
+            if d != date_obj:
+                yt_data = load_daily_data(d, "youtube")
+                if yt_data:
+                    break
+
+    nv_data = nv_data or []
+    yt_data = yt_data or []
+
+    nv_map = {item["product_code"]: item for item in nv_data}
+    yt_map = {item["product_code"]: item for item in yt_data}
+
+    # 비화장품 필터
+    cosmetic_items = [oy for oy in oy_data
+                      if oy.get("category", "") not in NON_COSMETIC_CATEGORIES]
+    if not cosmetic_items:
+        return None
+
+    # 정규화용 절대값 수집
+    nv_volumes = []
+    yt_views = []
+    for oy in cosmetic_items:
+        code = oy["product_code"]
+        nv = nv_map.get(code, {})
+        yt = yt_map.get(code, {})
+        nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
+        yt_views.append(yt.get("total_views", 0) or 0)
+
+    nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(cosmetic_items)
+    yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(cosmetic_items)
+
+    # data_status for weight computation
+    data_status = {
+        "oliveyoung": {"available": True},
+        "naver_search": {"available": bool(nv_data)},
+        "youtube": {"available": bool(yt_data)},
+    }
+    active_weights = compute_active_weights(data_status)
+
+    # 제품별 스코어 계산
+    day_products = {}  # product_code -> product dict
+    for idx, oy in enumerate(cosmetic_items):
+        code = oy["product_code"]
+        nv = nv_map.get(code, {})
+        yt = yt_map.get(code, {})
+
+        oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
+        if oy.get("is_promotion", False):
+            oy_score = round(oy_score * PROMOTION_PENALTY)
+
+        nv_score = nv_norm[idx] if nv_data else 0
+
+        yt_product_available = yt.get("youtube_available", True) if yt_data else False
+        if yt_data and yt_product_available:
+            yt_base = yt_norm[idx]
+            yt_bonus = calc_youtube_bonus(yt.get("video_count", 0))
+            yt_score = min(100, yt_base + yt_bonus)
+        else:
+            yt_score = None
+
+        if yt_score is not None:
+            scores = {"oliveyoung": oy_score, "naver_search": nv_score, "youtube": yt_score}
+            product_weights = active_weights
+        else:
+            scores = {"oliveyoung": oy_score, "naver_search": nv_score, "youtube": 0}
+            oy_ns_total = DEFAULT_WEIGHTS["oliveyoung"] + DEFAULT_WEIGHTS["naver_search"]
+            product_weights = {
+                "oliveyoung": round(DEFAULT_WEIGHTS["oliveyoung"] / oy_ns_total, 2),
+                "naver_search": round(DEFAULT_WEIGHTS["naver_search"] / oy_ns_total, 2),
+                "youtube": 0,
+            }
+
+        total = calc_total_score(scores, product_weights)
+        scores["total"] = total
+
+        sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
+
+        # name_ko
+        raw_sk = oy.get("search_keyword", oy["name"])
+        brand_en = oy.get("brand_en", "")
+        brand_ko = oy.get("brand", "")
+        if brand_en and raw_sk.startswith(brand_en):
+            name_ko_val = brand_ko + raw_sk[len(brand_en):]
+        else:
+            name_ko_val = raw_sk
+
+        day_products[code] = {
+            "product_code": code,
+            "search_keyword": sk,
+            "brand": oy.get("brand", ""),
+            "brand_en": brand_en,
+            "name_ko": name_ko_val,
+            "name": oy.get("name", ""),
+            "category": oy.get("category", ""),
+            "oliveyoung_rank": oy["rank"],
+            "scores": scores,
+            "youtube_available": yt_score is not None,
+            "is_promotion": oy.get("is_promotion", False),
+            "url": oy.get("url", ""),
+            "review_count": oy.get("review_count", 0),
+            "naver_change_rate": nv.get("change_rate", None),
+            "youtube_change_rate": yt.get("change_rate", yt.get("view_change_rate", None)),
+            "nv_raw": nv,
+            "yt_raw": yt,
+        }
+
+    # search_keyword 기준 중복 병합 (하루 내)
+    sk_groups = OrderedDict()
+    for code, p in day_products.items():
+        sk = p["search_keyword"]
+        if sk not in sk_groups:
+            sk_groups[sk] = []
+        sk_groups[sk].append(p)
+
+    merged = {}  # search_keyword -> merged product
+    for sk, group in sk_groups.items():
+        if len(group) == 1:
+            merged[sk] = group[0]
+            continue
+
+        # 최고 순위(최저 rank) 제품을 primary로
+        group.sort(key=lambda p: p["oliveyoung_rank"])
+        primary = group[0].copy()
+        primary["scores"] = dict(primary["scores"])
+        extra_count = len(group) - 1
+        oy_bonus = min(10, extra_count * 5)
+
+        new_oy = min(100, primary["scores"]["oliveyoung"] + oy_bonus)
+        primary["scores"]["oliveyoung"] = new_oy
+
+        # 총점 재계산
+        if primary.get("youtube_available"):
+            pw = active_weights
+        else:
+            oy_ns_total = DEFAULT_WEIGHTS["oliveyoung"] + DEFAULT_WEIGHTS["naver_search"]
+            pw = {
+                "oliveyoung": round(DEFAULT_WEIGHTS["oliveyoung"] / oy_ns_total, 2),
+                "naver_search": round(DEFAULT_WEIGHTS["naver_search"] / oy_ns_total, 2),
+                "youtube": 0,
+            }
+        primary["scores"]["total"] = calc_total_score(primary["scores"], pw)
+
+        primary["merged_from"] = [p["product_code"] for p in group]
+        primary["merged_oy_ranks"] = [p["oliveyoung_rank"] for p in group]
+
+        safe_print(f"  [{date_obj}] [병합] {sk}: OY rank {primary['merged_oy_ranks']} → 보너스 +{oy_bonus}")
+        merged[sk] = primary
+
+    return merged
+
+
 def main(use_period=True):
     today = datetime.now()
     date_str = today.strftime("%Y%m%d")
@@ -322,13 +511,10 @@ def main(use_period=True):
     daily_dates = get_daily_dates()
     periods = compute_periods(daily_dates)
     current_period = None
-    previous_period = None
     all_period_rankings = []  # 각 구간별 정렬된 제품 리스트
 
     if use_period and periods:
         current_period = periods[-1]
-        if len(periods) >= 2:
-            previous_period = periods[-2]
         print(f"[calc] 구간 {len(periods)}개 감지, 현재 구간: {current_period['start']} ~ {current_period['end']}")
     elif use_period and daily_dates:
         # 3일치 안 모임
@@ -339,27 +525,99 @@ def main(use_period=True):
         print(f"[calc] 다음 갱신: {PERIOD_DAYS}일치 모이면 ({needed_end} 이후)")
         return None
 
-    # ── 데이터 로드 ──
-    if current_period:
-        # 3일 구간 평균 모드
-        oy_avg_scores, oy_info = compute_period_oy_scores(current_period)
-        # 최신 날짜의 원본 데이터를 기반으로
-        oy_data = load_daily_oliveyoung(current_period["dates"][-1])
-        oy_real = True
+    # Load translations
+    trans_path = os.path.join(DATA_DIR, "translations.json")
+    translations = {}
+    if os.path.exists(trans_path):
+        with open(trans_path, "r", encoding="utf-8") as f:
+            translations = json.load(f)
 
-        # 네이버/유튜브는 최신 날짜 사용 (daily/에서만 — data/ 루트 fallback 금지)
-        latest_date = current_period["dates"][-1]
-        nv_data = load_daily_data(latest_date, "naver")
-        yt_data = load_daily_data(latest_date, "youtube")
+    # 키워드 맵 로드 (english_name 용)
+    kw_map = {}
+    kw_files = sorted(glob.glob(os.path.join(DATA_DIR, "_keywords_*.json")))
+    if kw_files:
+        try:
+            with open(kw_files[-1], "r", encoding="utf-8") as f:
+                kw_list = json.load(f)
+                if isinstance(kw_list, list):
+                    kw_map = {k["product_code"]: k for k in kw_list}
+                elif isinstance(kw_list, dict) and "keywords" in kw_list:
+                    kw_map = {k["product_code"]: k for k in kw_list["keywords"]}
+        except (json.JSONDecodeError, KeyError):
+            pass
+
+    # ── v6: 매일 독립 스코어 → 평균 ──
+    if current_period:
+        period_dates = current_period["dates"]
+        latest_date = period_dates[-1]
+
+        # 각 날짜별 독립 스코어 계산
+        daily_results = {}  # date -> {search_keyword -> product_with_scores}
+        for d in period_dates:
+            result = compute_single_day_scores(d, period_dates)
+            if result:
+                daily_results[d] = result
+                print(f"[calc] {d}: {len(result)}개 제품 스코어 계산 완료")
+
+        if not daily_results:
+            print("[calc] 모든 날짜에 OY 데이터 없음. 중단.")
+            return None
+
+        num_days = len(period_dates)  # 구간 일수 (등장 안 한 날은 0점)
+
+        # 전체 구간에서 한 번이라도 등장한 모든 search_keyword 수집
+        all_keywords = set()
+        for day_data in daily_results.values():
+            all_keywords.update(day_data.keys())
+
+        # 각 제품의 daily total 평균 계산
+        averaged_products = {}  # search_keyword -> {avg scores + metadata}
+        for sk in all_keywords:
+            totals = []
+            oy_scores = []
+            nv_scores = []
+            yt_scores = []
+            latest_product = None
+
+            for d in period_dates:
+                day_data = daily_results.get(d, {})
+                if sk in day_data:
+                    p = day_data[sk]
+                    totals.append(p["scores"]["total"])
+                    oy_scores.append(p["scores"]["oliveyoung"])
+                    nv_scores.append(p["scores"]["naver_search"])
+                    yt_scores.append(p["scores"]["youtube"])
+                    latest_product = p  # 가장 최신 날짜 데이터로 갱신
+                else:
+                    totals.append(0)
+                    oy_scores.append(0)
+                    nv_scores.append(0)
+                    yt_scores.append(0)
+
+            avg_total = round(sum(totals) / num_days)
+            avg_oy = round(sum(oy_scores) / num_days)
+            avg_nv = round(sum(nv_scores) / num_days)
+            avg_yt = round(sum(yt_scores) / num_days)
+
+            averaged_products[sk] = {
+                "scores": {
+                    "total": avg_total,
+                    "oliveyoung": avg_oy,
+                    "naver_search": avg_nv,
+                    "youtube": avg_yt,
+                },
+                "product": latest_product,
+                "days_appeared": sum(1 for t in totals if t > 0),
+            }
+
+        # 최신 날짜의 NV/YT/OY 데이터 (rising keywords, outside OY, data_status 용)
+        oy_data = load_daily_oliveyoung(latest_date)
+        nv_data = load_daily_data(latest_date, "naver") or []
+        yt_data = load_daily_data(latest_date, "youtube") or []
+        oy_real = True
         nv_real = bool(nv_data)
         yt_real = bool(yt_data)
 
-        if not nv_data:
-            print(f"[calc] 네이버 데이터 없음 (daily/{latest_date}) — 네이버 점수 0 처리")
-            nv_data = []
-        if not yt_data:
-            print(f"[calc] 유튜브 데이터 없음 (daily/{latest_date}) — 유튜브 점수 0 처리")
-            yt_data = []
     else:
         # 기존 방식 fallback (daily 폴더 없을 때)
         oy_data, oy_real = load_json("oliveyoung_*.json")
@@ -372,15 +630,9 @@ def main(use_period=True):
 
         nv_data, nv_real = load_json("naver_*.json")
         yt_data, yt_real = load_json("youtube_*.json")
-        oy_avg_scores = None
-        oy_info = None
 
-    # Load translations
-    trans_path = os.path.join(DATA_DIR, "translations.json")
-    translations = {}
-    if os.path.exists(trans_path):
-        with open(trans_path, "r", encoding="utf-8") as f:
-            translations = json.load(f)
+        # fallback: 단일 날짜로 compute_single_day_scores 사용 불가 → 직접 계산
+        averaged_products = None
 
     # Build data_status
     data_status = {
@@ -413,153 +665,188 @@ def main(use_period=True):
     yt_map = {item["product_code"]: item for item in yt_data}
     oy_codes = {p["product_code"] for p in oy_data}
 
-    # 키워드 맵 로드 (english_name 용)
-    kw_map = {}
-    kw_files = sorted(glob.glob(os.path.join(DATA_DIR, "_keywords_*.json")))
-    if kw_files:
-        try:
-            with open(kw_files[-1], "r", encoding="utf-8") as f:
-                kw_list = json.load(f)
-                if isinstance(kw_list, list):
-                    kw_map = {k["product_code"]: k for k in kw_list}
-                elif isinstance(kw_list, dict) and "keywords" in kw_list:
-                    kw_map = {k["product_code"]: k for k in kw_list["keywords"]}
-        except (json.JSONDecodeError, KeyError):
-            pass
-
-    # 비화장품 카테고리 제외
-    NON_COSMETIC_CATEGORIES = {"health", "food", "snack", "supplement", "medical", "other"}
-
-    # Collect absolute values for log normalization (비화장품 제외)
-    nv_volumes = []
-    yt_views = []
-    yt_vcounts = []
-    cosmetic_indices = []  # oy_data 내 화장품 인덱스
-    for i, oy in enumerate(oy_data):
-        if oy.get("category", "") in NON_COSMETIC_CATEGORIES:
-            continue
-        code = oy["product_code"]
-        nv = nv_map.get(code, {})
-        yt = yt_map.get(code, {})
-        nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
-        yt_views.append(yt.get("total_views", 0) or 0)
-        yt_vcounts.append(yt.get("video_count", 0) or 0)
-        cosmetic_indices.append(i)
-
-    nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(cosmetic_indices)
-    yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(cosmetic_indices)
-
-    # 화장품 인덱스 → 정규화 인덱스 매핑
-    norm_idx_map = {oy_i: norm_i for norm_i, oy_i in enumerate(cosmetic_indices)}
-
+    # ── 제품 리스트 구성 ──
     all_products = []
     naver_rising = []
     youtube_rising = []
     translation_lines = []
 
-    for i, oy in enumerate(oy_data):
-        code = oy["product_code"]
-        if oy.get("category", "") in NON_COSMETIC_CATEGORIES:
-            continue
-        nv = nv_map.get(code, {})
-        yt = yt_map.get(code, {})
+    if averaged_products:
+        # v6: 매일 스코어 평균 결과에서 제품 리스트 구성
+        for sk, avg_data in averaged_products.items():
+            p = avg_data["product"]  # 최신 날짜의 메타데이터
+            code = p["product_code"]
+            scores = avg_data["scores"]
 
-        # 올리브영 점수: 구간 평균 or 단일
-        if oy_avg_scores and code in oy_avg_scores:
-            oy_score = oy_avg_scores[code]
-        else:
+            nv = nv_map.get(code, {})
+            yt = yt_map.get(code, {})
+
+            nv_change = nv.get("change_rate", p.get("naver_change_rate"))
+            yt_change = yt.get("change_rate", yt.get("view_change_rate", p.get("youtube_change_rate")))
+
+            yt_6m = yt.get("video_count_3month", 0)
+            if yt_6m == -1:
+                yt_6m = 0
+            flags = detect_flags(scores, video_count_3month=yt_6m)
+            grade = seller_grade(scores["total"], flags)
+            note = seller_note(scores, flags)
+
+            kw_entry = kw_map.get(code, {}) if kw_map else {}
+            name_en_val = kw_entry.get("english_name", sk)
+
+            product = {
+                "rank": 0,
+                "oliveyoung_rank": p["oliveyoung_rank"],
+                "brand": p["brand"],
+                "brand_en": p.get("brand_en", ""),
+                "name_ko": p["name_ko"],
+                "name_en": name_en_val,
+                "search_keyword": sk,
+                "name_th": translations.get(code, {}).get("name_th", ""),
+                "category": p["category"],
+                "scores": scores,
+                "naver_change_rate": nv_change,
+                "youtube_change_rate": yt_change,
+                "signal": "",
+                "flags": flags,
+                "seller_grade": grade,
+                "rank_change": "0",
+                "product_code": code,
+                "oliveyoung_url": p.get("url", ""),
+                "shopee_url": make_affiliate_url(sk, platform="shopee"),
+                "lazada_url": make_affiliate_url(sk, platform="lazada"),
+                "yesstyle_url": make_affiliate_url(sk, platform="yesstyle"),
+                "amazon_url": make_affiliate_url(sk, platform="amazon"),
+                "oliveyoung_global_url": make_affiliate_url("", product_code=code, platform="oliveyoung"),
+                "seller_note": note,
+                "youtube_available": p.get("youtube_available", False),
+                "is_promotion": p.get("is_promotion", False),
+                "consecutive_periods": 0,
+                "days_appeared": avg_data["days_appeared"],
+            }
+            if "merged_from" in p:
+                product["merged_from"] = p["merged_from"]
+                product["merged_oy_ranks"] = p["merged_oy_ranks"]
+
+            all_products.append(product)
+            translation_lines.append(f'{code}|{p.get("brand_en", "")}|{p.get("name", "")}')
+
+            if nv.get("change_rate", 0) >= 20:
+                yt_kw = yt.get("keyword", "")
+                naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv.get("change_rate", 0)})
+            if (yt.get("change_rate", yt.get("view_change_rate", 0)) or 0) >= 30:
+                youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt.get("change_rate", yt.get("view_change_rate", 0)), "video_count": yt.get("video_count", 0)})
+
+    else:
+        # fallback: 기존 단일 데이터 방식 (daily 폴더 없을 때)
+        cosmetic_items = [oy for oy in oy_data
+                          if oy.get("category", "") not in NON_COSMETIC_CATEGORIES]
+
+        nv_volumes = []
+        yt_views = []
+        for oy in cosmetic_items:
+            code = oy["product_code"]
+            nv = nv_map.get(code, {})
+            yt = yt_map.get(code, {})
+            nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
+            yt_views.append(yt.get("total_views", 0) or 0)
+
+        nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(cosmetic_items)
+        yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(cosmetic_items)
+
+        for idx, oy in enumerate(cosmetic_items):
+            code = oy["product_code"]
+            nv = nv_map.get(code, {})
+            yt = yt_map.get(code, {})
+
             oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
-            # 단일 날짜에서도 프로모션 패널티 적용
             if oy.get("is_promotion", False):
                 oy_score = round(oy_score * PROMOTION_PENALTY)
 
-        ni = norm_idx_map.get(i, 0)
-        nv_score = nv_norm[ni] if nv_data else 0
+            nv_score = nv_norm[idx] if nv_data else 0
 
-        yt_product_available = yt.get("youtube_available", True) if yt_data else False
-        if yt_data and yt_product_available:
-            yt_base = yt_norm[ni]
-            yt_bonus = calc_youtube_bonus(yt.get("video_count", 0))
-            yt_score = min(100, yt_base + yt_bonus)
-        else:
-            yt_score = None
+            yt_product_available = yt.get("youtube_available", True) if yt_data else False
+            if yt_data and yt_product_available:
+                yt_base = yt_norm[idx]
+                yt_bonus = calc_youtube_bonus(yt.get("video_count", 0))
+                yt_score = min(100, yt_base + yt_bonus)
+            else:
+                yt_score = None
 
-        if yt_score is not None:
-            scores = {"oliveyoung": oy_score, "naver_search": nv_score, "youtube": yt_score}
-            product_weights = active_weights
-        else:
-            scores = {"oliveyoung": oy_score, "naver_search": nv_score, "youtube": 0}
-            oy_ns_total = DEFAULT_WEIGHTS["oliveyoung"] + DEFAULT_WEIGHTS["naver_search"]
-            product_weights = {
-                "oliveyoung": round(DEFAULT_WEIGHTS["oliveyoung"] / oy_ns_total, 2),
-                "naver_search": round(DEFAULT_WEIGHTS["naver_search"] / oy_ns_total, 2),
-                "youtube": 0,
+            if yt_score is not None:
+                scores = {"oliveyoung": oy_score, "naver_search": nv_score, "youtube": yt_score}
+                product_weights = active_weights
+            else:
+                scores = {"oliveyoung": oy_score, "naver_search": nv_score, "youtube": 0}
+                oy_ns_total = DEFAULT_WEIGHTS["oliveyoung"] + DEFAULT_WEIGHTS["naver_search"]
+                product_weights = {
+                    "oliveyoung": round(DEFAULT_WEIGHTS["oliveyoung"] / oy_ns_total, 2),
+                    "naver_search": round(DEFAULT_WEIGHTS["naver_search"] / oy_ns_total, 2),
+                    "youtube": 0,
+                }
+
+            total = calc_total_score(scores, product_weights)
+            scores["total"] = total
+
+            sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
+            raw_sk = oy.get("search_keyword", oy["name"])
+            brand_en = oy.get("brand_en", "")
+            brand_ko = oy.get("brand", "")
+            if brand_en and raw_sk.startswith(brand_en):
+                name_ko_val = brand_ko + raw_sk[len(brand_en):]
+            else:
+                name_ko_val = raw_sk
+
+            nv_change = nv.get("change_rate", None)
+            yt_change = yt.get("change_rate", yt.get("view_change_rate", None))
+
+            yt_6m = yt.get("video_count_3month", 0)
+            if yt_6m == -1:
+                yt_6m = 0
+            flags = detect_flags(scores, video_count_3month=yt_6m)
+            grade = seller_grade(total, flags)
+            note = seller_note(scores, flags)
+
+            kw_entry = kw_map.get(code, {}) if kw_map else {}
+            name_en_val = kw_entry.get("english_name", sk)
+
+            product = {
+                "rank": 0,
+                "oliveyoung_rank": oy["rank"],
+                "brand": oy["brand"],
+                "brand_en": oy.get("brand_en", ""),
+                "name_ko": name_ko_val,
+                "name_en": name_en_val,
+                "search_keyword": sk,
+                "name_th": translations.get(code, {}).get("name_th", ""),
+                "category": oy["category"],
+                "scores": scores,
+                "naver_change_rate": nv_change,
+                "youtube_change_rate": yt_change,
+                "signal": "",
+                "flags": flags,
+                "seller_grade": grade,
+                "rank_change": "0",
+                "product_code": code,
+                "oliveyoung_url": oy.get("url", ""),
+                "shopee_url": make_affiliate_url(sk, platform="shopee"),
+                "lazada_url": make_affiliate_url(sk, platform="lazada"),
+                "yesstyle_url": make_affiliate_url(sk, platform="yesstyle"),
+                "amazon_url": make_affiliate_url(sk, platform="amazon"),
+                "oliveyoung_global_url": make_affiliate_url("", product_code=code, platform="oliveyoung"),
+                "seller_note": note,
+                "youtube_available": yt_score is not None,
+                "is_promotion": oy.get("is_promotion", False),
+                "consecutive_periods": 0,
             }
+            all_products.append(product)
+            translation_lines.append(f'{code}|{oy.get("brand_en", "")}|{oy["name"]}')
 
-        total = calc_total_score(scores, product_weights)
-        scores["total"] = total
-
-        nv_change = nv.get("change_rate", None)
-        yt_change = yt.get("change_rate", yt.get("view_change_rate", None))
-
-        yt_6m = yt.get("video_count_3month", 0)
-        if yt_6m == -1:
-            yt_6m = 0  # API 에러면 판정 보류 (hidden_gem 유지)
-        flags = detect_flags(scores, video_count_3month=yt_6m)
-        grade = seller_grade(total, flags)
-        note = seller_note(scores, flags)
-        sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
-
-        # name_ko: 한글 브랜드명 + 한글 제품명 (search_keyword에서 영문 브랜드를 한글로 대체)
-        raw_sk = oy.get("search_keyword", oy["name"])
-        brand_en = oy.get("brand_en", "")
-        brand_ko = oy.get("brand", "")
-        if brand_en and raw_sk.startswith(brand_en):
-            name_ko_val = brand_ko + raw_sk[len(brand_en):]
-        else:
-            name_ko_val = raw_sk
-
-        # name_en: 키워드 맵의 english_name 또는 search_keyword(영문브랜드+제품명)
-        kw_entry = kw_map.get(code, {}) if kw_map else {}
-        name_en_val = kw_entry.get("english_name", sk)
-
-        product = {
-            "rank": 0,
-            "oliveyoung_rank": oy["rank"],
-            "brand": oy["brand"],
-            "brand_en": oy.get("brand_en", ""),
-            "name_ko": name_ko_val,
-            "name_en": name_en_val,
-            "search_keyword": sk,
-            "name_th": translations.get(code, {}).get("name_th", ""),
-            "category": oy["category"],
-            "scores": scores,
-            "naver_change_rate": nv_change,
-            "youtube_change_rate": yt_change,
-            "signal": "",
-            "flags": flags,
-            "seller_grade": grade,
-            "rank_change": "0",
-            "product_code": code,
-            "oliveyoung_url": oy.get("url", ""),
-            "shopee_url": make_affiliate_url(sk, platform="shopee"),
-            "lazada_url": make_affiliate_url(sk, platform="lazada"),
-            "yesstyle_url": make_affiliate_url(sk, platform="yesstyle"),
-            "amazon_url": make_affiliate_url(sk, platform="amazon"),
-            "oliveyoung_global_url": make_affiliate_url("", product_code=code, platform="oliveyoung"),
-            "seller_note": note,
-            "youtube_available": yt_score is not None,
-            "is_promotion": oy.get("is_promotion", False),
-            "consecutive_periods": 0,
-        }
-        all_products.append(product)
-        translation_lines.append(f'{code}|{oy.get("brand_en", "")}|{oy["name"]}')
-
-        if nv.get("change_rate", 0) >= 20:
-            yt_kw = yt.get("keyword", "")
-            naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv.get("change_rate", 0)})
-        if (yt.get("change_rate", yt.get("view_change_rate", 0)) or 0) >= 30:
-            youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt.get("change_rate", yt.get("view_change_rate", 0)), "video_count": yt.get("video_count", 0)})
+            if nv.get("change_rate", 0) >= 20:
+                yt_kw = yt.get("keyword", "")
+                naver_rising.append({"keyword": nv.get("keyword", ""), "keyword_en": yt_kw, "change_rate": nv.get("change_rate", 0)})
+            if (yt.get("change_rate", yt.get("view_change_rate", 0)) or 0) >= 30:
+                youtube_rising.append({"keyword": yt.get("keyword", ""), "change_rate": yt.get("change_rate", yt.get("view_change_rate", 0)), "video_count": yt.get("video_count", 0)})
 
     # Sort by total score
     all_products.sort(key=lambda p: p["scores"]["total"], reverse=True)
