@@ -614,6 +614,25 @@ def run_step3():
         zero_report.append(f"유튜브: {yt_zero}/{yt_total}건 영상 0 ({yt_pct}%), API에러 {yt_err}건")
         safe_print(f"[결과] 유튜브 영상 0: {yt_zero}/{yt_total} ({yt_pct}%), API에러: {yt_err}")
 
+    # Phase 4: 검색량 0 키워드 재시도
+    retry_script = os.path.join(SCRIPTS_DIR, "keyword_retry.py")
+    if os.path.exists(retry_script):
+        try:
+            r = subprocess.run(
+                [sys.executable, retry_script],
+                capture_output=True, text=True, timeout=300,
+                encoding="utf-8", errors="replace"
+            )
+            if r.returncode == 0:
+                safe_print("[RETRY] 키워드 재시도 완료")
+                for line in r.stdout.split("\n"):
+                    if line.strip() and ("성공" in line or "개선" in line or "변경" in line):
+                        safe_print(f"  {line.strip()}")
+            else:
+                safe_print(f"[RETRY] 실패 (무시하고 진행): {r.stderr[:200]}")
+        except Exception as e:
+            safe_print(f"[RETRY] 에러 (무시하고 진행): {e}")
+
     # 결과 경로를 임시 파일에 저장 (Step 4에서 사용)
     state = {
         "oy_path": oy_path,
