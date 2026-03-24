@@ -532,6 +532,13 @@ def main(use_period=True):
         with open(trans_path, "r", encoding="utf-8") as f:
             translations = json.load(f)
 
+    # 영문명 override 로드 (사용자 확인된 영문명, 글로벌몰 매칭 실패분)
+    en_override = {}
+    override_path = os.path.join(DATA_DIR, "english_names_override.json")
+    if os.path.exists(override_path):
+        with open(override_path, "r", encoding="utf-8") as f:
+            en_override = json.load(f)
+
     # 키워드 맵 로드 (english_name 용)
     kw_map = {}
     kw_files = sorted(glob.glob(os.path.join(DATA_DIR, "_keywords_*.json")))
@@ -692,7 +699,7 @@ def main(use_period=True):
             note = seller_note(scores, flags)
 
             kw_entry = kw_map.get(code, {}) if kw_map else {}
-            name_en_val = kw_entry.get("english_name", sk)
+            name_en_val = en_override.get(code) or kw_entry.get("english_name") or sk
 
             product = {
                 "rank": 0,
@@ -804,7 +811,7 @@ def main(use_period=True):
             note = seller_note(scores, flags)
 
             kw_entry = kw_map.get(code, {}) if kw_map else {}
-            name_en_val = kw_entry.get("english_name", sk)
+            name_en_val = en_override.get(code) or kw_entry.get("english_name") or sk
 
             product = {
                 "rank": 0,
