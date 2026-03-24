@@ -748,13 +748,7 @@ def generate_html(data):
 
 <!-- Share -->
 <div class="share-bar">
-  <a class="share-btn share-line" href="https://social-plugins.line.me/lineit/share?url={share_url}&text={share_text}" target="_blank" rel="noopener">LINE</a>
-  <a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u={share_url}" target="_blank" rel="noopener">Facebook</a>
-  <a class="share-btn share-tw" href="https://twitter.com/intent/tweet?text={share_text}&url={share_url}" target="_blank" rel="noopener">X</a>
-  <button class="share-btn share-tiktok" onclick="copyAndToast(this)">TikTok</button>
-  <button class="share-btn share-ig" onclick="copyAndToast(this)">Instagram</button>
-  <button class="share-btn share-yt" onclick="copyAndToast(this)">YouTube</button>
-  <button class="share-btn share-copy" onclick="copyAndToast(this)">&#128203; Copy</button>
+  <button class="share-btn share-copy" onclick="copyAndToast(this)">&#128279; เว็บไซต์แชร์</button>
 </div>
 <div class="toast" id="copy-toast"></div>
 
@@ -982,6 +976,8 @@ TH_TO_EN = [
     ("มาสก์แพ็ค", "Mask"),
     ("แฮร์แคร์", "Hair"),
     ("บอดี้แคร์", "Body"),
+    # Share button
+    ("เว็บไซต์แชร์", "Share Website"),
     # Buzz Trap (en version uses English)
     ("รอติดตาม", "Buzz Trap"),
 ]
