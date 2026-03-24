@@ -162,7 +162,7 @@ def build_discover_html(products):
     rising = [p for p in products if p.get("signal") == "rising" and "buzz_trap" not in p.get("flags", []) and p["rank"] <= 20]
     for p in rising:
         used.add(p["rank"])
-    sections.append(("rising", "&#128640; สินค้ามาแรง", "สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน", rising))
+    sections.append(("rising", "&#128640; Rising", "สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน", rising))
 
     # 2) Hidden Gem
     gems = [p for p in products if "hidden_gem" in p.get("flags", []) and p["rank"] not in used]
@@ -180,7 +180,7 @@ def build_discover_html(products):
     newbies = [p for p in products if p.get("rank_change") == "NEW" and p["rank"] <= 20 and p["rank"] not in used]
     for p in newbies:
         used.add(p["rank"])
-    sections.append(("new", "&#127381; สินค้าใหม่ประจำครั้งนี้", "เพิ่งเข้า TOP 30 เป็นครั้งแรก!", newbies))
+    sections.append(("new", "&#127381; New Entry", "เพิ่งเข้า TOP 30 เป็นครั้งแรก!", newbies))
 
 
     html = ""
@@ -631,25 +631,25 @@ def generate_html(data):
     <div class="st"><div class="st-v">{stats.get("steady_seller_count", 0)}</div><div class="st-l">Steady Seller</div></div>
   </div>
   <div class="fbar">
-    <button class="fbtn active" data-cat="all">ทั้งหมด</button>
-    <button class="fbtn" data-cat="skincare">สกินแคร์</button>
-    <button class="fbtn" data-cat="makeup">เมกอัพ</button>
-    <button class="fbtn" data-cat="suncare">กันแดด</button>
-    <button class="fbtn" data-cat="maskpack">มาสก์แพ็ค</button>
-    <button class="fbtn" data-cat="haircare">แฮร์แคร์</button>
-    <button class="fbtn" data-cat="bodycare">บอดี้แคร์</button>
+    <button class="fbtn active" data-cat="all">All</button>
+    <button class="fbtn" data-cat="skincare">Skincare</button>
+    <button class="fbtn" data-cat="makeup">Makeup</button>
+    <button class="fbtn" data-cat="suncare">Suncare</button>
+    <button class="fbtn" data-cat="maskpack">Mask</button>
+    <button class="fbtn" data-cat="haircare">Hair</button>
+    <button class="fbtn" data-cat="bodycare">Body</button>
   </div>
   <div class="view-toggle">
     <button class="vt-btn vt-active" data-view="discover">&#128293; น่าจับตา</button>
     <button class="vt-btn" data-view="ranking">&#128202; อันดับ</button>
   </div>
   <div class="cat-legend">
-    <span>&#128167; สกินแคร์</span>
-    <span>&#128132; เมกอัพ</span>
-    <span>&#9728;&#65039; กันแดด</span>
-    <span>&#129526; มาสก์แพ็ค</span>
-    <span>&#128135; แฮร์แคร์</span>
-    <span>&#129524; บอดี้แคร์</span>
+    <span>&#128167; Skincare</span>
+    <span>&#128132; Makeup</span>
+    <span>&#9728;&#65039; Suncare</span>
+    <span>&#129526; Mask Pack</span>
+    <span>&#128135; Haircare</span>
+    <span>&#129524; Bodycare</span>
   </div>
   <div class="ranking-view" style="display:none"><div class="plist">{product_cards}</div></div>
   <div class="discover-view">{discover_html}</div>
@@ -900,7 +900,7 @@ TH_TO_EN = [
 
 LANG_TOGGLE_TH = '<a href="en.html" class="lang-toggle" title="English">&#127468;&#127463; EN</a>'
 LANG_TOGGLE_EN = '<a href="index.html" class="lang-toggle" title="ไทย">&#127481;&#127469; TH</a>'
-LANG_TOGGLE_CSS = ".lang-toggle{position:fixed;top:8px;right:8px;z-index:200;background:#fff;color:#333;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.15)}"
+LANG_TOGGLE_CSS = ".lang-toggle{position:fixed;top:12px;right:12px;z-index:9999;background:#fff;color:#333;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.25);border:1px solid #ddd}"
 
 
 def make_english_version(html_th):
