@@ -281,18 +281,24 @@ def verify_english_names(oy_path, keywords_path, timeout=600):
 - 영문명이 한글 제품의 핵심 특성(라인명, 제품타입)을 정확히 반영하면 ok
 - 영문명에 한글명에 없는 단어가 추가되어 있으면 "needs_confirm" (예: 한글 "퍼스트 스프레이 세럼"인데 영문 "White Truffle First Spray Serum"처럼 White Truffle이 추가된 경우)
 - mismatch인 경우 corrected_name에 올바른 영문명을 제시 (브랜드 영문명 + 제품명 영역)
-- needs_confirm인 경우 corrected_name은 비우고, reason에 어떤 단어가 한글명에 없는지 명시
+- needs_confirm인 경우 corrected_name은 비우고, reason에 아래 내용을 모두 포함:
+  1. 어떤 단어가 한글명에 없고 영문명에만 있는지
+  2. 글로벌몰/공식몰에서 검색한 결과 (해당 단어가 공식 이름에 포함되는지)
+  3. 올리브영 국내몰이 축약 표기한 건지, 아예 다른 제품인지 판단 근거
+  예: "한글명 '퍼스트 스프레이 세럼'에 없는 'White Truffle'이 영문명에 포함. 글로벌몰(global.oliveyoung.com)에서 'd'Alba First Spray Serum' 검색 결과 공식 이름이 'd'Alba White Truffle First Spray Serum'으로 확인. 올리브영 국내몰이 축약 표기한 것으로 판단."
 
 ## 제품 목록
 {compare_text}
 
-각 제품에 대해 status(ok/mismatch/missing)를 판단하고, mismatch면 corrected_name과 reason을 제시해."""
+각 제품에 대해 status(ok/mismatch/missing/needs_confirm)를 판단해.
+- mismatch면 corrected_name과 reason을 제시
+- needs_confirm이면 반드시 웹검색(global.oliveyoung.com, 공식몰)으로 확인한 결과를 reason에 포함"""
 
     cmd = [
         CLAUDE_EXE, "-p",
         "--output-format", "json",
         "--json-schema", EN_VERIFY_SCHEMA,
-        "--allowed-tools", "Read",
+        "--allowed-tools", "Read,WebFetch,WebSearch",
         "--no-session-persistence",
         prompt,
     ]

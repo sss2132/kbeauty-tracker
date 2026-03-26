@@ -612,6 +612,13 @@ def main(use_period=True):
         with open(override_path, "r", encoding="utf-8") as f:
             en_override = json.load(f)
 
+    # 한글명 override 로드 (올리브영이 축약 표기한 제품의 공식 정식 이름)
+    ko_override = {}
+    ko_override_path = os.path.join(DATA_DIR, "korean_names_override.json")
+    if os.path.exists(ko_override_path):
+        with open(ko_override_path, "r", encoding="utf-8") as f:
+            ko_override = json.load(f)
+
     # 키워드 맵 로드 (english_name 용)
     kw_map = {}
     kw_files = sorted(glob.glob(os.path.join(DATA_DIR, "_keywords_*.json")))
@@ -788,13 +795,14 @@ def main(use_period=True):
 
             kw_entry = kw_map.get(code, {}) if kw_map else {}
             name_en_val = en_override.get(code) or kw_entry.get("english_name") or sk
+            name_ko_val = ko_override.get(code) or p["name_ko"]
 
             product = {
                 "rank": 0,
                 "oliveyoung_rank": p["oliveyoung_rank"],
                 "brand": p["brand"],
                 "brand_en": p.get("brand_en", ""),
-                "name_ko": p["name_ko"],
+                "name_ko": name_ko_val,
                 "name_en": name_en_val,
                 "search_keyword": sk,
                 "name_th": translations.get(code, {}).get("name_th", ""),
@@ -900,6 +908,7 @@ def main(use_period=True):
 
             kw_entry = kw_map.get(code, {}) if kw_map else {}
             name_en_val = en_override.get(code) or kw_entry.get("english_name") or sk
+            name_ko_val = ko_override.get(code) or name_ko_val
 
             product = {
                 "rank": 0,
