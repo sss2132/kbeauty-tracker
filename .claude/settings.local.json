@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(telegram:configure)",
+      "Bash(chmod:*)",
+      "Skill(telegram:access)",
+      "mcp__plugin_telegram_telegram__reply"
+    ]
+  }
+}
