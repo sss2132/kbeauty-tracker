@@ -324,6 +324,55 @@ NON_COSMETIC_KEYWORDS = [
 ]
 
 
+def clean_product_name(name):
+    """올리브영 원본 제품명에서 용량/기획/프로모션 텍스트를 제거하여 핵심 제품명만 추출.
+
+    제거 대상: 용량(ml, g, 매, 입), 기획 텍스트(더블, 리필, 증정, 골라담기 등),
+    수량 표현(N+N, N입, N종), 프로모션 괄호 내용
+    유지 대상: 브랜드명 + 제품 라인명 + 제품 고유명
+    """
+    import re
+    s = name.strip()
+    # 대괄호 프로모션 제거 (앞쪽 [NEW], [오특] 등)
+    s = re.sub(r'^\[.*?\]\s*', '', s)
+    # 괄호 제거: 프로모션/옵션/기획 내용 (단, 제품 고유 괄호 아닌 것만)
+    s = re.sub(r'\s*\([\+＋].*?\)', '', s)  # (+증정...), (+리필...)
+    s = re.sub(r'\s*\([^)]*(?:기획|콜라보|단품|택\d+|수분/|진정/|종\s*중)[^)]*\)', '', s)
+    # 뒤쪽 슬래시 옵션 제거 (벚꽃/더블/듀오, 본품+리필)
+    s = re.sub(r'[/\s]+본품\+리필$', '', s)
+    s = re.sub(r'\s+벚꽃/더블/듀오.*$', '', s)
+    # 묶음 상품 정보 제거 (시카밤 B5++시카PRO마스크... 같은 패턴)
+    s = re.sub(r'\+[^\s]*마스크.*$', '', s)
+    s = re.sub(r'\+브러쉬.*$', '', s)
+    # 더블기획, 듀오기획 등 (괄호 포함)
+    s = re.sub(r'\s+더블기획(?:\([^)]*\))?', '', s)
+    s = re.sub(r'\s+듀오기획(?:\([^)]*\))?', '', s)
+    s = re.sub(r'\s+리필기획(?:\([^)]*\))?', '', s)
+    # 용량 패턴 제거 (공백 있거나 바로 붙어있는 경우 모두)
+    s = re.sub(r'\s*\d+(?:\.\d+)?(?:ml|ML|mL|g|G|mg|매|입|ea)\b', '', s)
+    s = re.sub(r'/\d+(?:ml|ML|mL|g|G|매)\b', '', s)  # /10매, /50ml 등
+    # N+N, N입, N개 등
+    s = re.sub(r'\s+\d+\+\d+(?:매)?', '', s)
+    s = re.sub(r'\s+\d+(?:입|개)\b', '', s)
+    s = re.sub(r'\s+\d+종\s*(?:골라담기|택\s*\d+|중\s*택\s*\d+)?', '', s)
+    # 기획/프로모션 키워드
+    s = re.sub(r'\s+(?:더블|듀오|대용량|리필)?기획(?:세트)?(?:\s.*)?$', '', s)
+    s = re.sub(r'\s+(?:더블|듀오)$', '', s)
+    s = re.sub(r'\s+대용량$', '', s)
+    s = re.sub(r'\s+중\s*택\d+$', '', s)
+    # N매, NCOLOR 등 뒤쪽 수량
+    s = re.sub(r'\s+\d+매$', '', s)
+    s = re.sub(r'\s+\d+COLOR$', '', s)
+    s = re.sub(r'\s+\d+colors?$', '', s, flags=re.IGNORECASE)
+    # 증정 정보
+    s = re.sub(r'\s*\+.*증정.*$', '', s)
+    # 꼬리 정리: 뒤에 남은 "N+" 패턴 (7+1매에서 7+만 남는 경우)
+    s = re.sub(r'\s+\d+\+$', '', s)
+    s = re.sub(r'\s*/\s*$', '', s)
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s
+
+
 def is_non_cosmetic_by_keyword(product_name):
     """제품명에 비화장품 키워드가 포함되어 있는지 검사."""
     for kw in NON_COSMETIC_KEYWORDS:
@@ -442,22 +491,14 @@ def compute_single_day_scores(date_obj, period_dates):
         scores["total"] = total
 
         sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
-
-        # name_ko
-        raw_sk = oy.get("search_keyword", oy["name"])
         brand_en = oy.get("brand_en", "")
-        brand_ko = oy.get("brand", "")
-        if brand_en and raw_sk.startswith(brand_en):
-            name_ko_val = brand_ko + raw_sk[len(brand_en):]
-        else:
-            name_ko_val = raw_sk
 
         day_products[code] = {
             "product_code": code,
             "search_keyword": sk,
             "brand": oy.get("brand", ""),
             "brand_en": brand_en,
-            "name_ko": name_ko_val,
+            "name_ko": clean_product_name(oy.get("name", "")),
             "name": oy.get("name", ""),
             "category": oy.get("category", ""),
             "oliveyoung_rank": oy["rank"],
@@ -749,10 +790,10 @@ def main(use_period=True):
                 "rank_change": "0",
                 "product_code": code,
                 "oliveyoung_url": p.get("url", ""),
-                "shopee_url": make_affiliate_url(sk, platform="shopee"),
-                "lazada_url": make_affiliate_url(sk, platform="lazada"),
-                "yesstyle_url": make_affiliate_url(sk, platform="yesstyle"),
-                "amazon_url": make_affiliate_url(sk, platform="amazon"),
+                "shopee_url": make_affiliate_url(name_en_val, platform="shopee"),
+                "lazada_url": make_affiliate_url(name_en_val, platform="lazada"),
+                "yesstyle_url": make_affiliate_url(name_en_val, platform="yesstyle"),
+                "amazon_url": make_affiliate_url(name_en_val, platform="amazon"),
                 "oliveyoung_global_url": make_affiliate_url("", product_code=code, platform="oliveyoung"),
                 "seller_note": note,
                 "youtube_available": p.get("youtube_available", False),
@@ -826,13 +867,8 @@ def main(use_period=True):
             scores["total"] = total
 
             sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
-            raw_sk = oy.get("search_keyword", oy["name"])
             brand_en = oy.get("brand_en", "")
-            brand_ko = oy.get("brand", "")
-            if brand_en and raw_sk.startswith(brand_en):
-                name_ko_val = brand_ko + raw_sk[len(brand_en):]
-            else:
-                name_ko_val = raw_sk
+            name_ko_val = clean_product_name(oy.get("name", ""))
 
             nv_change = nv.get("change_rate", None)
             yt_change = yt.get("change_rate", yt.get("view_change_rate", None))
@@ -866,10 +902,10 @@ def main(use_period=True):
                 "rank_change": "0",
                 "product_code": code,
                 "oliveyoung_url": oy.get("url", ""),
-                "shopee_url": make_affiliate_url(sk, platform="shopee"),
-                "lazada_url": make_affiliate_url(sk, platform="lazada"),
-                "yesstyle_url": make_affiliate_url(sk, platform="yesstyle"),
-                "amazon_url": make_affiliate_url(sk, platform="amazon"),
+                "shopee_url": make_affiliate_url(name_en_val, platform="shopee"),
+                "lazada_url": make_affiliate_url(name_en_val, platform="lazada"),
+                "yesstyle_url": make_affiliate_url(name_en_val, platform="yesstyle"),
+                "amazon_url": make_affiliate_url(name_en_val, platform="amazon"),
                 "oliveyoung_global_url": make_affiliate_url("", product_code=code, platform="oliveyoung"),
                 "seller_note": note,
                 "youtube_available": yt_score is not None,

@@ -52,7 +52,7 @@
 .product-emoji{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .product-info{flex:1;min-width:0}
 .product-brand{font-size:12px;font-weight:700;color:#e8547a;text-transform:uppercase}
-.product-name{font-size:14px;color:#2d3436;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
+.product-name{font-size:14px;color:#2d3436;margin-top:2px;line-height:1.3}
 .product-name-ko{font-size:11px;color:#999;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .product-scores{display:flex;gap:4px;margin-top:3px}
 .sb{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px}
@@ -185,7 +185,8 @@
 .disc-steady{background:#f0f0ff;border-left:4px solid #5352ed}
 .disc-title{font-size:15px;font-weight:700;margin-bottom:2px}
 .disc-desc{font-size:12px;color:#777;margin-bottom:10px}
-.disc-card{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:10px;padding:10px;margin-bottom:6px}
+.disc-card{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:10px;padding:10px;margin-bottom:6px}
+.disc-right{flex-shrink:0}
 .disc-card[data-hidden="true"]{display:none}
 .disc-rank{font-size:13px;font-weight:700;color:#e8547a;min-width:40px;text-align:center}
 .disc-rank .rc{display:inline;margin-left:2px}
@@ -212,10 +213,10 @@
 
 <div class="hdr">
   <div class="hdr-top"><h1>K-Beauty Trend Tracker</h1><a href="index.html" class="lang-toggle">&#127481;&#127469; TH</a></div>
-  <div class="sub">Korean Beauty Trends | 26 Mar 2026</div>
+  <div class="sub">Korean Beauty Trends | 27 Mar 2026</div>
   <div class="tagline">Real data-driven K-Beauty rankings, not ads</div>
   <div class="update-cycle">Updated every 3 days | 3-day data for ranking accuracy</div>
-  <div class="update-date">Last updated: 26 Mar 2026</div>
+  <div class="update-date">Last updated: 27 Mar 2026</div>
 </div>
 
 <div class="tab-bar">
@@ -229,11 +230,11 @@
 <!-- Tab 1: Rankings -->
 <div class="panel active" id="p-ranking">
   <div class="stats">
-    <div class="st"><div class="st-v">3</div><div class="st-l">&#128640; Rising</div></div>
+    <div class="st"><div class="st-v">0</div><div class="st-l">&#128640; Rising</div></div>
     <div class="st"><div class="st-v">3</div><div class="st-l">&#9203; Buzz Trap</div></div>
     <div class="st"><div class="st-v">0</div><div class="st-l">Hidden Gem</div></div>
     <div class="st"><div class="st-v">0</div><div class="st-l">Steady Seller</div></div>
-    <div class="st"><div class="st-v">12</div><div class="st-l">&#127381; New Entry</div></div>
+    <div class="st"><div class="st-v">0</div><div class="st-l">&#127381; New Entry</div></div>
   </div>
   <div class="fbar">
     <button class="fbtn active" data-cat="all">All</button>
@@ -257,31 +258,31 @@
     <span>&#129524; Bodycare</span>
   </div>
   <div class="ranking-view" style="display:none"><div class="plist"><div class="product-card" data-category="maskpack">
-  <div class="product-rank rank-gold">1<span class="rc rc-up">&#9650;1</span></div>
+  <div class="product-rank rank-gold">1<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#129526;</div>
   <div class="product-info">
     <div class="product-brand">Mediheal</div>
     <div class="product-name">MEDIHEAL Essential Mask Sheet</div>
     <div class="product-name-ko">메디힐 에센셜 마스크팩</div>
-    <div class="product-badges"></div>
+    <div class="product-badges"><span class="badge badge-hot" title="Best seller with high social buzz">HOT</span><span class="badge-desc">Best seller with high social buzz</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=MEDIHEAL%20Essential%20Mask%20Sheet&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=MEDIHEAL%20Essential%20Mask%20Sheet" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=MEDIHEAL%20Essential%20Mask%20Sheet&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=MEDIHEAL%20Essential%20Mask%20Sheet" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank rank-silver">2<span class="rc rc-up">&#9650;2</span></div>
+  <div class="product-rank rank-silver">2<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Jung Saem Mool</div>
-    <div class="product-name">JUNGSAEMMOOL Masterclass Radiant Cushion</div>
+    <div class="product-name">JUNGSAEMMOOL Essential Skin Nuder Cushion</div>
     <div class="product-name-ko">정샘물 에센셜 스킨 누더 쿠션</div>
     <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
   </div>
@@ -289,15 +290,15 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=JUNGSAEMMOOL%20Essential%20Skin%20Nuder%20Cushion&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=JUNGSAEMMOOL%20Essential%20Skin%20Nuder%20Cushion" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=JUNGSAEMMOOL%20Essential%20Skin%20Nuder%20Cushion&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=JUNGSAEMMOOL%20Essential%20Skin%20Nuder%20Cushion" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank rank-bronze">3<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank rank-bronze">3<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Dear Dahlia</div>
@@ -309,15 +310,35 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EA%B8%80%EB%A1%9C%EC%9A%B0%20%ED%8B%B4%ED%8A%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EA%B8%80%EB%A1%9C%EC%9A%B0%20%ED%8B%B4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EA%B8%80%EB%A1%9C%EC%9A%B0%20%ED%8B%B4%ED%8A%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EA%B8%80%EB%A1%9C%EC%9A%B0%20%ED%8B%B4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=DEAR%20DAHLIA%20Dressy%20Glow%20Tint&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=DEAR%20DAHLIA%20Dressy%20Glow%20Tint" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=DEAR%20DAHLIA%20Dressy%20Glow%20Tint&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=DEAR%20DAHLIA%20Dressy%20Glow%20Tint" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">4<span class="rc rc-up">&#9650;5</span></div>
+  <div class="product-rank ">4<span class="rc rc-up">&#9650;1</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">d'Alba</div>
+    <div class="product-name">d'Alba White Truffle First Spray Serum</div>
+    <div class="product-name-ko">달바 퍼스트 스프레이 세럼</div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20White%20Truffle%20First%20Spray%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20White%20Truffle%20First%20Spray%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20White%20Truffle%20First%20Spray%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20White%20Truffle%20First%20Spray%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">5<span class="rc rc-down">&#9660;1</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Mediheal</div>
@@ -329,39 +350,19 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
-    <div class="bl-note">May not be available on all platforms</div>
-  </div>
-</div>
-<div class="product-card" data-category="skincare">
-  <div class="product-rank ">5<span class="rc rc-up">&#9650;18</span></div>
-  <div class="product-emoji">&#128167;</div>
-  <div class="product-info">
-    <div class="product-brand">d'Alba</div>
-    <div class="product-name">d'Alba White Truffle First Spray Serum</div>
-    <div class="product-name-ko">달바 퍼스트 스프레이 세럼</div>
-    <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span><span class="seller-grade grade-watch">Watch</span></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=MEDIHEAL%20Toner%20Pad&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=MEDIHEAL%20Toner%20Pad" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=MEDIHEAL%20Toner%20Pad&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=MEDIHEAL%20Toner%20Pad" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="maskpack">
-  <div class="product-rank ">6<span class="rc rc-up">&#9650;4</span></div>
+  <div class="product-rank ">6<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#129526;</div>
   <div class="product-info">
     <div class="product-brand">Torriden</div>
-    <div class="product-name">Torriden Dive In Low Molecular Hyaluronic Acid Mask Sheet</div>
+    <div class="product-name">Torriden Mask Sheet</div>
     <div class="product-name-ko">토리든 시트 마스크</div>
     <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
   </div>
@@ -369,55 +370,55 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Torriden%20%EC%8B%9C%ED%8A%B8%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=Torriden%20Mask%20Sheet&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Torriden%20Mask%20Sheet" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Torriden%20Mask%20Sheet&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Torriden%20Mask%20Sheet" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">7<span class="rc rc-up">&#9650;10</span></div>
+  <div class="product-rank ">7<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">S.Nature</div>
     <div class="product-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
     <div class="product-name-ko">에스네이처 아쿠아 스쿠알란 수분크림</div>
-    <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span><span class="seller-grade grade-watch">Watch</span></div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=S.Nature%20%EC%95%84%EC%BF%A0%EC%95%84%20%EC%8A%A4%EC%BF%A0%EC%95%8C%EB%9E%80%20%EC%88%98%EB%B6%84%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=S.Nature%20%EC%95%84%EC%BF%A0%EC%95%84%20%EC%8A%A4%EC%BF%A0%EC%95%8C%EB%9E%80%20%EC%88%98%EB%B6%84%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=S.Nature%20%EC%95%84%EC%BF%A0%EC%95%84%20%EC%8A%A4%EC%BF%A0%EC%95%8C%EB%9E%80%20%EC%88%98%EB%B6%84%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=S.Nature%20%EC%95%84%EC%BF%A0%EC%95%84%20%EC%8A%A4%EC%BF%A0%EC%95%8C%EB%9E%80%20%EC%88%98%EB%B6%84%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">8<span class="rc rc-up">&#9650;12</span></div>
+  <div class="product-rank ">8<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">La Roche-Posay</div>
     <div class="product-name">La Roche-Posay Cicaplast Baume B5+</div>
     <div class="product-name-ko">라로슈포제 시카밤 B5+</div>
-    <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span><span class="seller-grade grade-watch">Watch</span></div>
+    <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5%2B&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5%2B&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%EB%B0%A4%20B5%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=La%20Roche-Posay%20Cicaplast%20Baume%20B5%2B&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=La%20Roche-Posay%20Cicaplast%20Baume%20B5%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=La%20Roche-Posay%20Cicaplast%20Baume%20B5%2B&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=La%20Roche-Posay%20Cicaplast%20Baume%20B5%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">9<span class="rc rc-down">&#9660;1</span></div>
+  <div class="product-rank ">9<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Wellage</div>
@@ -429,35 +430,35 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Wellage%20%EB%A6%AC%EC%96%BC%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89%20%EB%B8%94%EB%A3%A8%20100%20%EC%95%B0%ED%94%8C" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">10<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">10<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Torriden</div>
-    <div class="product-name">Torriden Dive In Serum</div>
-    <div class="product-name-ko">토리든 다이브인 세럼</div>
+    <div class="product-name">Torriden DIVE-IN Low Molecule Hyaluronic Acid Serum</div>
+    <div class="product-name-ko">토리든 다이브인 저분자 히알루론산 세럼</div>
     <div class="product-badges"><span class="seller-grade grade-watch">Watch</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Torriden%20%EB%8B%A4%EC%9D%B4%EB%B8%8C%EC%9D%B8%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=Torriden%20DIVE-IN%20Low%20Molecule%20Hyaluronic%20Acid%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Torriden%20DIVE-IN%20Low%20Molecule%20Hyaluronic%20Acid%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Torriden%20DIVE-IN%20Low%20Molecule%20Hyaluronic%20Acid%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Torriden%20DIVE-IN%20Low%20Molecule%20Hyaluronic%20Acid%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="maskpack">
-  <div class="product-rank ">11<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">11<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#129526;</div>
   <div class="product-info">
     <div class="product-brand">Biodance</div>
@@ -469,35 +470,15 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Biodance%20%EB%A6%AC%EC%96%BC%20%EB%94%A5%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Biodance%20%EB%A6%AC%EC%96%BC%20%EB%94%A5%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Biodance%20%EB%A6%AC%EC%96%BC%20%EB%94%A5%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Biodance%20%EB%A6%AC%EC%96%BC%20%EB%94%A5%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
-    <div class="bl-note">May not be available on all platforms</div>
-  </div>
-</div>
-<div class="product-card" data-category="makeup">
-  <div class="product-rank ">12<span class="rc rc-new">NEW</span></div>
-  <div class="product-emoji">&#128132;</div>
-  <div class="product-info">
-    <div class="product-brand">Coringco</div>
-    <div class="product-name">Coringco Toktok-Hara No-Glue Eyelashes</div>
-    <div class="product-name-ko">코링코 톡톡하라 노글루 속눈썹</div>
-    <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span><span class="seller-grade grade-hold">Hold</span></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Coringco%20%ED%86%A1%ED%86%A1%ED%95%98%EB%9D%BC%20%EB%85%B8%EA%B8%80%EB%A3%A8%20%EC%86%8D%EB%88%88%EC%8D%B9&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Coringco%20%ED%86%A1%ED%86%A1%ED%95%98%EB%9D%BC%20%EB%85%B8%EA%B8%80%EB%A3%A8%20%EC%86%8D%EB%88%88%EC%8D%B9" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Coringco%20%ED%86%A1%ED%86%A1%ED%95%98%EB%9D%BC%20%EB%85%B8%EA%B8%80%EB%A3%A8%20%EC%86%8D%EB%88%88%EC%8D%B9&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Coringco%20%ED%86%A1%ED%86%A1%ED%95%98%EB%9D%BC%20%EB%85%B8%EA%B8%80%EB%A3%A8%20%EC%86%8D%EB%88%88%EC%8D%B9" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">13<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">12<span class="rc rc-up">&#9650;1</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Medicube</div>
@@ -509,39 +490,59 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Medicube%20PDRN%20%ED%95%91%ED%81%AC%20%EC%95%B0%ED%94%8C&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Medicube%20PDRN%20%ED%95%91%ED%81%AC%20%EC%95%B0%ED%94%8C" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Medicube%20PDRN%20%ED%95%91%ED%81%AC%20%EC%95%B0%ED%94%8C&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Medicube%20PDRN%20%ED%95%91%ED%81%AC%20%EC%95%B0%ED%94%8C" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=medicube%20PDRN%20Pink%20Peptide%20Ampoule&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=medicube%20PDRN%20Pink%20Peptide%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=medicube%20PDRN%20Pink%20Peptide%20Ampoule&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=medicube%20PDRN%20Pink%20Peptide%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
-<div class="product-card" data-category="cleansing">
-  <div class="product-rank ">14<span class="rc rc-up">&#9650;12</span></div>
-  <div class="product-emoji">&#10024;</div>
+<div class="product-card" data-category="makeup">
+  <div class="product-rank ">13<span class="rc rc-down">&#9660;1</span></div>
+  <div class="product-emoji">&#128132;</div>
   <div class="product-info">
-    <div class="product-brand">Ma:nyo</div>
-    <div class="product-name">Manyo Pure Cleansing Oil</div>
-    <div class="product-name-ko">Manyo 퓨어 클렌징오일</div>
+    <div class="product-brand">Coringco</div>
+    <div class="product-name">CORINGCO Toktok Hara No Glue Eyelash</div>
+    <div class="product-name-ko">코링코 톡톡하라 노글루 속눈썹</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span><span class="seller-grade grade-hold">Hold</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Manyo%20%ED%93%A8%EC%96%B4%20%ED%81%B4%EB%A0%8C%EC%A7%95%EC%98%A4%EC%9D%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=CORINGCO%20Toktok%20Hara%20No%20Glue%20Eyelash&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=CORINGCO%20Toktok%20Hara%20No%20Glue%20Eyelash" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=CORINGCO%20Toktok%20Hara%20No%20Glue%20Eyelash&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=CORINGCO%20Toktok%20Hara%20No%20Glue%20Eyelash" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="cleansing">
+  <div class="product-rank ">14<span class="rc rc-same">--</span></div>
+  <div class="product-emoji">&#10024;</div>
+  <div class="product-info">
+    <div class="product-brand">Ma:nyo</div>
+    <div class="product-name">ma:nyo Pure Cleansing Oil</div>
+    <div class="product-name-ko">마녀공장 퓨어 클렌징오일</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span><span class="seller-grade grade-hold">Hold</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=ma%3Anyo%20Pure%20Cleansing%20Oil&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=ma%3Anyo%20Pure%20Cleansing%20Oil" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=ma%3Anyo%20Pure%20Cleansing%20Oil&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=ma%3Anyo%20Pure%20Cleansing%20Oil" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="suncare">
-  <div class="product-rank ">15<span class="rc rc-up">&#9650;14</span></div>
+  <div class="product-rank ">15<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#9728;&#65039;</div>
   <div class="product-info">
     <div class="product-brand">d'Alba</div>
-    <div class="product-name">d'Alba Waterfull Tone-Up Sun Cream</div>
+    <div class="product-name">d'Alba Waterfull Tone-Up Sun Cream Pink</div>
     <div class="product-name-ko">달바 핑크 톤업 선크림</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span><span class="seller-grade grade-hold">Hold</span></div>
   </div>
@@ -549,35 +550,15 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=d%27Alba%20%ED%95%91%ED%81%AC%20%ED%86%A4%EC%97%85%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
-    <div class="bl-note">May not be available on all platforms</div>
-  </div>
-</div>
-<div class="product-card" data-category="skincare">
-  <div class="product-rank ">16<span class="rc rc-up">&#9650;9</span></div>
-  <div class="product-emoji">&#128167;</div>
-  <div class="product-info">
-    <div class="product-brand">Mediheal</div>
-    <div class="product-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
-    <div class="product-name-ko">메디힐 마데카소사이드 흔적 리페어 세럼</div>
-    <div class="product-badges"></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Mediheal%20%EB%A7%88%EB%8D%B0%EC%B9%B4%EC%86%8C%EC%82%AC%EC%9D%B4%EB%93%9C%20%ED%9D%94%EC%A0%81%20%EB%A6%AC%ED%8E%98%EC%96%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">17<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">16<span class="rc rc-up">&#9650;1</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Dear Dahlia</div>
@@ -589,35 +570,55 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EB%93%80%20%EB%A6%BD%EC%A0%A4&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EB%93%80%20%EB%A6%BD%EC%A0%A4" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EB%93%80%20%EB%A6%BD%EC%A0%A4&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EB%93%80%20%EB%A6%BD%EC%A0%A4" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=DEAR%20DAHLIA%20Dressy%20Dew%20Lip%20Gel&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=DEAR%20DAHLIA%20Dressy%20Dew%20Lip%20Gel" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=DEAR%20DAHLIA%20Dressy%20Dew%20Lip%20Gel&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=DEAR%20DAHLIA%20Dressy%20Dew%20Lip%20Gel" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">18<span class="rc rc-up">&#9650;6</span></div>
+  <div class="product-rank ">17<span class="rc rc-down">&#9660;1</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
-    <div class="product-brand">Menokin</div>
-    <div class="product-name">Menokin Quick Bubble Mask</div>
-    <div class="product-name-ko">메노킨 퀵 버블 마스크</div>
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
+    <div class="product-name-ko">메디힐 마데카소사이드 흔적 리페어 세럼</div>
     <div class="product-badges"></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Menokin%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Menokin%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Menokin%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Menokin%20%ED%80%B5%20%EB%B2%84%EB%B8%94%20%EB%A7%88%EC%8A%A4%ED%81%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">19<span class="rc rc-down">&#9660;16</span></div>
+  <div class="product-rank ">18<span class="rc rc-same">--</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Menokin</div>
+    <div class="product-name">MENOKIN 30 Seconds Quick Bubble Mask</div>
+    <div class="product-name-ko">메노킨 30초 퀵 버블 마스크</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=MENOKIN%2030%20Seconds%20Quick%20Bubble%20Mask&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=MENOKIN%2030%20Seconds%20Quick%20Bubble%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=MENOKIN%2030%20Seconds%20Quick%20Bubble%20Mask&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=MENOKIN%2030%20Seconds%20Quick%20Bubble%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">19<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Anua</div>
@@ -629,35 +630,15 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Anua%20%ED%94%BC%EB%94%94%EC%95%8C%EC%97%94%20%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%A0%EC%82%B0%20%EC%BA%A1%EC%8A%90%20100%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
-    <div class="bl-note">May not be available on all platforms</div>
-  </div>
-</div>
-<div class="product-card" data-category="haircare">
-  <div class="product-rank ">20<span class="rc rc-down">&#9660;8</span></div>
-  <div class="product-emoji">&#128135;</div>
-  <div class="product-info">
-    <div class="product-brand">Unove</div>
-    <div class="product-name">UNOVE Deep Damage Treatment EX</div>
-    <div class="product-name-ko">어노브 딥 데미지 헤어 트리트먼트 EX</div>
-    <div class="product-badges"></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Unove%20%EB%94%A5%20%EB%8D%B0%EB%AF%B8%EC%A7%80%20%ED%97%A4%EC%96%B4%20%ED%8A%B8%EB%A6%AC%ED%8A%B8%EB%A8%BC%ED%8A%B8%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=Anua%20PDRN%20Hyaluronic%20Acid%20Capsule%20100%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Anua%20PDRN%20Hyaluronic%20Acid%20Capsule%20100%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Anua%20PDRN%20Hyaluronic%20Acid%20Capsule%20100%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Anua%20PDRN%20Hyaluronic%20Acid%20Capsule%20100%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">21<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">20<span class="rc rc-up">&#9650;1</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Dear Dahlia</div>
@@ -669,15 +650,35 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EB%B2%A8%EB%B2%B3%20%EB%A6%BD%20%ED%8E%9C%EC%8A%AC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EB%B2%A8%EB%B2%B3%20%EB%A6%BD%20%ED%8E%9C%EC%8A%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EB%B2%A8%EB%B2%B3%20%EB%A6%BD%20%ED%8E%9C%EC%8A%AC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EB%B2%A8%EB%B2%B3%20%EB%A6%BD%20%ED%8E%9C%EC%8A%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=DEAR%20DAHLIA%20Dressy%20Velvet%20Lip%20Pencil&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=DEAR%20DAHLIA%20Dressy%20Velvet%20Lip%20Pencil" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=DEAR%20DAHLIA%20Dressy%20Velvet%20Lip%20Pencil&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=DEAR%20DAHLIA%20Dressy%20Velvet%20Lip%20Pencil" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="haircare">
+  <div class="product-rank ">21<span class="rc rc-down">&#9660;1</span></div>
+  <div class="product-emoji">&#128135;</div>
+  <div class="product-info">
+    <div class="product-brand">Unove</div>
+    <div class="product-name">UNOVE Deep Damage Treatment EX</div>
+    <div class="product-name-ko">어노브 딥 데미지 헤어 트리트먼트 EX</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=UNOVE%20Deep%20Damage%20Treatment%20EX&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=UNOVE%20Deep%20Damage%20Treatment%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=UNOVE%20Deep%20Damage%20Treatment%20EX&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=UNOVE%20Deep%20Damage%20Treatment%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">22<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">22<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Wakemake</div>
@@ -689,15 +690,35 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Wakemake%20%EC%86%8C%ED%94%84%ED%8A%B8%20%EC%89%AC%EC%96%B4%20%EB%A9%80%ED%8B%B0%20%ED%8C%94%EB%A0%88%ED%8A%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Wakemake%20%EC%86%8C%ED%94%84%ED%8A%B8%20%EC%89%AC%EC%96%B4%20%EB%A9%80%ED%8B%B0%20%ED%8C%94%EB%A0%88%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Wakemake%20%EC%86%8C%ED%94%84%ED%8A%B8%20%EC%89%AC%EC%96%B4%20%EB%A9%80%ED%8B%B0%20%ED%8C%94%EB%A0%88%ED%8A%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Wakemake%20%EC%86%8C%ED%94%84%ED%8A%B8%20%EC%89%AC%EC%96%B4%20%EB%A9%80%ED%8B%B0%20%ED%8C%94%EB%A0%88%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=WAKEMAKE%20Soft%20Sheer%20Multi%20Palette&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=WAKEMAKE%20Soft%20Sheer%20Multi%20Palette" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=WAKEMAKE%20Soft%20Sheer%20Multi%20Palette&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=WAKEMAKE%20Soft%20Sheer%20Multi%20Palette" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div>
+<div class="product-card" data-category="makeup">
+  <div class="product-rank ">23<span class="rc rc-up">&#9650;1</span></div>
+  <div class="product-emoji">&#128132;</div>
+  <div class="product-info">
+    <div class="product-brand">The Saem</div>
+    <div class="product-name">THE SAEM Cover Perfection Triple Pot Concealer</div>
+    <div class="product-name-ko">더샘 커버 퍼펙션 트리플 팟 컨실러 글로우</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="suncare">
-  <div class="product-rank ">23<span class="rc rc-down">&#9660;17</span></div>
+  <div class="product-rank ">24<span class="rc rc-down">&#9660;1</span></div>
   <div class="product-emoji">&#9728;&#65039;</div>
   <div class="product-info">
     <div class="product-brand">Round Lab</div>
@@ -709,55 +730,35 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Round%20Lab%20%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4%20%EC%88%98%EB%B6%84%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Round%20Lab%20%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4%20%EC%88%98%EB%B6%84%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Round%20Lab%20%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4%20%EC%88%98%EB%B6%84%20%EC%84%A0%ED%81%AC%EB%A6%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Round%20Lab%20%EC%9E%90%EC%9E%91%EB%82%98%EB%AC%B4%20%EC%88%98%EB%B6%84%20%EC%84%A0%ED%81%AC%EB%A6%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
-    <div class="bl-note">May not be available on all platforms</div>
-  </div>
-</div>
-<div class="product-card" data-category="makeup">
-  <div class="product-rank ">24<span class="rc rc-down">&#9660;19</span></div>
-  <div class="product-emoji">&#128132;</div>
-  <div class="product-info">
-    <div class="product-brand">The Saem</div>
-    <div class="product-name">The Saem Cover Perfection Triple Pot Concealer Glow</div>
-    <div class="product-name-ko">더샘 커버 퍼펙션 트리플 팟 컨실러</div>
-    <div class="product-badges"></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=The%20Saem%20%EC%BB%A4%EB%B2%84%20%ED%8D%BC%ED%8E%99%EC%85%98%20%ED%8A%B8%EB%A6%AC%ED%94%8C%20%ED%8C%9F%20%EC%BB%A8%EC%8B%A4%EB%9F%AC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=ROUND%20LAB%20Birch%20Juice%20Moisturizing%20Sunscreen&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=ROUND%20LAB%20Birch%20Juice%20Moisturizing%20Sunscreen" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=ROUND%20LAB%20Birch%20Juice%20Moisturizing%20Sunscreen&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=ROUND%20LAB%20Birch%20Juice%20Moisturizing%20Sunscreen" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">25<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">25<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Dong-A Pharmaceutical</div>
     <div class="product-name">DONG-A Pharm Pigmentation Pro Cream</div>
-    <div class="product-name-ko">Dong-A Pharm 색소침착 프로 크림제</div>
+    <div class="product-name-ko">동아제약 색소침착 프로 크림제</div>
     <div class="product-badges"></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Dong-A%20Pharm%20%EC%83%89%EC%86%8C%EC%B9%A8%EC%B0%A9%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Dong-A%20Pharm%20%EC%83%89%EC%86%8C%EC%B9%A8%EC%B0%A9%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Dong-A%20Pharm%20%EC%83%89%EC%86%8C%EC%B9%A8%EC%B0%A9%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Dong-A%20Pharm%20%EC%83%89%EC%86%8C%EC%B9%A8%EC%B0%A9%20%ED%94%84%EB%A1%9C%20%ED%81%AC%EB%A6%BC%EC%A0%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">26<span class="rc rc-down">&#9660;5</span></div>
+  <div class="product-rank ">26<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">La Roche-Posay</div>
@@ -769,19 +770,19 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8A%B8%20%EB%B0%A4%20B5%2B&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8A%B8%20%EB%B0%A4%20B5%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8A%B8%20%EB%B0%A4%20B5%2B&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=La%20Roche-Posay%20%EC%8B%9C%EC%B9%B4%ED%94%8C%EB%9D%BC%EC%8A%A4%ED%8A%B8%20%EB%B0%A4%20B5%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=La%20Roche-Posay%20Cicaplast%20Baume%20B5%2B&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=La%20Roche-Posay%20Cicaplast%20Baume%20B5%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=La%20Roche-Posay%20Cicaplast%20Baume%20B5%2B&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=La%20Roche-Posay%20Cicaplast%20Baume%20B5%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">27<span class="rc rc-down">&#9660;26</span></div>
+  <div class="product-rank ">27<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Laneige</div>
-    <div class="product-name">Laneige 네오 쿠션 더 매트</div>
+    <div class="product-name">LANEIGE Neo Cushion Matte</div>
     <div class="product-name-ko">라네즈 네오 쿠션 더 매트</div>
     <div class="product-badges"></div>
   </div>
@@ -789,19 +790,19 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Laneige%20%EB%84%A4%EC%98%A4%20%EC%BF%A0%EC%85%98%20%EB%8D%94%20%EB%A7%A4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=LANEIGE%20Neo%20Cushion%20Matte&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=LANEIGE%20Neo%20Cushion%20Matte" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=LANEIGE%20Neo%20Cushion%20Matte&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=LANEIGE%20Neo%20Cushion%20Matte" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="suncare">
-  <div class="product-rank ">28<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">28<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#9728;&#65039;</div>
   <div class="product-info">
     <div class="product-brand">Dr.G</div>
-    <div class="product-name">Dr.G Green Mild Up Sun Plus</div>
+    <div class="product-name">Dr.G Green Mild Up Sun+</div>
     <div class="product-name-ko">닥터지 그린 마일드 업 선 플러스</div>
     <div class="product-badges"></div>
   </div>
@@ -809,15 +810,15 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Dr.G%20%EA%B7%B8%EB%A6%B0%20%EB%A7%88%EC%9D%BC%EB%93%9C%20%EC%97%85%20%EC%84%A0%20%ED%94%8C%EB%9F%AC%EC%8A%A4&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Dr.G%20%EA%B7%B8%EB%A6%B0%20%EB%A7%88%EC%9D%BC%EB%93%9C%20%EC%97%85%20%EC%84%A0%20%ED%94%8C%EB%9F%AC%EC%8A%A4" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Dr.G%20%EA%B7%B8%EB%A6%B0%20%EB%A7%88%EC%9D%BC%EB%93%9C%20%EC%97%85%20%EC%84%A0%20%ED%94%8C%EB%9F%AC%EC%8A%A4&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Dr.G%20%EA%B7%B8%EB%A6%B0%20%EB%A7%88%EC%9D%BC%EB%93%9C%20%EC%97%85%20%EC%84%A0%20%ED%94%8C%EB%9F%AC%EC%8A%A4" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=Dr.G%20Green%20Mild%20Up%20Sun%2B&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=Dr.G%20Green%20Mild%20Up%20Sun%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=Dr.G%20Green%20Mild%20Up%20Sun%2B&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=Dr.G%20Green%20Mild%20Up%20Sun%2B" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">29<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">29<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">O HUI</div>
@@ -829,93 +830,96 @@
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=O%20HUI%203%EC%95%84%EC%9B%8C%20%EB%B8%94%EB%9F%AC%EB%A7%81%20%EC%84%A0%ED%8C%8C%EC%9A%B0%EB%8D%94&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=O%20HUI%203%EC%95%84%EC%9B%8C%20%EB%B8%94%EB%9F%AC%EB%A7%81%20%EC%84%A0%ED%8C%8C%EC%9A%B0%EB%8D%94" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=O%20HUI%203%EC%95%84%EC%9B%8C%20%EB%B8%94%EB%9F%AC%EB%A7%81%20%EC%84%A0%ED%8C%8C%EC%9A%B0%EB%8D%94&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=O%20HUI%203%EC%95%84%EC%9B%8C%20%EB%B8%94%EB%9F%AC%EB%A7%81%20%EC%84%A0%ED%8C%8C%EC%9A%B0%EB%8D%94" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=O%20HUI%203-Hour%20Blurring%20Sun%20Powder&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=O%20HUI%203-Hour%20Blurring%20Sun%20Powder" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=O%20HUI%203-Hour%20Blurring%20Sun%20Powder&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=O%20HUI%203-Hour%20Blurring%20Sun%20Powder" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">30<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">30<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Dong-A Pharmaceutical</div>
     <div class="product-name">DONG-A Pharm Pigmentation Pro Liquid</div>
-    <div class="product-name-ko">Dong-A Pharm 색소침착 프로 액제</div>
+    <div class="product-name-ko">동아제약 색소침착 프로 액제</div>
     <div class="product-badges"></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Dong-A%20Pharm%20%EC%83%89%EC%86%8C%EC%B9%A8%EC%B0%A9%20%ED%94%84%EB%A1%9C%20%EC%95%A1%EC%A0%9C&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Dong-A%20Pharm%20%EC%83%89%EC%86%8C%EC%B9%A8%EC%B0%A9%20%ED%94%84%EB%A1%9C%20%EC%95%A1%EC%A0%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Dong-A%20Pharm%20%EC%83%89%EC%86%8C%EC%B9%A8%EC%B0%A9%20%ED%94%84%EB%A1%9C%20%EC%95%A1%EC%A0%9C&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Dong-A%20Pharm%20%EC%83%89%EC%86%8C%EC%B9%A8%EC%B0%A9%20%ED%94%84%EB%A1%9C%20%EC%95%A1%EC%A0%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=DONG-A%20Pharm%20Pigmentation%20Pro%20Liquid&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=DONG-A%20Pharm%20Pigmentation%20Pro%20Liquid" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=DONG-A%20Pharm%20Pigmentation%20Pro%20Liquid&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=DONG-A%20Pharm%20Pigmentation%20Pro%20Liquid" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div></div></div>
   <div class="discover-view"><div class="disc-section disc-rising">
   <div class="disc-title">&#128640; Rising</div>
   <div class="disc-desc">Products that rose significantly in ranking</div>
-  <div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#5 <span class="rc rc-up">&#9650;18</span></div>
-  <div class="disc-emoji">&#128167;</div>
-  <div class="disc-info">
-    <div class="product-brand">d'Alba</div>
-    <div class="product-name">d'Alba White Truffle First Spray Serum</div>
-    <div class="product-name-ko">달바 퍼스트 스프레이 세럼</div>
-    <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span></div>
-  </div>
-</div><div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#7 <span class="rc rc-up">&#9650;10</span></div>
-  <div class="disc-emoji">&#128167;</div>
-  <div class="disc-info">
-    <div class="product-brand">S.Nature</div>
-    <div class="product-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
-    <div class="product-name-ko">에스네이처 아쿠아 스쿠알란 수분크림</div>
-    <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span></div>
-  </div>
-</div><div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#8 <span class="rc rc-up">&#9650;12</span></div>
-  <div class="disc-emoji">&#128167;</div>
-  <div class="disc-info">
-    <div class="product-brand">La Roche-Posay</div>
-    <div class="product-name">La Roche-Posay Cicaplast Baume B5+</div>
-    <div class="product-name-ko">라로슈포제 시카밤 B5+</div>
-    <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span></div>
-  </div>
-</div>
+  <div class="disc-empty-sec">None this period</div>
 </div><div class="disc-section disc-buzz">
   <div class="disc-title">&#9203; Buzz Trap</div>
   <div class="disc-desc">Social buzz high but sales data still uncertain</div>
   <div class="disc-card" data-category="makeup">
-  <div class="disc-rank">#12 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-rank">#13 <span class="rc rc-down">&#9660;1</span></div>
   <div class="disc-emoji">&#128132;</div>
   <div class="disc-info">
     <div class="product-brand">Coringco</div>
-    <div class="product-name">Coringco Toktok-Hara No-Glue Eyelashes</div>
+    <div class="product-name">CORINGCO Toktok Hara No Glue Eyelash</div>
     <div class="product-name-ko">코링코 톡톡하라 노글루 속눈썹</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
+  <div class="disc-right">
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">&#128722; Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=CORINGCO%20Toktok%20Hara%20No%20Glue%20Eyelash&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=CORINGCO%20Toktok%20Hara%20No%20Glue%20Eyelash" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=CORINGCO%20Toktok%20Hara%20No%20Glue%20Eyelash&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=CORINGCO%20Toktok%20Hara%20No%20Glue%20Eyelash" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
 </div><div class="disc-card" data-category="cleansing">
-  <div class="disc-rank">#14 <span class="rc rc-up">&#9650;12</span></div>
+  <div class="disc-rank">#14 <span class="rc rc-same">--</span></div>
   <div class="disc-emoji">&#10024;</div>
   <div class="disc-info">
     <div class="product-brand">Ma:nyo</div>
-    <div class="product-name">Manyo Pure Cleansing Oil</div>
-    <div class="product-name-ko">Manyo 퓨어 클렌징오일</div>
+    <div class="product-name">ma:nyo Pure Cleansing Oil</div>
+    <div class="product-name-ko">마녀공장 퓨어 클렌징오일</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
+  <div class="disc-right">
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">&#128722; Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=ma%3Anyo%20Pure%20Cleansing%20Oil&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=ma%3Anyo%20Pure%20Cleansing%20Oil" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=ma%3Anyo%20Pure%20Cleansing%20Oil&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=ma%3Anyo%20Pure%20Cleansing%20Oil" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
 </div><div class="disc-card" data-category="suncare">
-  <div class="disc-rank">#15 <span class="rc rc-up">&#9650;14</span></div>
+  <div class="disc-rank">#15 <span class="rc rc-same">--</span></div>
   <div class="disc-emoji">&#9728;&#65039;</div>
   <div class="disc-info">
     <div class="product-brand">d'Alba</div>
-    <div class="product-name">d'Alba Waterfull Tone-Up Sun Cream</div>
+    <div class="product-name">d'Alba Waterfull Tone-Up Sun Cream Pink</div>
     <div class="product-name-ko">달바 핑크 톤업 선크림</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
+  </div>
+  <div class="disc-right">
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">&#128722; Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div>
 </div><div class="disc-section disc-gem">
@@ -929,52 +933,7 @@
 </div><div class="disc-section disc-new">
   <div class="disc-title">&#127381; New Entry</div>
   <div class="disc-desc">First time entering TOP 30!</div>
-  <div class="disc-card" data-category="makeup">
-  <div class="disc-rank">#3 <span class="rc rc-new">NEW</span></div>
-  <div class="disc-emoji">&#128132;</div>
-  <div class="disc-info">
-    <div class="product-brand">Dear Dahlia</div>
-    <div class="product-name">DEAR DAHLIA Dressy Glow Tint</div>
-    <div class="product-name-ko">디어달리아 드레시 글로우 틴트</div>
-    <div class="product-badges"></div>
-  </div>
-</div><div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#10 <span class="rc rc-new">NEW</span></div>
-  <div class="disc-emoji">&#128167;</div>
-  <div class="disc-info">
-    <div class="product-brand">Torriden</div>
-    <div class="product-name">Torriden Dive In Serum</div>
-    <div class="product-name-ko">토리든 다이브인 세럼</div>
-    <div class="product-badges"></div>
-  </div>
-</div><div class="disc-card" data-category="maskpack">
-  <div class="disc-rank">#11 <span class="rc rc-new">NEW</span></div>
-  <div class="disc-emoji">&#129526;</div>
-  <div class="disc-info">
-    <div class="product-brand">Biodance</div>
-    <div class="product-name">BIODANCE Bio-Collagen Real Deep Mask</div>
-    <div class="product-name-ko">바이오던스 리얼 딥 마스크</div>
-    <div class="product-badges"></div>
-  </div>
-</div><div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#13 <span class="rc rc-new">NEW</span></div>
-  <div class="disc-emoji">&#128167;</div>
-  <div class="disc-info">
-    <div class="product-brand">Medicube</div>
-    <div class="product-name">medicube PDRN Pink Peptide Ampoule</div>
-    <div class="product-name-ko">메디큐브 PDRN 핑크 앰플</div>
-    <div class="product-badges"></div>
-  </div>
-</div><div class="disc-card" data-category="makeup">
-  <div class="disc-rank">#17 <span class="rc rc-new">NEW</span></div>
-  <div class="disc-emoji">&#128132;</div>
-  <div class="disc-info">
-    <div class="product-brand">Dear Dahlia</div>
-    <div class="product-name">DEAR DAHLIA Dressy Dew Lip Gel</div>
-    <div class="product-name-ko">디어달리아 드레시 듀 립젤</div>
-    <div class="product-badges"></div>
-  </div>
-</div>
+  <div class="disc-empty-sec">None this period</div>
 </div></div>
 </div>
 
@@ -1056,53 +1015,28 @@
   <div class="ss ss-buzz"><h3>&#9203; Buzz Trap (3 items)</h3>
   <p class="ss-desc">Products needing more data — see details in Pro</p>
   <p class="ss-teaser">&#128274; See full list in <a href="#" onclick="document.querySelectorAll('.tab-btn')[3].click();return false" style="color:#e8547a;font-weight:700">Pro Report</a></p>
-</div><div class="ss ss-dropped"><h3>&#128308; Dropped from TOP 30 this period (12)</h3>
-  <p class="ss-desc">Was in TOP 30 last period but dropped out</p><div class="si si-dropped">
-  <div class="si-name">에스트라 아토베리어365 크림</div>
-</div><div class="si si-dropped">
-  <div class="si-name">청미정 다시마 샴푸</div>
-</div><div class="si si-dropped">
-  <div class="si-name">아누아 피디알엔 히알루론산 수분 캡슐 미스트</div>
-</div><div class="si si-dropped">
-  <div class="si-name">토리든 다이브인 저분자 히알루론산 세럼</div>
-</div><div class="si si-dropped">
-  <div class="si-name">메디힐 PDRN 모공 탄력 세럼</div>
-</div><div class="si si-dropped">
-  <div class="si-name">달바 퍼플 톤업 선크림</div>
-</div><div class="si si-dropped">
-  <div class="si-name">어노브 딥 데미지 리페어 샴푸</div>
-</div><div class="si si-dropped">
-  <div class="si-name">메이크프렘 세이프 미 클렌징밀크</div>
-</div><div class="si si-dropped">
-  <div class="si-name">메디힐 에센셜 마스크팩 고기능</div>
-</div><div class="si si-dropped">
-  <div class="si-name">닥터지 레드 블레미쉬 클리어 수딩크림</div>
-</div><div class="si si-dropped">
-  <div class="si-name">비플레인 녹두 약산성 클렌징폼</div>
-</div><div class="si si-dropped">
-  <div class="si-name">에스티로더 갈색병</div>
-</div></div><div class="ss"><h3>&#127942; TOP 5 Recommended to Source</h3><div class="src-item">
+</div><div class="ss"><h3>&#127942; TOP 5 Recommended to Source</h3><div class="src-item">
   <span class="src-rank">#1</span>
   <div class="src-info"><div class="src-name">MEDIHEAL Essential Mask Sheet</div><div class="src-note">OY TOP5</div></div>
   <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Mediheal%20%EC%97%90%EC%84%BC%EC%85%9C%20%EB%A7%88%EC%8A%A4%ED%81%AC%ED%8C%A9" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=MEDIHEAL%20Essential%20Mask%20Sheet&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=MEDIHEAL%20Essential%20Mask%20Sheet" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=MEDIHEAL%20Essential%20Mask%20Sheet&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=MEDIHEAL%20Essential%20Mask%20Sheet" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div><div class="src-item">
   <span class="src-rank">#2</span>
-  <div class="src-info"><div class="src-name">JUNGSAEMMOOL Masterclass Radiant Cushion</div><div class="src-note">search rising</div></div>
+  <div class="src-info"><div class="src-name">JUNGSAEMMOOL Essential Skin Nuder Cushion</div><div class="src-note">search rising</div></div>
   <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Jung%20Saem%20Mool%20%EC%97%90%EC%84%BC%EC%85%9C%20%EC%8A%A4%ED%82%A8%20%EB%88%84%EB%8D%94%20%EC%BF%A0%EC%85%98" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=JUNGSAEMMOOL%20Essential%20Skin%20Nuder%20Cushion&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=JUNGSAEMMOOL%20Essential%20Skin%20Nuder%20Cushion" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=JUNGSAEMMOOL%20Essential%20Skin%20Nuder%20Cushion&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=JUNGSAEMMOOL%20Essential%20Skin%20Nuder%20Cushion" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div><div class="src-item">
@@ -1111,34 +1045,34 @@
   <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EA%B8%80%EB%A1%9C%EC%9A%B0%20%ED%8B%B4%ED%8A%B8&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EA%B8%80%EB%A1%9C%EC%9A%B0%20%ED%8B%B4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EA%B8%80%EB%A1%9C%EC%9A%B0%20%ED%8B%B4%ED%8A%B8&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Dear%20Dahlia%20%EB%93%9C%EB%A0%88%EC%8B%9C%20%EA%B8%80%EB%A1%9C%EC%9A%B0%20%ED%8B%B4%ED%8A%B8" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=DEAR%20DAHLIA%20Dressy%20Glow%20Tint&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=DEAR%20DAHLIA%20Dressy%20Glow%20Tint" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=DEAR%20DAHLIA%20Dressy%20Glow%20Tint&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=DEAR%20DAHLIA%20Dressy%20Glow%20Tint" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div><div class="src-item">
   <span class="src-rank">#4</span>
-  <div class="src-info"><div class="src-name">MEDIHEAL Toner Pad</div><div class="src-note">OY TOP15</div></div>
-  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=Mediheal%20%EB%8D%94%EB%A7%88%20%ED%8C%A8%EB%93%9C" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
-    <div class="bl-note">May not be available on all platforms</div>
-  </div>
-</div><div class="src-item">
-  <span class="src-rank">#5</span>
   <div class="src-info"><div class="src-name">d'Alba White Truffle First Spray Serum</div><div class="src-note">OY TOP15 / search low</div></div>
   <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
-    <a href="https://www.amazon.com/s?k=d%27Alba%20%ED%8D%BC%EC%8A%A4%ED%8A%B8%20%EC%8A%A4%ED%94%84%EB%A0%88%EC%9D%B4%20%EC%84%B8%EB%9F%BC" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20White%20Truffle%20First%20Spray%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20White%20Truffle%20First%20Spray%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20White%20Truffle%20First%20Spray%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20White%20Truffle%20First%20Spray%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
+    <div class="bl-note">May not be available on all platforms</div>
+  </div>
+</div><div class="src-item">
+  <span class="src-rank">#5</span>
+  <div class="src-info"><div class="src-name">MEDIHEAL Toner Pad</div><div class="src-note">OY TOP15</div></div>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=MEDIHEAL%20Toner%20Pad&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=MEDIHEAL%20Toner%20Pad" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">Ships to Thailand</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=MEDIHEAL%20Toner%20Pad&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">Ships worldwide</span></a>
+    <a href="https://www.amazon.com/s?k=MEDIHEAL%20Toner%20Pad" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">Ships worldwide</span></a>
     <div class="bl-note">May not be available on all platforms</div>
   </div>
 </div></div>
@@ -1179,9 +1113,9 @@
     <h3>&#9203; Buzz Trap (3 items)</h3>
     <p class="ss-desc">Products needing more data</p>
     <div class="blur-wrap">
-      <div class="blur-list"><div class="si si-buzz"><div class="si-name">Coringco Toktok-Hara No-Glue Eyelashes</div>
-  <div class="si-reason">Awaiting more data</div></div><div class="si si-buzz"><div class="si-name">Manyo Pure Cleansing Oil</div>
-  <div class="si-reason">Awaiting more data</div></div><div class="si si-buzz"><div class="si-name">d'Alba Waterfull Tone-Up Sun Cream</div>
+      <div class="blur-list"><div class="si si-buzz"><div class="si-name">CORINGCO Toktok Hara No Glue Eyelash</div>
+  <div class="si-reason">Awaiting more data</div></div><div class="si si-buzz"><div class="si-name">ma:nyo Pure Cleansing Oil</div>
+  <div class="si-reason">Awaiting more data</div></div><div class="si si-buzz"><div class="si-name">d'Alba Waterfull Tone-Up Sun Cream Pink</div>
   <div class="si-reason">Awaiting more data</div></div></div>
       <a href="#" class="blur-cta" onclick="this.parentElement.querySelector('.blur-list').classList.remove('blur-list');this.remove();return false">&#128275; Unlock full list</a>
     </div>

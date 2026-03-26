@@ -215,6 +215,11 @@ def build_discover_html(products):
                 elif f == "steady_seller":
                     badges += '<span class="badge badge-steady" title="สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย">STEADY SELLER</span><span class="badge-desc">สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย</span>'
 
+            shopee = esc(p.get("shopee_url", "#"))
+            lazada = esc(p.get("lazada_url", "#"))
+            yesstyle = esc(p.get("yesstyle_url", "#"))
+            amazon = esc(p.get("amazon_url", "#"))
+
             cards += f'''<div class="disc-card" data-category="{cat}">
   <div class="disc-rank">#{rank} {rc_html}</div>
   <div class="disc-emoji">{cat_emoji}</div>
@@ -223,6 +228,16 @@ def build_discover_html(products):
     <div class="product-name">{display_name}</div>
     <div class="product-name-ko">{name_ko}</div>
     <div class="product-badges">{badges}</div>
+  </div>
+  <div class="disc-right">
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">&#128722; Buy &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="{lazada}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="{yesstyle}" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>'''
         if not cards:
@@ -458,7 +473,7 @@ def generate_html(data):
 .product-emoji{{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}}
 .product-info{{flex:1;min-width:0}}
 .product-brand{{font-size:12px;font-weight:700;color:#e8547a;text-transform:uppercase}}
-.product-name{{font-size:14px;color:#2d3436;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}}
+.product-name{{font-size:14px;color:#2d3436;margin-top:2px;line-height:1.3}}
 .product-name-ko{{font-size:11px;color:#999;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 .product-scores{{display:flex;gap:4px;margin-top:3px}}
 .sb{{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px}}
@@ -591,7 +606,8 @@ def generate_html(data):
 .disc-steady{{background:#f0f0ff;border-left:4px solid #5352ed}}
 .disc-title{{font-size:15px;font-weight:700;margin-bottom:2px}}
 .disc-desc{{font-size:12px;color:#777;margin-bottom:10px}}
-.disc-card{{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:10px;padding:10px;margin-bottom:6px}}
+.disc-card{{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:10px;padding:10px;margin-bottom:6px}}
+.disc-right{{flex-shrink:0}}
 .disc-card[data-hidden="true"]{{display:none}}
 .disc-rank{{font-size:13px;font-weight:700;color:#e8547a;min-width:40px;text-align:center}}
 .disc-rank .rc{{display:inline;margin-left:2px}}

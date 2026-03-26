@@ -97,6 +97,26 @@ KEYWORD_SCHEMA = json.dumps({
     "required": ["keywords"]
 }, ensure_ascii=False)
 
+EN_VERIFY_SCHEMA = json.dumps({
+    "type": "object",
+    "properties": {
+        "results": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "product_code": {"type": "string"},
+                    "status": {"type": "string", "enum": ["ok", "mismatch", "missing", "needs_confirm"]},
+                    "corrected_name": {"type": "string", "description": "status가 mismatch일 때만: 수정된 영문명"},
+                    "reason": {"type": "string", "description": "status가 ok가 아닐 때: 사유"}
+                },
+                "required": ["product_code", "status"]
+            }
+        }
+    },
+    "required": ["results"]
+}, ensure_ascii=False)
+
 
 def compute_file_hash(filepath):
     """파일의 SHA256 해시 계산 — 검증 결과와 데이터 파일 연결용."""
@@ -200,6 +220,159 @@ def run_keyword_agent(oy_path, timeout=600):
 
     safe_print("[KEYWORD] Agent 응답 파싱 실패 - 기본 키워드 사용")
     return None
+
+
+def verify_english_names(oy_path, keywords_path, timeout=600):
+    """영문명과 한글 풀네임을 product-by-product로 대조 검증.
+
+    키워드 생성 후, 결정된 english_name이 한글 제품명과 일치하는지 확인.
+    오매칭 발견 시 수정된 이름을 반환하여 keywords 파일을 업데이트.
+    """
+    if not os.path.exists(keywords_path):
+        safe_print("[EN_VERIFY] 키워드 파일 없음 - 검증 건너뜀")
+        return
+
+    with open(oy_path, "r", encoding="utf-8") as f:
+        oy_data = json.load(f)
+    with open(keywords_path, "r", encoding="utf-8") as f:
+        kw_data = json.load(f)
+
+    # 올리브영 제품 맵 (product_code → full name)
+    oy_map = {}
+    for p in oy_data:
+        oy_map[p["product_code"]] = {
+            "name": p["name"],
+            "brand": p.get("brand", ""),
+            "brand_en": p.get("brand_en", ""),
+        }
+
+    # 비교 목록 생성
+    compare_lines = []
+    for kw in kw_data:
+        code = kw["product_code"]
+        en_name = kw.get("english_name", "")
+        oy_info = oy_map.get(code, {})
+        ko_name = oy_info.get("name", "")
+        brand = oy_info.get("brand", "")
+        brand_en = oy_info.get("brand_en", "")
+        compare_lines.append(f"{code} | {brand} ({brand_en}) | KO: {ko_name} | EN: {en_name}")
+
+    if not compare_lines:
+        safe_print("[EN_VERIFY] 비교 대상 없음")
+        return
+
+    compare_text = "\n".join(compare_lines)
+
+    prompt = f"""너는 K-Beauty 제품의 영문명 검증 전문가야.
+아래 목록에서 각 제품의 한글 풀네임(KO)과 영문명(EN)이 같은 제품을 가리키는지 확인해.
+
+## 검증 기준
+1. **제품 타입 일치**: 세럼↔Serum, 크림↔Cream, 쿠션↔Cushion, 패드↔Pad, 마스크↔Mask, 틴트↔Tint 등
+2. **제품 라인명 일치**: 한글 제품명의 핵심 키워드가 영문명에 반영되어야 함
+   - 예: "누더 쿠션" → "Nuder Cushion" (O), "Radiant Cushion" (X - 다른 제품)
+   - 예: "핑크 톤업 선크림" → "Pink Tone-Up Sun Cream" (O), "Waterfull Tone-Up Sun Cream" (X - 다른 라인)
+   - 예: "시트 마스크" → "Mask Sheet" (O), "Dive In Low Molecular Hyaluronic Acid Mask Sheet" (X - 너무 구체적, 다른 제품 이름)
+3. **브랜드 일치**: 영문명의 브랜드가 한글 브랜드와 같아야 함
+4. **한글이 영문명에 그대로 들어가 있으면 mismatch**: 영문명 필드에 한글 문자가 포함되어 있으면 번역이 안 된 것
+
+## 판단 원칙
+- 용량(ml, g, 매)이나 프로모션(기획, 더블, 2입) 텍스트는 무시
+- 같은 브랜드의 다른 제품 라인이 영문명에 들어가 있으면 mismatch
+- 영문명이 한글 제품의 핵심 특성(라인명, 제품타입)을 정확히 반영하면 ok
+- 영문명에 한글명에 없는 단어가 추가되어 있으면 "needs_confirm" (예: 한글 "퍼스트 스프레이 세럼"인데 영문 "White Truffle First Spray Serum"처럼 White Truffle이 추가된 경우)
+- mismatch인 경우 corrected_name에 올바른 영문명을 제시 (브랜드 영문명 + 제품명 영역)
+- needs_confirm인 경우 corrected_name은 비우고, reason에 어떤 단어가 한글명에 없는지 명시
+
+## 제품 목록
+{compare_text}
+
+각 제품에 대해 status(ok/mismatch/missing)를 판단하고, mismatch면 corrected_name과 reason을 제시해."""
+
+    cmd = [
+        CLAUDE_EXE, "-p",
+        "--output-format", "json",
+        "--json-schema", EN_VERIFY_SCHEMA,
+        "--allowed-tools", "Read",
+        "--no-session-persistence",
+        prompt,
+    ]
+
+    safe_print("[EN_VERIFY] 영문명 검증 Agent 호출 중...")
+
+    try:
+        result = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=timeout,
+            encoding="utf-8", errors="replace", cwd=PROJECT_ROOT,
+        )
+    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+        safe_print(f"[EN_VERIFY] Agent 실패: {e}")
+        return
+
+    if result.returncode != 0:
+        safe_print(f"[EN_VERIFY] Agent 실행 실패: {(result.stderr or '')[:200]}")
+        return
+
+    raw = result.stdout.strip()
+    try:
+        outer = json.loads(raw)
+        if "structured_output" in outer and isinstance(outer["structured_output"], dict):
+            inner = outer["structured_output"]
+        elif "results" in outer:
+            inner = outer
+        else:
+            safe_print("[EN_VERIFY] 응답 파싱 실패")
+            return
+    except (json.JSONDecodeError, TypeError):
+        safe_print("[EN_VERIFY] JSON 파싱 실패")
+        return
+
+    verify_results = inner.get("results", [])
+    mismatches = [r for r in verify_results if r.get("status") == "mismatch"]
+    missing = [r for r in verify_results if r.get("status") == "missing"]
+    needs_confirm = [r for r in verify_results if r.get("status") == "needs_confirm"]
+
+    if not mismatches and not missing and not needs_confirm:
+        safe_print(f"[EN_VERIFY] 전체 {len(verify_results)}개 제품 영문명 OK")
+        return
+
+    safe_print(f"[EN_VERIFY] 오매칭 {len(mismatches)}건, 확인필요 {len(needs_confirm)}건, 누락 {len(missing)}건")
+
+    # needs_confirm 목록을 파일로 저장 (orchestrator가 텔레그램으로 사용자에게 확인 요청)
+    if needs_confirm:
+        confirm_path = os.path.join(DATA_DIR, "_en_needs_confirm.json")
+        confirm_items = []
+        for nc in needs_confirm:
+            code = nc["product_code"]
+            oy_info = oy_map.get(code, {})
+            kw_entry = {kw["product_code"]: kw for kw in kw_data}.get(code, {})
+            confirm_items.append({
+                "product_code": code,
+                "korean_name": oy_info.get("name", ""),
+                "english_name": kw_entry.get("english_name", ""),
+                "reason": nc.get("reason", ""),
+            })
+            safe_print(f"  확인필요: {oy_info.get('name', code)} → EN: {kw_entry.get('english_name', '?')} ({nc.get('reason', '')})")
+        with open(confirm_path, "w", encoding="utf-8") as f:
+            json.dump(confirm_items, f, ensure_ascii=False, indent=2)
+        safe_print(f"[EN_VERIFY] 확인 필요 {len(confirm_items)}건 → _en_needs_confirm.json (텔레그램으로 사용자 확인 요청 필요)")
+
+    # 키워드 파일의 english_name 수정 (mismatch만 자동 수정)
+    kw_by_code = {kw["product_code"]: kw for kw in kw_data}
+    fixed_count = 0
+    for m in mismatches:
+        code = m["product_code"]
+        corrected = m.get("corrected_name", "")
+        reason = m.get("reason", "")
+        if corrected and code in kw_by_code:
+            old_name = kw_by_code[code].get("english_name", "")
+            kw_by_code[code]["english_name"] = corrected
+            fixed_count += 1
+            safe_print(f"  수정: {old_name} → {corrected} ({reason})")
+
+    if fixed_count > 0:
+        with open(keywords_path, "w", encoding="utf-8") as f:
+            json.dump(kw_data, f, ensure_ascii=False, indent=2)
+        safe_print(f"[EN_VERIFY] {fixed_count}건 영문명 수정 완료 → {os.path.basename(keywords_path)}")
 
 
 def run_verification_agent(prompt, timeout=1800, allowed_tools="Read,Glob"):
@@ -545,6 +718,10 @@ def run_step3():
         safe_print(f"[KEYWORD] {len(kw_result['keywords'])}개 키워드 생성 완료")
     else:
         safe_print("[KEYWORD] 키워드 생성 실패 - 기본 키워드로 진행")
+
+    # Phase 1.5: 영문명 검증 (한글 풀네임과 대조)
+    if os.path.exists(keywords_path):
+        verify_english_names(oy_path, keywords_path)
 
     results = {}
 
