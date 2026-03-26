@@ -180,7 +180,7 @@ def run_with_api(products):
 
 def run_with_sample():
     """API 키 없음 - 샘플 데이터 사용"""
-    sample_path = os.path.join(DATA_DIR, "naver_sample.json")
+    sample_path = os.path.join(DATA_DIR, "samples", "naver_sample.json")
     if not os.path.exists(sample_path):
         print("[네이버] 오류: naver_sample.json 없음")
         return []
@@ -199,7 +199,7 @@ def main():
     if oy_files:
         oy_path = oy_files[-1]
     else:
-        oy_path = os.path.join(DATA_DIR, "oliveyoung_sample.json")
+        oy_path = os.path.join(DATA_DIR, "samples", "oliveyoung_sample.json")
     if not os.path.exists(oy_path):
         print("[네이버] 오류: 올리브영 데이터 없음")
         return

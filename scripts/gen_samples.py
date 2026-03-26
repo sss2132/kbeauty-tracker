@@ -77,7 +77,7 @@ naver_data.extend([
     {"product_code": "OUTSIDE_NV_005", "keyword": "닥터자르트 시카페어 크림", "search_keyword_en": "Dr.Jart Cicapair Cream", "search_volume": 11000, "search_volume_last_week": 6000, "change_rate": 83.3},
 ])
 
-with open(os.path.join(DATA_DIR, "naver_sample.json"), "w", encoding="utf-8") as f:
+with open(os.path.join(DATA_DIR, "samples", "naver_sample.json"), "w", encoding="utf-8") as f:
     json.dump(naver_data, f, ensure_ascii=False, indent=2)
 print(f"Naver sample: {len(naver_data)} entries")
 
@@ -154,7 +154,7 @@ youtube_data.extend([
     {"product_code": "OUTSIDE_YT_005", "keyword": "Hanyul Artemisia Essence", "search_keyword_en": "Hanyul Artemisia Essence", "video_count": 22, "total_views": 900000, "video_count_last_week": 15, "total_views_last_week": 400000, "change_rate": 125.0},
 ])
 
-with open(os.path.join(DATA_DIR, "youtube_sample.json"), "w", encoding="utf-8") as f:
+with open(os.path.join(DATA_DIR, "samples", "youtube_sample.json"), "w", encoding="utf-8") as f:
     json.dump(youtube_data, f, ensure_ascii=False, indent=2)
 print(f"YouTube sample: {len(youtube_data)} entries")
 
@@ -226,6 +226,6 @@ for code, (kw, rank, matched, price) in nr.items():
         "total_results": 100,
     })
 
-with open(os.path.join(DATA_DIR, "naver_rank_sample.json"), "w", encoding="utf-8") as f:
+with open(os.path.join(DATA_DIR, "samples", "naver_rank_sample.json"), "w", encoding="utf-8") as f:
     json.dump(naver_rank_data, f, ensure_ascii=False, indent=2)
 print(f"Naver Rank sample: {len(naver_rank_data)} entries")

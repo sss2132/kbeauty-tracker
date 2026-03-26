@@ -1391,6 +1391,36 @@ def cleanup_stale_state_files(today_str):
         if today_str not in os.path.basename(f):
             safe_print(f"  [정리] 이전 키워드 파일 삭제: {os.path.basename(f)}")
             os.remove(f)
+    # 이전 날짜 글로벌몰 영문명 파일 정리
+    for f in glob.glob(os.path.join(DATA_DIR, "_global_names_*.json")):
+        if today_str not in os.path.basename(f):
+            safe_print(f"  [정리] 이전 글로벌몰 파일 삭제: {os.path.basename(f)}")
+            os.remove(f)
+    # 이전 날짜 영문명 확인 파일 정리
+    en_confirm = os.path.join(DATA_DIR, "_en_needs_confirm.json")
+    if os.path.exists(en_confirm):
+        os.remove(en_confirm)
+    # data/ 루트의 이전 날짜별 데이터 파일 정리 (daily/로 복사 완료된 것만)
+    for prefix in ["oliveyoung_", "naver_", "youtube_"]:
+        for f in glob.glob(os.path.join(DATA_DIR, f"{prefix}2*.json")):
+            basename = os.path.basename(f)
+            # 오늘자 파일은 유지 (아직 작업 중일 수 있음)
+            if today_str in basename:
+                continue
+            # sample 파일 제외
+            if "sample" in basename:
+                continue
+            # daily/에 복사본이 있는 경우만 삭제
+            # 파일명에서 날짜 추출: prefix_YYYYMMDD.json
+            import re as _re
+            m = _re.search(r'(\d{8})', basename)
+            if m:
+                file_date = m.group(1)
+                daily_date = f"{file_date[:4]}-{file_date[4:6]}-{file_date[6:8]}"
+                daily_copy = os.path.join(DATA_DIR, "daily", daily_date, basename)
+                if os.path.exists(daily_copy):
+                    safe_print(f"  [정리] 루트 데이터 파일 삭제 (daily/에 보존): {basename}")
+                    os.remove(f)
 
 
 def _find_previous_daily_path(source_prefix):

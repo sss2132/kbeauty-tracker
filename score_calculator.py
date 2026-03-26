@@ -144,7 +144,7 @@ def load_json(pattern_or_name):
         if files:
             with open(files[-1], "r", encoding="utf-8") as f:
                 return json.load(f), True
-    sample = os.path.join(DATA_DIR, pattern_or_name.replace("_*.json", "_sample.json"))
+    sample = os.path.join(DATA_DIR, "samples", pattern_or_name.replace("_*.json", "_sample.json"))
     if os.path.exists(sample):
         with open(sample, "r", encoding="utf-8") as f:
             return json.load(f), False
@@ -726,7 +726,7 @@ def main(use_period=True):
         # 기존 방식 fallback (daily 폴더 없을 때)
         oy_data, oy_real = load_json("oliveyoung_*.json")
         if not oy_data:
-            path = os.path.join(DATA_DIR, "oliveyoung_sample.json")
+            path = os.path.join(DATA_DIR, "samples", "oliveyoung_sample.json")
             if os.path.exists(path):
                 with open(path, "r", encoding="utf-8") as f:
                     oy_data = json.load(f)
