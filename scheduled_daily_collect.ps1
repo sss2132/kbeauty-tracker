@@ -1,6 +1,7 @@
 ﻿Set-Location "C:\Users\Taejun Park\Desktop\K-Beauty"
 
-# Set K-Beauty bot token (overrides shared .env)
+# K-Beauty 전용 텔레그램 state dir (다른 세션과 봇 토큰 충돌 방지)
+$env:TELEGRAM_STATE_DIR = "$env:USERPROFILE\.claude\channels\telegram-kbeauty"
 $env:TELEGRAM_BOT_TOKEN = "8723850429:AAHAds6417Co8TEqi5muSO_asT_dq2yuNuE"
 
 # 1. Telegram notification via Bot API (direct, no Claude needed)

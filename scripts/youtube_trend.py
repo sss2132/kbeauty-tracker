@@ -51,6 +51,14 @@ def _api_get(url, params):
     return resp.json()
 
 
+def _shorten_keyword(keyword):
+    """브랜드 + 핵심 2단어로 축소. 이미 짧으면 None 반환."""
+    parts = keyword.strip().split()
+    if len(parts) <= 3:
+        return None  # 이미 충분히 짧음
+    return " ".join(parts[:3])
+
+
 def search_videos(keyword, published_after, max_results=10):
     """YouTube 검색 API로 최근 영상 조회"""
     params = {
@@ -202,10 +210,9 @@ def run_with_api(products):
         print(f"videos:{video_count} views:{total_views} change:{change_rate:+.1f}%{flag}")
         time.sleep(0.2)
 
-    # Phase 2: 3개월 영상 수 조회 (hidden_gem 후보만 — steady_seller 판정용)
-    # 최근 2주 영상 < 3인 제품만 대상 (이 제품들이 hidden_gem/steady_seller 후보)
+    # Phase 2: 3개월 영상 수 조회
     candidates = [r for r in results if not r["youtube_available"] and not r["api_error"]]
-    print(f"\n[유튜브] 3개월 영상 수 조회 ({len(candidates)}개 hidden_gem 후보)")
+    print(f"\n[유튜브] 3개월 영상 수 조회 ({len(candidates)}개 후보)")
     for i, r in enumerate(candidates):
         keyword = r["keyword"]
         print(f"  [{i+1}/{len(candidates)}] {keyword} 3M...", end=" ")
@@ -215,6 +222,42 @@ def run_with_api(products):
             print("[API ERROR]")
         else:
             print(f"{count_3m} videos")
+        time.sleep(0.2)
+
+    # Phase 2b: 신제품 판정 + 기존 제품 폴백 키워드 시도
+    NEW_PRODUCT_THRESHOLD = 5  # 3개월 영상 이 미만이면 신제품 후보
+    for r in candidates:
+        if r["video_count"] != 0:
+            continue
+        count_3m = r.get("video_count_3month", 0)
+        if 0 <= count_3m < NEW_PRODUCT_THRESHOLD:
+            r["is_new_product_candidate"] = True
+            print(f"  [신제품 후보] {r['keyword']} (3M: {count_3m})")
+
+    fallback_candidates = [r for r in candidates
+                           if r["video_count"] == 0
+                           and r.get("video_count_3month", 0) >= NEW_PRODUCT_THRESHOLD
+                           and not r.get("is_new_product_candidate")]
+    if fallback_candidates:
+        print(f"\n[유튜브] 폴백 키워드 시도 ({len(fallback_candidates)}개)")
+    for i, r in enumerate(fallback_candidates):
+        shortened = _shorten_keyword(r["keyword"])
+        if not shortened:
+            continue
+        print(f"  [{i+1}/{len(fallback_candidates)}] {r['keyword']} -> {shortened}...", end=" ")
+        vc, tv, vc_lw, tv_lw, cr = fetch_keyword_trend(shortened)
+        if vc > 0:
+            r["video_count"] = vc
+            r["total_views"] = tv
+            r["video_count_last_week"] = vc_lw
+            r["total_views_last_week"] = tv_lw
+            r["change_rate"] = cr
+            r["youtube_available"] = vc >= 3
+            r["fallback_keyword"] = shortened
+            r["fallback_discount"] = 0.7
+            print(f"videos:{vc} views:{tv} [FALLBACK OK]")
+        else:
+            print(f"videos:0 [FALLBACK FAILED]")
         time.sleep(0.2)
 
     if api_errors:

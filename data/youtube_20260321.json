@@ -1,0 +1,602 @@
+[
+  {
+    "product_code": "A000000223414",
+    "keyword": "Mediheal 메디힐 에센셜 마스크팩",
+    "video_count": 2,
+    "total_views": null,
+    "video_count_last_week": 2,
+    "total_views_last_week": 5234,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000245129",
+    "keyword": "Chasing Rabbits Glow Cover Sun Cushion",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000218073",
+    "keyword": "Dr.Adol 닥터아돌 카테킨 아세로라",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000222833",
+    "keyword": "Aestura 에스트라 아토베리어365 크림",
+    "video_count": 7,
+    "total_views": 4374,
+    "video_count_last_week": 4,
+    "total_views_last_week": 21183,
+    "change_rate": -79.4,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000237901",
+    "keyword": "Medicube AGE-R 메디큐브 에이지알 미니플러스",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 3,
+    "total_views_last_week": 46741,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000171427",
+    "keyword": "Mediheal 메디힐 더마 패드",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 2,
+    "total_views_last_week": 100,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000243433",
+    "keyword": "Medicube 메디큐브 PDRN 핑크",
+    "video_count": 20,
+    "total_views": 41820,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": 100.0,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000184299",
+    "keyword": "VDL VDL 치크스테인 블러셔/블러셔",
+    "video_count": 9,
+    "total_views": 42620,
+    "video_count_last_week": 11,
+    "total_views_last_week": 46294,
+    "change_rate": -7.9,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000217607",
+    "keyword": "Meal It 밀잇 식단관리 단백질쉐이크",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000232724",
+    "keyword": "dalba 달바 퍼스트 스프레이",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000247770",
+    "keyword": "ANUA PDRN Serum",
+    "video_count": 4,
+    "total_views": 1981,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": 100.0,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000247573",
+    "keyword": "Medicube AGE-R 메디큐브 에이지알 부스터",
+    "video_count": 11,
+    "total_views": 21,
+    "video_count_last_week": 5,
+    "total_views_last_week": 46742,
+    "change_rate": -100.0,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000206904",
+    "keyword": "La Roche-Posay 라로슈포제 시카플라스트 밤",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 2,
+    "total_views_last_week": 4656,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000212703",
+    "keyword": "Fully 풀리 비건 팩클렌저",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000247182",
+    "keyword": "Make P:rem 메이크프렘 세이프 미",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 1,
+    "total_views_last_week": 27596,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000174309",
+    "keyword": "Holika Holika 홀리카홀리카 마이페이브 피스",
+    "video_count": 7,
+    "total_views": 121359,
+    "video_count_last_week": 7,
+    "total_views_last_week": 132788,
+    "change_rate": -8.6,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000235192",
+    "keyword": "Flou 플루X헬로키티 비타글로우 수분광채",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000139063",
+    "keyword": "Jung Saem Mool 정샘물 에센셜 스킨",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 2,
+    "total_views_last_week": 10647,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000211119",
+    "keyword": "Mediheal 메디힐 마데카소사이드 흔적",
+    "video_count": 3,
+    "total_views": 35328,
+    "video_count_last_week": 5,
+    "total_views_last_week": 98982,
+    "change_rate": -64.3,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000247193",
+    "keyword": "Torriden 토리든 다이브인 저분자",
+    "video_count": 4,
+    "total_views": 557,
+    "video_count_last_week": 2,
+    "total_views_last_week": 32053,
+    "change_rate": -98.3,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000185903",
+    "keyword": "VDL VDL 커버 스테인",
+    "video_count": 4,
+    "total_views": 160720,
+    "video_count_last_week": 2,
+    "total_views_last_week": 1,
+    "change_rate": 16071900.0,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000235247",
+    "keyword": "웰라쥬 웰라쥬 리얼 히알루로닉",
+    "video_count": 7,
+    "total_views": 10300,
+    "video_count_last_week": 10,
+    "total_views_last_week": 349330,
+    "change_rate": -97.1,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000150361",
+    "keyword": "Holika Holika 홀리카홀리카 마이페이브 무드",
+    "video_count": 9,
+    "total_views": 184881,
+    "video_count_last_week": 11,
+    "total_views_last_week": 152101,
+    "change_rate": 21.6,
+    "youtube_available": true
+  },
+  {
+    "product_code": "B000000249860",
+    "keyword": "Orthomol 오쏘몰 이뮨 멀티비타민&미네랄",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 2,
+    "total_views_last_week": 2,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000246780",
+    "keyword": "Round Lab 라운드랩 자작나무 수분",
+    "video_count": 4,
+    "total_views": 1950,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": 100.0,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000192782",
+    "keyword": "S.Nature 에스네이처 아쿠아 스쿠알란",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 1,
+    "total_views_last_week": 1,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000213569",
+    "keyword": "코링코 코링코 톡톡하라 노글루",
+    "video_count": 7,
+    "total_views": 35234,
+    "video_count_last_week": 2,
+    "total_views_last_week": 16493,
+    "change_rate": 113.6,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000235485",
+    "keyword": "Uriage 유리아쥬 스틱레브르 컬러드",
+    "video_count": 3,
+    "total_views": 22369,
+    "video_count_last_week": 3,
+    "total_views_last_week": 11695,
+    "change_rate": 91.3,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000217620",
+    "keyword": "Mediheal 메디힐 에센셜 마스크팩",
+    "video_count": 2,
+    "total_views": null,
+    "video_count_last_week": 2,
+    "total_views_last_week": 5234,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000232098",
+    "keyword": "CLIO 클리오 킬 커버",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 7,
+    "total_views_last_week": 19932,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000205908",
+    "keyword": "VDL VDL 톤 스테인",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 2,
+    "total_views_last_week": 2890,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000246445",
+    "keyword": "Fwee 퓌 3D 볼류밍",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 4,
+    "total_views_last_week": 5305,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000247918",
+    "keyword": "Manyo Factory 마녀공장 퓨어 클렌징오일",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 1,
+    "total_views_last_week": 1707,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000249348",
+    "keyword": "Biodance 바이오던스 리얼 딥",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000231892",
+    "keyword": "ANUA PDRN Moisture Cream",
+    "video_count": 5,
+    "total_views": 29595,
+    "video_count_last_week": 8,
+    "total_views_last_week": 83581,
+    "change_rate": -64.6,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000234422",
+    "keyword": "메노킨 메노킨 30초 퀵",
+    "video_count": 3,
+    "total_views": 3889,
+    "video_count_last_week": 2,
+    "total_views_last_week": 15702,
+    "change_rate": -75.2,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000230208",
+    "keyword": "Innisfree 이니스프리 레티놀 시카",
+    "video_count": 2,
+    "total_views": null,
+    "video_count_last_week": 3,
+    "total_views_last_week": 2,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000165598",
+    "keyword": "Torriden 토리든 다이브인 히알루론산",
+    "video_count": 5,
+    "total_views": 791,
+    "video_count_last_week": 3,
+    "total_views_last_week": 117760,
+    "change_rate": -99.3,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000202912",
+    "keyword": "Hince 힌스 로 글로우",
+    "video_count": 5,
+    "total_views": 11770,
+    "video_count_last_week": 3,
+    "total_views_last_week": 10243,
+    "change_rate": 14.9,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000233470",
+    "keyword": "Mediheal 메디힐 콜라겐 캡슐",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000245446",
+    "keyword": "Beplain 비플레인 녹두 약산성",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000198343",
+    "keyword": "CLIO 클리오 샤프 쏘",
+    "video_count": 2,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000177984",
+    "keyword": "HERA 헤라 센슈얼 누드",
+    "video_count": 4,
+    "total_views": 6,
+    "video_count_last_week": 5,
+    "total_views_last_week": 7241,
+    "change_rate": -99.9,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000238740",
+    "keyword": "오프라 코스메틱 오프라 미니 하이라이터",
+    "video_count": 3,
+    "total_views": 9222,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": 100.0,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000171423",
+    "keyword": "UNOVE Deep Damage Treatment",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 2,
+    "total_views_last_week": 4016,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000171848",
+    "keyword": "Illiyoon 일리윤 세라마이드 아토",
+    "video_count": 8,
+    "total_views": 15957,
+    "video_count_last_week": 6,
+    "total_views_last_week": 18510,
+    "change_rate": -13.8,
+    "youtube_available": true
+  },
+  {
+    "product_code": "A000000157030",
+    "keyword": "라엘 라엘 유기농 순면커버",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000183059",
+    "keyword": "UNOVE Deep Damage Shampoo",
+    "video_count": 1,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000247728",
+    "keyword": "Delight Project 딜라이트 프로젝트 베이글칩",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000185046",
+    "keyword": "Tocobo 투크 워터프루프 슬림",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000247774",
+    "keyword": "Goodal 구달 청귤 비타C",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000200646",
+    "keyword": "Bring Green 브링그린 징크테카 트러블",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000013194",
+    "keyword": "Bioderma 바이오더마 센시비오 H2O",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000164615",
+    "keyword": "Dr.G 닥터지 레드 블레미쉬",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000178635",
+    "keyword": "VDL VDL 커버스테인 퍼펙팅",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000167236",
+    "keyword": "Peripera 페리페라 스피디 스키니",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000245090",
+    "keyword": "Aestura 에스트라 아토베리어365 로션",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000251117",
+    "keyword": "Grafen 그라펜 포어올킬 원스텝",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000202777",
+    "keyword": "HERA 헤라 블랙 쿠션",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  },
+  {
+    "product_code": "A000000197231",
+    "keyword": "romand Glasting Color Gloss",
+    "video_count": 0,
+    "total_views": null,
+    "video_count_last_week": 0,
+    "total_views_last_week": 0,
+    "change_rate": null,
+    "youtube_available": false
+  }
+]

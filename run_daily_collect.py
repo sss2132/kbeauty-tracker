@@ -67,6 +67,11 @@ VERIFICATION_SCHEMA = json.dumps({
         "issues": {
             "type": "array",
             "items": {"type": "string"}
+        },
+        "new_launches": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "1주 이내 출시 확인된 신제품의 product_code 목록"
         }
     },
     "required": ["passed", "issues"]
@@ -197,15 +202,15 @@ def run_keyword_agent(oy_path, timeout=600):
     return None
 
 
-def run_verification_agent(prompt, timeout=1800):
+def run_verification_agent(prompt, timeout=1800, allowed_tools="Read,Glob"):
     """
     Claude Code CLI를 별도 프로세스로 띄워 검증 실행.
 
     새 프로세스 = 이전 수집/추출 대화 기억 없음 = unbiased 검증.
-    --json-schema로 구조화 응답, --allowed-tools로 Read/Glob만 허용.
+    --json-schema로 구조화 응답, --allowed-tools로 허용 도구 제한.
 
     Returns:
-        dict: {"passed": bool, "issues": ["문제1", "문제2", ...]}
+        dict: {"passed": bool, "issues": [...], "new_launches": [...]}
               파싱 실패 시 {"passed": False, "issues": ["파싱 실패: ..."]}
     """
     cmd = [
@@ -213,7 +218,7 @@ def run_verification_agent(prompt, timeout=1800):
         "-p",
         "--output-format", "json",
         "--json-schema", VERIFICATION_SCHEMA,
-        "--allowed-tools", "Read,Glob",
+        "--allowed-tools", allowed_tools,
         "--no-session-persistence",
         prompt,
     ]
@@ -429,6 +434,11 @@ JSON 파일:
    - 같은 제품이 다른 기획(10매 vs 1매, 단품 vs 세트 등)으로 여러 순위에 등장하는지 확인
    - search_keyword가 동일한 제품 쌍이 있으면 모두 보고 (합산 대상)
    - 이전 날짜 데이터가 있으면 비교: 어제 없던 제품이 갑자기 나타났는데, 어제 있던 유사 제품이 사라진 경우 → 같은 제품의 이름 변경 가능성 보고
+9. 비화장품 제품 감지:
+   - 건강기능식품(단백질 쉐이크, 비타민, 영양제, 콜라겐 음료 등), 식품/스낵(베이글칩 등), 음반/앨범, 구강용품(칫솔, 치아미백 등)이 포함되어 있는지 확인
+   - 판단 기준: 피부에 바르거나 붙이는 제품 = 화장품, 먹는 제품/먹는 영양제 = 비화장품
+   - 콜라겐 "패치"나 콜라겐 "세럼"은 화장품이므로 OK
+   - 비화장품이 발견되면 issues에 포함하여 product_code와 제품명을 명시
 
 ## 출력 형식
 반드시 아래 JSON 형식으로만 응답해:
@@ -698,11 +708,23 @@ def build_api_verification_prompt(oy_path, nv_path, yt_path):
 - 네이버+유튜브 둘 다 결과가 0인 제품이 전체의 50% 이상이면 이상
 - 네이버/유튜브 파일 모두 없으면 passed: false
 
+### 신제품 감지 (new_launches)
+다음 두 경로로 신제품 후보를 수집하고 웹검색으로 검증해:
+
+경로 1: 올리브영 JSON의 name_full 필드에 "[NEW" 또는 "선런칭" 또는 "런칭"이 포함된 제품
+경로 2: 유튜브 JSON에서 is_new_product_candidate: true인 제품
+
+위 후보에 대해 웹검색("[브랜드명] [제품명] 출시일" 등)으로 실제 출시일을 확인해:
+- 1주 이내 출시 확인 → new_launches 배열에 product_code 추가
+- 1주 초과 또는 출시일 불명 → 신제품 아님 (추가하지 않음)
+- 올리브영이 [NEW]를 붙여도 실제로는 리뉴얼이거나 기획 변경일 수 있으므로 반드시 웹검색 확인
+
 ## 출력 형식
 반드시 아래 JSON 형식으로만 응답해:
-- 모두 정상이면: {{"passed": true, "issues": []}}
-- 문제 있으면: {{"passed": false, "issues": ["문제1", "문제2", ...]}}
+- 모두 정상이면: {{"passed": true, "issues": [], "new_launches": ["코드1", ...]}}
+- 문제 있으면: {{"passed": false, "issues": ["문제1", "문제2", ...], "new_launches": []}}
 
+new_launches는 검증 통과 여부와 무관하게 항상 포함.
 수집 실패(파일 없음)는 issues에 기록하되, 네이버/유튜브 중 하나만 실패해도 passed: true 가능.
 둘 다 실패했으면 passed: false.""")
 
@@ -745,7 +767,7 @@ def run_step4():
         return False
 
     prompt = build_api_verification_prompt(oy_path, nv_path, yt_path)
-    result = run_verification_agent(prompt)
+    result = run_verification_agent(prompt, allowed_tools="Read,Glob,WebFetch,WebSearch")
 
     # === 검증 결과를 파일로 저장 (Step 5에서 강제 확인) ===
     file_hashes = {}
@@ -756,6 +778,7 @@ def run_step4():
     verification_data = {
         "passed": result["passed"],
         "issues": result["issues"],
+        "new_launches": result.get("new_launches", []),
         "verified_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "verified_date": datetime.now().strftime("%Y%m%d"),
         "file_hashes": file_hashes,
@@ -842,6 +865,48 @@ def run_step5():
 
     safe_print("[CHECK] 파일 해시 일치 — 검증 후 변조 없음")
 
+    # ── 최종 체크: orchestrator 승인 게이트 (매일 daily 저장 전) ──
+    # _final_check_approved.json이 없으면 최종 확인 요청 후 중단.
+    # orchestrator가 확인 완료 후 이 파일을 생성하고 step5를 재실행.
+    new_launches = vr.get("new_launches", [])
+    approval_path = os.path.join(DATA_DIR, "_final_check_approved.json")
+    if not os.path.exists(approval_path):
+        daily_path_preview = os.path.join(DAILY_DIR, today.strftime("%Y-%m-%d"))
+        final_check_path = os.path.join(DATA_DIR, "_final_check_needed.json")
+        final_check = {
+            "status": "waiting_approval",
+            "today_str": today_str,
+            "daily_path": daily_path_preview,
+            "new_launches": new_launches,
+            "oy_path": oy_path,
+            "nv_path": nv_path,
+            "yt_path": yt_path,
+            "check_items": [
+                "스크린샷 vs 최종 데이터 대조 (제품명, 가격, 순위, 총 제품 수)",
+                "오특(오늘의 특가) 제품 정확히 표기되었는지",
+                "유튜브/네이버 0건 제품 확인 (신제품 vs 기존제품 분류)",
+                "유튜브 fallback 적용 제품 목록 및 0.7 할인 확인",
+                "신제품(LAUNCH) 표기 정확한지",
+                "비화장품 정상 제외되었는지",
+                "동일 제품 중복(병합 대상) 키워드 일치 확인",
+                "번들/골라담기 제품 키워드가 CLAUDE.md 확정 테이블과 일치하는지",
+                "글로벌몰 영문명(english_name) 정상 수집되었는지",
+                "전일 대비 급격한 순위 변동 (데이터 오류 가능성 체크)",
+            ],
+        }
+        with open(final_check_path, "w", encoding="utf-8") as f:
+            json.dump(final_check, f, ensure_ascii=False, indent=2)
+        safe_print(f"\n[FINAL CHECK] daily 저장 전 최종 확인 필요")
+        safe_print("  orchestrator가 스크린샷 대조 후 텔레그램으로 승인 요청합니다.")
+        safe_print("  승인 후 step5를 다시 실행하면 저장이 진행됩니다.")
+        return "WAITING_APPROVAL"
+
+    # 승인 완료 — 임시 파일 정리
+    safe_print("[APPROVED] 최종 확인 승인 완료 — daily 저장 진행")
+    for tmp in [approval_path, os.path.join(DATA_DIR, "_final_check_needed.json")]:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+
     # daily 폴더에 저장
     date_folder = today.strftime("%Y-%m-%d")
     daily_path = os.path.join(DAILY_DIR, date_folder)
@@ -858,6 +923,7 @@ def run_step5():
             safe_print(f"  -> daily/{date_folder}/{prefix}_{today_str}.json")
 
     # 수집 메타데이터 기록 (이 날짜가 실제 파이프라인 수집인지 증명)
+    new_launches = vr.get("new_launches", [])
     meta = {
         "collected_at": today.strftime("%Y-%m-%d %H:%M:%S"),
         "collected_by": "run_daily_collect.py pipeline",
@@ -866,12 +932,15 @@ def run_step5():
         "verified_at": vr.get("verified_at"),
         "verified_by": vr.get("verified_by"),
         "file_hashes": saved_hashes,
+        "new_launches": new_launches,
     }
     meta_path = os.path.join(daily_path, "_collection_meta.json")
     with open(meta_path, "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
     safe_print(f"[SAVE] {saved}개 파일 저장 + 메타데이터 기록")
+    if new_launches:
+        safe_print(f"[LAUNCH] 신제품 {len(new_launches)}개: {', '.join(new_launches)}")
 
     # 3일치 완전 수집 확인 (올리브영+네이버+유튜브 모두 있어야 함)
     complete_count, incomplete_days = count_complete_daily_data()
@@ -978,7 +1047,7 @@ def run_step5():
             os.remove(tmp)
 
     # 스크린샷 archive 이동
-    archive_dir = os.path.join(SCREENSHOT_DIR, "archive", today_str[:4] + "-" + today_str[4:6])
+    archive_dir = os.path.join(SCREENSHOT_DIR, "Archive", today_str[:4] + "-" + today_str[4:6])
     ss_files = glob.glob(os.path.join(SCREENSHOT_DIR, f"oliveyoung_{today_str}_*.png"))
     if ss_files:
         os.makedirs(archive_dir, exist_ok=True)
@@ -1198,7 +1267,11 @@ def run_full_pipeline():
         return False
 
     # Step 5: 저장 + 갱신
-    if not run_step5():
+    step5_result = run_step5()
+    if step5_result == "WAITING_APPROVAL":
+        safe_print("\n[PAUSE] 최종 확인 대기 중 — orchestrator가 처리합니다.")
+        return "WAITING_APPROVAL"
+    if not step5_result:
         return False
 
     safe_print(f"\n{'=' * 50}")

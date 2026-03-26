@@ -1,0 +1,17 @@
+{
+  "collected_at": "2026-03-25 21:09:51",
+  "collected_by": "run_daily_collect.py pipeline",
+  "sources": {
+    "oliveyoung": "oliveyoung_20260325.json",
+    "naver": "naver_20260325.json",
+    "youtube": "youtube_20260325.json"
+  },
+  "verified": true,
+  "verified_at": "2026-03-25 21:09:45",
+  "verified_by": "claude agent tool verification (independent subagent)",
+  "file_hashes": {
+    "oliveyoung": "15e15e1c2d956a15b4ca6e565dbfef6de8e8db203d9687a743646ffb24cc1a98",
+    "naver": "24a8a143ab8aefd0d996f1567f68aac2ce926c31e98262d2ffec8df42a53409b",
+    "youtube": "be7d5da41d94ba391af12da5e113e9ac0f7e648a4db6a6311bc8d1e806491727"
+  }
+}

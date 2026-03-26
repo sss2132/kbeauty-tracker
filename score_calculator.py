@@ -318,6 +318,19 @@ def compute_consistency_bonus(consecutive_periods):
 
 NON_COSMETIC_CATEGORIES = {"health", "food", "snack", "supplement", "medical", "other"}
 
+NON_COSMETIC_KEYWORDS = [
+    "단백질", "쉐이크", "베이글", "Album", "앨범", "치아미백", "칫솔",
+    "구강", "비타민정", "영양제", "Mini Album",
+]
+
+
+def is_non_cosmetic_by_keyword(product_name):
+    """제품명에 비화장품 키워드가 포함되어 있는지 검사."""
+    for kw in NON_COSMETIC_KEYWORDS:
+        if kw in product_name:
+            return True
+    return False
+
 
 def safe_print(text):
     """cp949 등 터미널 인코딩에서 깨지는 문자를 ? 로 대체하여 출력."""
@@ -364,9 +377,10 @@ def compute_single_day_scores(date_obj, period_dates):
     nv_map = {item["product_code"]: item for item in nv_data}
     yt_map = {item["product_code"]: item for item in yt_data}
 
-    # 비화장품 필터
+    # 비화장품 필터 (카테고리 + 키워드 블랙리스트)
     cosmetic_items = [oy for oy in oy_data
-                      if oy.get("category", "") not in NON_COSMETIC_CATEGORIES]
+                      if oy.get("category", "") not in NON_COSMETIC_CATEGORIES
+                      and not is_non_cosmetic_by_keyword(oy.get("name", ""))]
     if not cosmetic_items:
         return None
 
@@ -553,6 +567,21 @@ def main(use_period=True):
         except (json.JSONDecodeError, KeyError):
             pass
 
+    # 신제품 목록 로드 (daily 메타데이터에서)
+    all_new_launches = set()
+    for folder in sorted(os.listdir(DAILY_DIR)) if os.path.isdir(DAILY_DIR) else []:
+        meta_path = os.path.join(DAILY_DIR, folder, "_collection_meta.json")
+        if os.path.exists(meta_path):
+            try:
+                with open(meta_path, "r", encoding="utf-8") as f:
+                    meta = json.load(f)
+                for code in meta.get("new_launches", []):
+                    all_new_launches.add(code)
+            except (json.JSONDecodeError, KeyError):
+                pass
+    if all_new_launches:
+        safe_print(f"[calc] 신제품 {len(all_new_launches)}개 감지")
+
     # ── v6: 매일 독립 스코어 → 평균 ──
     if current_period:
         period_dates = current_period["dates"]
@@ -728,6 +757,7 @@ def main(use_period=True):
                 "seller_note": note,
                 "youtube_available": p.get("youtube_available", False),
                 "is_promotion": p.get("is_promotion", False),
+                "is_new_launch": code in all_new_launches,
                 "consecutive_periods": 0,
                 "days_appeared": avg_data["days_appeared"],
             }
@@ -743,7 +773,8 @@ def main(use_period=True):
     else:
         # fallback: 기존 단일 데이터 방식 (daily 폴더 없을 때)
         cosmetic_items = [oy for oy in oy_data
-                          if oy.get("category", "") not in NON_COSMETIC_CATEGORIES]
+                          if oy.get("category", "") not in NON_COSMETIC_CATEGORIES
+                          and not is_non_cosmetic_by_keyword(oy.get("name", ""))]
 
         nv_volumes = []
         yt_views = []
@@ -773,6 +804,9 @@ def main(use_period=True):
                 yt_base = yt_norm[idx]
                 yt_bonus = calc_youtube_bonus(yt.get("video_count", 0))
                 yt_score = min(100, yt_base + yt_bonus)
+                # 폴백 키워드 할인 적용
+                if yt.get("fallback_discount"):
+                    yt_score = round(yt_score * yt["fallback_discount"])
             else:
                 yt_score = None
 
@@ -840,6 +874,7 @@ def main(use_period=True):
                 "seller_note": note,
                 "youtube_available": yt_score is not None,
                 "is_promotion": oy.get("is_promotion", oy.get("is_oteuk", False)),
+                "is_new_launch": code in all_new_launches,
                 "consecutive_periods": 0,
             }
             all_products.append(product)
