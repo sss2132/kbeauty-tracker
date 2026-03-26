@@ -13,6 +13,7 @@ import requests
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import YOUTUBE_API_KEY, YOUTUBE_API_KEYS
+from score_calculator import clean_product_name
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
@@ -177,21 +178,46 @@ def run_with_api(products):
         products = products[:50]
         print(f"[유튜브] 키워드 파일 없음 - Top {len(products)}개 처리")
 
+    # korean_names_override 로드
+    ko_override = {}
+    ko_ov_path = os.path.join(DATA_DIR, "korean_names_override.json")
+    if os.path.exists(ko_ov_path):
+        with open(ko_ov_path, "r", encoding="utf-8") as f:
+            ko_override = json.load(f)
+
     for i, product in enumerate(products):
         pc = product["product_code"]
+        # 풀네임: ko_override > clean_product_name(원본)
+        fullname = ko_override.get(pc) or clean_product_name(product.get("name", ""))
+        # 축약 키워드: keyword agent 생성 or search_keyword
         if pc in keyword_map:
-            keyword = keyword_map[pc]["youtube_keyword"]
+            short_keyword = keyword_map[pc]["youtube_keyword"]
         else:
-            keyword = product.get("search_keyword",
-                                  product.get("brand_en", product["brand"]) + " " + product["name"])
-        print(f"  [{i+1}/{len(products)}] {keyword}...", end=" ")
+            short_keyword = product.get("search_keyword",
+                                        product.get("brand_en", product["brand"]) + " " + product["name"])
 
-        video_count, total_views, vc_lw, tv_lw, change_rate = fetch_keyword_trend(keyword)
+        # Phase 1: 풀네임으로 먼저 검색
+        print(f"  [{i+1}/{len(products)}] {fullname}...", end=" ")
+        video_count, total_views, vc_lw, tv_lw, change_rate = fetch_keyword_trend(fullname)
         api_error = video_count == -1
+        used_keyword = fullname
+        fallback_discount = 1.0
+
+        # Phase 1→2: 풀네임 결과 부족(< 3건) + API 에러 아님 → 축약 키워드로 재검색 + 패널티
+        if not api_error and video_count < 3 and short_keyword != fullname:
+            print(f"<3 → fallback: {short_keyword}...", end=" ")
+            vc2, tv2, vc_lw2, tv_lw2, cr2 = fetch_keyword_trend(short_keyword)
+            if vc2 > video_count and vc2 != -1:
+                video_count, total_views = vc2, tv2
+                vc_lw, tv_lw, change_rate = vc_lw2, tv_lw2, cr2
+                used_keyword = short_keyword
+                fallback_discount = 0.7
+            time.sleep(0.2)
+
         yt_available = (not api_error) and video_count >= 3
-        results.append({
+        result_entry = {
             "product_code": product["product_code"],
-            "keyword": keyword,
+            "keyword": used_keyword,
             "video_count": video_count,
             "total_views": total_views if yt_available else None,
             "video_count_last_week": vc_lw,
@@ -199,12 +225,19 @@ def run_with_api(products):
             "change_rate": change_rate if yt_available else None,
             "youtube_available": yt_available,
             "api_error": api_error,
-        })
+        }
+        if fallback_discount < 1.0:
+            result_entry["fullname_keyword"] = fullname
+            result_entry["fallback_keyword"] = used_keyword
+            result_entry["fallback_discount"] = fallback_discount
+        results.append(result_entry)
         if api_error:
             flag = " [API ERROR]"
-            api_errors.append(keyword)
+            api_errors.append(used_keyword)
         elif not yt_available:
             flag = " [SKIP: <3 videos]"
+        elif fallback_discount < 1.0:
+            flag = " [FALLBACK 0.7x]"
         else:
             flag = ""
         print(f"videos:{video_count} views:{total_views} change:{change_rate:+.1f}%{flag}")

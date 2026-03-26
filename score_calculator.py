@@ -472,6 +472,8 @@ def compute_single_day_scores(date_obj, period_dates):
             yt_base = yt_norm[idx]
             yt_bonus = calc_youtube_bonus(yt.get("video_count", 0))
             yt_score = min(100, yt_base + yt_bonus)
+            if yt.get("fallback_discount"):
+                yt_score = round(yt_score * yt["fallback_discount"])
         else:
             yt_score = None
 
