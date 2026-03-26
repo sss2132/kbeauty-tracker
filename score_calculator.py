@@ -514,6 +514,20 @@ def compute_single_day_scores(date_obj, period_dates):
         }
 
     # search_keyword 기준 중복 병합 (하루 내)
+    # en_override의 영문명이 같은 제품도 동일 그룹으로 처리
+    en_override_path = os.path.join(DATA_DIR, "english_names_override.json")
+    _en_ov = {}
+    if os.path.exists(en_override_path):
+        with open(en_override_path, "r", encoding="utf-8") as f:
+            _en_ov = json.load(f)
+    # 영문명 → 대표 search_keyword 매핑 (동일 영문명 = 동일 제품)
+    _en_to_sk = {}
+    for code, p in day_products.items():
+        en_name = _en_ov.get(code, "")
+        if en_name and en_name in _en_to_sk:
+            p["search_keyword"] = _en_to_sk[en_name]
+        elif en_name:
+            _en_to_sk[en_name] = p["search_keyword"]
     sk_groups = OrderedDict()
     for code, p in day_products.items():
         sk = p["search_keyword"]
@@ -551,6 +565,10 @@ def compute_single_day_scores(date_obj, period_dates):
 
         primary["merged_from"] = [p["product_code"] for p in group]
         primary["merged_oy_ranks"] = [p["oliveyoung_rank"] for p in group]
+        # 병합 시 가장 긴 name_ko를 사용 (올리브영이 축약 표기하는 경우 대비)
+        longest_name = max((p.get("name_ko", "") for p in group), key=len)
+        if len(longest_name) > len(primary.get("name_ko", "")):
+            primary["name_ko"] = longest_name
 
         safe_print(f"  [{date_obj}] [병합] {sk}: OY rank {primary['merged_oy_ranks']} → 보너스 +{oy_bonus}")
         merged[sk] = primary
