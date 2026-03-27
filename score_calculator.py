@@ -1057,6 +1057,16 @@ def main(use_period=True):
     naver_rising = []
     youtube_rising = []
 
+    # 영문명 조회용 맵 (all_products + en_override 전체 + kw_map)
+    en_name_map = dict(en_override)  # override가 가장 우선
+    if kw_map:
+        for code, kw_entry in kw_map.items():
+            if code not in en_name_map and kw_entry.get("english_name"):
+                en_name_map[code] = kw_entry["english_name"]
+    for p in all_products:
+        if p["product_code"] not in en_name_map:
+            en_name_map[p["product_code"]] = p.get("name_en", "")
+
     nv_map_all = {item["product_code"]: item for item in nv_data}
     yt_map_all = {item["product_code"]: item for item in yt_data}
 
@@ -1071,10 +1081,9 @@ def main(use_period=True):
         for code, item in nv_items:
             rank_change = nv_last_rank.get(code, 50) - nv_this_rank.get(code, 50)
             if rank_change >= 3:
-                yt_item = yt_map_all.get(code, {})
                 naver_rising.append({
                     "keyword": item.get("keyword", ""),
-                    "keyword_en": yt_item.get("keyword", ""),
+                    "keyword_en": en_name_map.get(code, ""),
                     "change_rate": rank_change,  # 순위 변동 (위)
                     "this_rank": nv_this_rank[code],
                     "last_rank": nv_last_rank[code],
@@ -1094,6 +1103,7 @@ def main(use_period=True):
             if rank_change >= 3:
                 youtube_rising.append({
                     "keyword": item.get("keyword", ""),
+                    "keyword_en": en_name_map.get(code, ""),
                     "change_rate": rank_change,  # 순위 변동 (위)
                     "video_count": item.get("video_count", 0),
                     "this_rank": yt_this_rank[code],
