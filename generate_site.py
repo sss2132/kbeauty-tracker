@@ -646,8 +646,8 @@ def generate_html(data):
 <div class="hdr">
   <div class="hdr-top"><h1>K-Beauty Trend Tracker</h1><a href="en.html" class="lang-toggle">&#127468;&#127463; EN</a></div>
   <div class="sub">เทรนด์ความงามเกาหลี | {date_th}</div>
-  <div class="tagline">จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา</div>
-  <div class="update-cycle">อัปเดตทุก 3 วัน | ข้อมูลจาก 3 วัน เพื่อความแม่นยำของอันดับ</div>
+  <div class="tagline">อ้างอิงข้อมูลจริงจาก Olive Young &#183; Naver Shopping &#183; YouTube</div>
+  <div class="update-cycle">อัปเดตทุก 3 วัน | ไม่ใช่โฆษณา ไม่รับสปอนเซอร์</div>
   <div class="update-date">อัปเดตล่าสุด: {date_th}</div>
 </div>
 
@@ -926,8 +926,8 @@ TH_TO_EN = [
     ("&#128293; น่าจับตา", "&#128293; Discover"),
     # Header
     ("เทรนด์ความงามเกาหลี", "Korean Beauty Trends"),
-    ("จัดอันดับเทรนด์ K-Beauty จากข้อมูลจริง ไม่ใช่โฆษณา", "Real data-driven K-Beauty rankings, not ads"),
-    ("อัปเดตทุก 3 วัน | ข้อมูลจาก 3 วัน เพื่อความแม่นยำของอันดับ", "Updated every 3 days | 3-day data for ranking accuracy"),
+    ("อ้างอิงข้อมูลจริงจาก Olive Young &#183; Naver Shopping &#183; YouTube", "Based on real data from Olive Young &#183; Naver Shopping &#183; YouTube"),
+    ("อัปเดตทุก 3 วัน | ไม่ใช่โฆษณา ไม่รับสปอนเซอร์", "Updated every 3 days | No ads, no sponsors"),
     ("อัปเดตล่าสุด:", "Last updated:"),
     ("เทรนด์ K-Beauty อัปเดตทุก 3 วัน", "K-Beauty trends updated every 3 days"),
     ("เครื่องสำอางเกาหลีที่น่าจับตามอง", "Korean cosmetics worth watching"),
