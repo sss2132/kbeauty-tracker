@@ -990,8 +990,9 @@ def run_step5():
     safe_print(f"  Step 5: 저장 + 갱신 확인")
     safe_print(f"{'=' * 50}\n")
 
-    # 이전 날짜 불완전 daily 폴더 + 좀비 상태 파일 정리
+    # 이전 날짜 불완전 daily 폴더 + 좀비 상태/임시 파일 + 루트 데이터 파일 정리
     cleanup_incomplete_daily(today_str)
+    cleanup_stale_state_files(today_str)
 
     # ================================================================
     # 검증 결과 강제 확인 (하드코딩 — 우회 불가)
