@@ -1067,8 +1067,15 @@ def main(use_period=True):
         if p["product_code"] not in en_name_map:
             en_name_map[p["product_code"]] = p.get("name_en", "")
 
-    nv_map_all = {item["product_code"]: item for item in nv_data}
-    yt_map_all = {item["product_code"]: item for item in yt_data}
+    # TOP 30 제품 코드 (키워드 rising은 TOP 30 내 제품만 표시)
+    top_codes = set()
+    for p in all_products:
+        top_codes.add(p["product_code"])
+        for mc in p.get("merged_from", []):
+            top_codes.add(mc)
+
+    nv_map_all = {item["product_code"]: item for item in nv_data if item["product_code"] in top_codes}
+    yt_map_all = {item["product_code"]: item for item in yt_data if item["product_code"] in top_codes}
 
     # 네이버: 이번주/전주 검색량으로 순위 매기고 변동 계산
     nv_items = [(code, nv_map_all[code]) for code in nv_map_all
