@@ -224,9 +224,10 @@ def compute_period_oy_scores(period):
             code = item["product_code"]
             score = calc_oliveyoung_score(item["rank"], item.get("review_count", 0))
 
-            # 오특 + 1+1 패널티
-            if item.get("is_promotion", item.get("is_oteuk", False)) or is_buy_one_get_one(item.get("name", "")):
-                score = score * PROMOTION_PENALTY
+            # 오특 + 1+1 + 2입 패널티 (할인율 기반 단계적 적용)
+            penalty = get_promotion_penalty(item)
+            if penalty < 1.0:
+                score = score * penalty
 
             if code not in product_scores:
                 product_scores[code] = []
@@ -342,6 +343,38 @@ def is_buy_one_get_one(name):
     if re.search(r'더블기획|더블 기획|듀오 기획|듀오기획', name):
         return True
     return False
+
+
+def get_promotion_penalty(item):
+    """오특/1+1/2입 등 프로모션 유형에 따른 패널티 계수 반환.
+
+    Returns:
+        float: 1.0 (패널티 없음), 0.9, 0.7, 0.5 (최대 패널티)
+    """
+    import re
+    name = item.get("name", "")
+
+    # 오특 또는 명시적 1+1/더블기획 → 0.5
+    if item.get("is_promotion", item.get("is_oteuk", False)):
+        return 0.5
+    if is_buy_one_get_one(name):
+        return 0.5
+
+    # 2입/2개 기획 감지 → 할인율 기반 판단
+    if re.search(r'2입|2개 기획|2개기획', name):
+        price = int(item.get("price", 0) or 0)
+        original = int(item.get("original_price", 0) or 0)
+        if original > 0 and price > 0:
+            discount_rate = 1 - (price / original)
+            if discount_rate >= 0.5:
+                return 0.5   # 50% 이상 할인 = 사실상 1+1
+            elif discount_rate >= 0.3:
+                return 0.7   # 30~50% 할인
+            else:
+                return 0.9   # 30% 미만 = 일반 번들
+        return 0.7  # 가격 정보 없으면 중간값
+
+    return 1.0  # 패널티 없음
 
 
 def clean_product_name(name):
