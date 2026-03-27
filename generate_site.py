@@ -183,7 +183,7 @@ def build_discover_html(products):
     sections.append(("steady", "&#127942; Steady Seller", "สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย เชื่อถือได้", steadies))
 
     # 3) 신규진입 (NEW)
-    newbies = [p for p in products if p.get("rank_change") == "NEW" and p["rank"] <= 20 and p["rank"] not in used]
+    newbies = [p for p in products if p.get("rank_change") == "NEW" and p["rank"] not in used]
     for p in newbies:
         used.add(p["rank"])
     sections.append(("new", "&#127381; New Entry", "เพิ่งเข้า TOP 30 เป็นครั้งแรก!", newbies))
@@ -242,7 +242,15 @@ def build_discover_html(products):
 </div>'''
         if not cards:
             cards = '<div class="disc-empty-sec">ยังไม่มีในครั้งนี้</div>'
-        html += f'''<div class="disc-section disc-{sec_type}">
+        # 5개 초과 시 접기/펼치기
+        if len(items) > 5:
+            card_list = cards.split('</div>\n<div class="disc-card"')
+            visible = '</div>\n<div class="disc-card"'.join(card_list[:5])
+            hidden = '</div>\n<div class="disc-card"'.join(card_list[5:])
+            cards = f'''{visible}
+<div class="disc-more-wrap" id="disc-more-{sec_type}" style="display:none"><div class="disc-card"{hidden}</div>
+<button class="disc-more-btn" onclick="var w=document.getElementById('disc-more-{sec_type}');w.style.display=w.style.display==='none'?'block':'none';this.textContent=w.style.display==='none'?'+ ดูเพิ่ม ({len(items)-5})':'- ซ่อน'">+ ดูเพิ่ม ({len(items)-5})</button>'''
+        html += f'''<div class="disc-section disc-{sec_type}" id="disc-sec-{sec_type}">
   <div class="disc-title">{title}</div>
   <div class="disc-desc">{desc}</div>
   {cards}
@@ -438,7 +446,7 @@ def generate_html(data):
 
 /* Header */
 .hdr{{background:linear-gradient(135deg,#e8547a,#ff6b9d);color:#fff;padding:16px 20px;text-align:center}}
-.hdr h1{{font-size:18px;font-weight:700}}.hdr .sub{{font-size:12px;opacity:.85;margin-top:2px}}.hdr .tagline{{font-size:11px;opacity:.7;margin-top:4px;letter-spacing:.3px}}
+.hdr h1{{font-size:22px;font-weight:700;letter-spacing:.5px}}.hdr .sub{{font-size:13px;opacity:.85;margin-top:4px}}.hdr .tagline{{font-size:11px;opacity:.7;margin-top:4px;letter-spacing:.3px}}
 .update-cycle{{font-size:10px;opacity:.6;margin-top:4px;text-align:center}}.update-date{{font-size:10px;opacity:.6;margin-top:2px;text-align:center}}
 
 /* Tabs */
@@ -448,7 +456,7 @@ def generate_html(data):
 
 /* Stats */
 .stats{{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:12px 12px}}
-.st{{background:#fff;border-radius:10px;padding:8px 4px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}}
+.st{{background:#fff;border-radius:10px;padding:8px 4px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer;transition:.15s}}.st:hover{{background:#fff0f3}}
 .st-v{{font-size:18px;font-weight:700;color:#e8547a}}.st-l{{font-size:9px;color:#999;margin-top:2px}}
 
 /* Filter */
@@ -615,6 +623,7 @@ def generate_html(data):
 .disc-score{{font-size:18px;font-weight:700;color:#e8547a;flex-shrink:0;min-width:36px;text-align:center}}
 .disc-empty{{text-align:center;color:#999;padding:40px 0;font-size:14px}}
 .disc-empty-sec{{text-align:center;color:#aaa;padding:16px 0;font-size:13px}}
+.disc-more-btn{{display:block;width:100%;padding:8px;margin-top:4px;background:#f0f0f0;border:none;border-radius:8px;font-size:12px;font-weight:600;color:#e8547a;cursor:pointer;font-family:inherit}}.disc-more-btn:hover{{background:#ffe0e8}}
 /* Mobile */
 @media(max-width:380px){{
   .stats{{grid-template-columns:repeat(3,1fr)}}
@@ -649,11 +658,11 @@ def generate_html(data):
 <!-- Tab 1: Rankings -->
 <div class="panel active" id="p-ranking">
   <div class="stats">
-    <div class="st"><div class="st-v">{sum(1 for p in products if p.get("signal") == "rising")}</div><div class="st-l">&#128640; Rising</div></div>
-    <div class="st"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">&#9203; รอติดตาม</div></div>
-    <div class="st"><div class="st-v">{stats["hidden_gem_count"]}</div><div class="st-l">Hidden Gem</div></div>
-    <div class="st"><div class="st-v">{stats.get("steady_seller_count", 0)}</div><div class="st-l">Steady Seller</div></div>
-    <div class="st"><div class="st-v">{stats.get("new_entries", 0)}</div><div class="st-l">&#127381; New Entry</div></div>
+    <div class="st" onclick="goDiscover('rising')"><div class="st-v">{sum(1 for p in products if p.get("signal") == "rising")}</div><div class="st-l">&#128640; Rising</div></div>
+    <div class="st" onclick="goDiscover('buzz')"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">&#9203; รอติดตาม</div></div>
+    <div class="st" onclick="goDiscover('gem')"><div class="st-v">{stats["hidden_gem_count"]}</div><div class="st-l">Hidden Gem</div></div>
+    <div class="st" onclick="goDiscover('steady')"><div class="st-v">{stats.get("steady_seller_count", 0)}</div><div class="st-l">Steady Seller</div></div>
+    <div class="st" onclick="goDiscover('new')"><div class="st-v">{stats.get("new_entries", 0)}</div><div class="st-l">&#127381; New Entry</div></div>
   </div>
   <div class="fbar">
     <button class="fbtn active" data-cat="all">ทั้งหมด</button>
@@ -776,6 +785,22 @@ def generate_html(data):
 </div>
 
 <script>
+function goDiscover(secType){{
+  /* Stats 클릭 → Discover 탭 열고 해당 섹션으로 스크롤 */
+  var tabs=document.querySelectorAll('.tab-btn'),panels=document.querySelectorAll('.panel');
+  tabs.forEach(function(t){{t.classList.remove('active')}});
+  panels.forEach(function(p){{p.classList.remove('active')}});
+  tabs[0].classList.add('active');
+  document.getElementById('p-ranking').classList.add('active');
+  /* Discover 뷰로 전환 */
+  var vtBtns=document.querySelectorAll('.vt-btn');
+  if(vtBtns.length>=2){{vtBtns[1].click()}}
+  /* 해당 섹션 스크롤 */
+  setTimeout(function(){{
+    var sec=document.getElementById('disc-sec-'+secType);
+    if(sec){{sec.scrollIntoView({{behavior:'smooth',block:'start'}})}}
+  }},100);
+}}
 (function(){{
   /* Tabs */
   var tabs=document.querySelectorAll('.tab-btn'),panels=document.querySelectorAll('.panel');
