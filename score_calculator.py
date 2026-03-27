@@ -224,8 +224,8 @@ def compute_period_oy_scores(period):
             code = item["product_code"]
             score = calc_oliveyoung_score(item["rank"], item.get("review_count", 0))
 
-            # 오특 패널티
-            if item.get("is_promotion", item.get("is_oteuk", False)):
+            # 오특 + 1+1 패널티
+            if item.get("is_promotion", item.get("is_oteuk", False)) or is_buy_one_get_one(item.get("name", "")):
                 score = score * PROMOTION_PENALTY
 
             if code not in product_scores:
@@ -322,6 +322,26 @@ NON_COSMETIC_KEYWORDS = [
     "단백질", "쉐이크", "베이글", "Album", "앨범", "치아미백", "칫솔",
     "구강", "비타민정", "영양제", "Mini Album",
 ]
+
+
+def is_buy_one_get_one(name):
+    """1+1, 더블기획, 듀오기획 등 동일 제품 묶음 판매 여부 감지.
+
+    대상: 1+1, Nml+Nml(동일 용량), 더블기획, 듀오 기획
+    제외: 10+1, 7+1 등 마스크팩 보너스 (앞 숫자 >= 2)
+    """
+    import re
+    # 명시적 1+1
+    if re.search(r'(?<!\d)1\+1', name):
+        return True
+    # 동일 용량 묶음: 50ml+50ml, 60ml+60ml, 100g+100g 등
+    m = re.search(r'(\d+)(ml|mL|ML|g|G)\+\1\2', name)
+    if m:
+        return True
+    # 더블/듀오 기획
+    if re.search(r'더블기획|더블 기획|듀오 기획|듀오기획', name):
+        return True
+    return False
 
 
 def clean_product_name(name):
@@ -462,7 +482,9 @@ def compute_single_day_scores(date_obj, period_dates):
         yt = yt_map.get(code, {})
 
         oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
-        if oy.get("is_promotion", oy.get("is_oteuk", False)):
+        is_promo = oy.get("is_promotion", oy.get("is_oteuk", False))
+        is_11 = is_buy_one_get_one(oy.get("name", ""))
+        if is_promo or is_11:
             oy_score = round(oy_score * PROMOTION_PENALTY)
 
         nv_score = nv_norm[idx] if nv_data else 0
@@ -863,7 +885,7 @@ def main(use_period=True):
             yt = yt_map.get(code, {})
 
             oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
-            if oy.get("is_promotion", oy.get("is_oteuk", False)):
+            if oy.get("is_promotion", oy.get("is_oteuk", False)) or is_buy_one_get_one(oy.get("name", "")):
                 oy_score = round(oy_score * PROMOTION_PENALTY)
 
             nv_score = nv_norm[idx] if nv_data else 0

@@ -231,11 +231,11 @@
 <!-- Tab 1: Rankings -->
 <div class="panel active" id="p-ranking">
   <div class="stats">
-    <div class="st" onclick="goDiscover('rising')"><div class="st-v">2</div><div class="st-l">&#128640; Rising</div></div>
-    <div class="st" onclick="goDiscover('buzz')"><div class="st-v">3</div><div class="st-l">&#9203; รอติดตาม</div></div>
+    <div class="st" onclick="goDiscover('rising')"><div class="st-v">3</div><div class="st-l">&#128640; Rising</div></div>
+    <div class="st" onclick="goDiscover('buzz')"><div class="st-v">5</div><div class="st-l">&#9203; รอติดตาม</div></div>
     <div class="st" onclick="goDiscover('gem')"><div class="st-v">0</div><div class="st-l">Hidden Gem</div></div>
     <div class="st" onclick="goDiscover('steady')"><div class="st-v">0</div><div class="st-l">Steady Seller</div></div>
-    <div class="st" onclick="goDiscover('new')"><div class="st-v">11</div><div class="st-l">&#127381; New Entry</div></div>
+    <div class="st" onclick="goDiscover('new')"><div class="st-v">10</div><div class="st-l">&#127381; New Entry</div></div>
   </div>
   <div class="fbar">
     <button class="fbtn active" data-cat="all">ทั้งหมด</button>
@@ -259,7 +259,7 @@
     <span>&#129524; Bodycare</span>
   </div>
   <div class="ranking-view" style="display:none"><div class="plist"><div class="product-card" data-category="maskpack">
-  <div class="product-rank rank-gold">1<span class="rc rc-up">&#9650;1</span></div>
+  <div class="product-rank rank-gold">1<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#129526;</div>
   <div class="product-info">
     <div class="product-brand">Mediheal</div>
@@ -299,7 +299,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank rank-bronze">3<span class="rc rc-up">&#9650;17</span></div>
+  <div class="product-rank rank-bronze">3<span class="rc rc-up">&#9650;11</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">La Roche-Posay</div>
@@ -339,7 +339,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">5<span class="rc rc-up">&#9650;4</span></div>
+  <div class="product-rank ">5<span class="rc rc-up">&#9650;3</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Mediheal</div>
@@ -358,8 +358,28 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">6<span class="rc rc-up">&#9650;12</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">d'Alba</div>
+    <div class="product-name">d'Alba White Truffle First Spray Serum</div>
+    <div class="product-name-ko">달바 화이트 트러플 퍼스트 스프레이 세럼</div>
+    <div class="product-badges"><span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span><span class="seller-grade grade-watch">จับตา</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20White%20Truffle%20First%20Spray%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20White%20Truffle%20First%20Spray%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20White%20Truffle%20First%20Spray%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20White%20Truffle%20First%20Spray%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
 <div class="product-card" data-category="maskpack">
-  <div class="product-rank ">6<span class="rc rc-up">&#9650;4</span></div>
+  <div class="product-rank ">7<span class="rc rc-same">--</span></div>
   <div class="product-emoji">&#129526;</div>
   <div class="product-info">
     <div class="product-brand">Torriden</div>
@@ -379,67 +399,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">7<span class="rc rc-up">&#9650;16</span></div>
-  <div class="product-emoji">&#128167;</div>
-  <div class="product-info">
-    <div class="product-brand">d'Alba</div>
-    <div class="product-name">d'Alba White Truffle First Spray Serum</div>
-    <div class="product-name-ko">달바 화이트 트러플 퍼스트 스프레이 세럼</div>
-    <div class="product-badges"><span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span><span class="seller-grade grade-watch">จับตา</span></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=d%27Alba%20White%20Truffle%20First%20Spray%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20White%20Truffle%20First%20Spray%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20White%20Truffle%20First%20Spray%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=d%27Alba%20White%20Truffle%20First%20Spray%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
-  </div>
-</div>
-<div class="product-card" data-category="skincare">
-  <div class="product-rank ">8<span class="rc rc-up">&#9650;9</span></div>
-  <div class="product-emoji">&#128167;</div>
-  <div class="product-info">
-    <div class="product-brand">S.Nature</div>
-    <div class="product-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
-    <div class="product-name-ko">에스네이처 아쿠아 스쿠알란 수분크림</div>
-    <div class="product-badges"><span class="seller-grade grade-watch">จับตา</span></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
-  </div>
-</div>
-<div class="product-card" data-category="skincare">
-  <div class="product-rank ">9<span class="rc rc-down">&#9660;1</span></div>
-  <div class="product-emoji">&#128167;</div>
-  <div class="product-info">
-    <div class="product-brand">Wellage</div>
-    <div class="product-name">WELLAGE Real Hyaluronic Blue 100 Ampoule</div>
-    <div class="product-name-ko">웰라쥬 리얼 히알루로닉 블루 100 앰플</div>
-    <div class="product-badges"><span class="seller-grade grade-watch">จับตา</span></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
-  </div>
-</div>
-<div class="product-card" data-category="skincare">
-  <div class="product-rank ">10<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">8<span class="rc rc-new">NEW</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Torriden</div>
@@ -459,13 +419,13 @@
   </div>
 </div>
 <div class="product-card" data-category="maskpack">
-  <div class="product-rank ">11<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">9<span class="rc rc-up">&#9650;16</span></div>
   <div class="product-emoji">&#129526;</div>
   <div class="product-info">
     <div class="product-brand">Biodance</div>
     <div class="product-name">BIODANCE Bio-Collagen Real Deep Mask</div>
     <div class="product-name-ko">바이오던스 바이오 콜라겐 리얼 딥 마스크</div>
-    <div class="product-badges"></div>
+    <div class="product-badges"><span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
@@ -478,28 +438,8 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
-<div class="product-card" data-category="skincare">
-  <div class="product-rank ">12<span class="rc rc-new">NEW</span></div>
-  <div class="product-emoji">&#128167;</div>
-  <div class="product-info">
-    <div class="product-brand">Medicube</div>
-    <div class="product-name">medicube PDRN Pink Peptide Ampoule</div>
-    <div class="product-name-ko">메디큐브 PDRN 핑크 펩타이드 앰플</div>
-    <div class="product-badges"></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=medicube%20PDRN%20Pink%20Peptide%20Ampoule&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=medicube%20PDRN%20Pink%20Peptide%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=medicube%20PDRN%20Pink%20Peptide%20Ampoule&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=medicube%20PDRN%20Pink%20Peptide%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
-  </div>
-</div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">13<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">10<span class="rc rc-up">&#9650;19</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Coringco</div>
@@ -518,8 +458,28 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">11<span class="rc rc-new">NEW</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Medicube</div>
+    <div class="product-name">medicube PDRN Pink Peptide Ampoule</div>
+    <div class="product-name-ko">메디큐브 PDRN 핑크 펩타이드 앰플</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=medicube%20PDRN%20Pink%20Peptide%20Ampoule&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=medicube%20PDRN%20Pink%20Peptide%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=medicube%20PDRN%20Pink%20Peptide%20Ampoule&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=medicube%20PDRN%20Pink%20Peptide%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
 <div class="product-card" data-category="cleansing">
-  <div class="product-rank ">14<span class="rc rc-up">&#9650;12</span></div>
+  <div class="product-rank ">12<span class="rc rc-up">&#9650;8</span></div>
   <div class="product-emoji">&#10024;</div>
   <div class="product-info">
     <div class="product-brand">Ma:nyo</div>
@@ -538,48 +498,48 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
-<div class="product-card" data-category="suncare">
-  <div class="product-rank ">15<span class="rc rc-up">&#9650;14</span></div>
-  <div class="product-emoji">&#9728;&#65039;</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">13<span class="rc rc-up">&#9650;10</span></div>
+  <div class="product-emoji">&#128167;</div>
   <div class="product-info">
-    <div class="product-brand">d'Alba</div>
-    <div class="product-name">d'Alba Waterfull Tone-Up Sun Cream Pink</div>
-    <div class="product-name-ko">달바 핑크 톤업 선크림</div>
+    <div class="product-brand">S.Nature</div>
+    <div class="product-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
+    <div class="product-name-ko">에스네이처 아쿠아 스쿠알란 수분크림</div>
     <div class="product-badges"><span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span><span class="seller-grade grade-hold">รอดู</span></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">16<span class="rc rc-up">&#9650;9</span></div>
+  <div class="product-rank ">14<span class="rc rc-up">&#9650;2</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
-    <div class="product-brand">Mediheal</div>
-    <div class="product-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
-    <div class="product-name-ko">메디힐 마데카소사이드 흔적 리페어 세럼</div>
+    <div class="product-brand">Wellage</div>
+    <div class="product-name">WELLAGE Real Hyaluronic Blue 100 Ampoule</div>
+    <div class="product-name-ko">웰라쥬 리얼 히알루로닉 블루 100 앰플</div>
     <div class="product-badges"></div>
   </div>
   <div class="product-right">
     <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
   </div>
   <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://shopee.co.th/search?keyword=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=WELLAGE%20Real%20Hyaluronic%20Blue%20100%20Ampoule" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">17<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">15<span class="rc rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Dear Dahlia</div>
@@ -599,7 +559,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">18<span class="rc rc-up">&#9650;6</span></div>
+  <div class="product-rank ">16<span class="rc rc-up">&#9650;3</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Menokin</div>
@@ -619,7 +579,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">19<span class="rc rc-down">&#9660;16</span></div>
+  <div class="product-rank ">17<span class="rc rc-down">&#9660;14</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Anua</div>
@@ -638,28 +598,8 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
-<div class="product-card" data-category="haircare">
-  <div class="product-rank ">20<span class="rc rc-down">&#9660;8</span></div>
-  <div class="product-emoji">&#128135;</div>
-  <div class="product-info">
-    <div class="product-brand">Unove</div>
-    <div class="product-name">UNOVE Deep Damage Treatment EX</div>
-    <div class="product-name-ko">어노브 딥 데미지 헤어 트리트먼트 EX</div>
-    <div class="product-badges"></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=UNOVE%20Deep%20Damage%20Treatment%20EX&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=UNOVE%20Deep%20Damage%20Treatment%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=UNOVE%20Deep%20Damage%20Treatment%20EX&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=UNOVE%20Deep%20Damage%20Treatment%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
-  </div>
-</div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">21<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">18<span class="rc rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Dear Dahlia</div>
@@ -678,8 +618,28 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
+<div class="product-card" data-category="suncare">
+  <div class="product-rank ">19<span class="rc rc-up">&#9650;8</span></div>
+  <div class="product-emoji">&#9728;&#65039;</div>
+  <div class="product-info">
+    <div class="product-brand">d'Alba</div>
+    <div class="product-name">d'Alba Waterfull Tone-Up Sun Cream Pink</div>
+    <div class="product-name-ko">달바 핑크 톤업 선크림</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span><span class="seller-grade grade-hold">รอดู</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">22<span class="rc rc-new">NEW</span></div>
+  <div class="product-rank ">20<span class="rc rc-new">NEW</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Wakemake</div>
@@ -698,8 +658,88 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">21<span class="rc rc-up">&#9650;9</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
+    <div class="product-name-ko">메디힐 마데카소사이드 흔적 리페어 세럼</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span><span class="seller-grade grade-hold">รอดู</span></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
+<div class="product-card" data-category="makeup">
+  <div class="product-rank ">22<span class="rc rc-down">&#9660;17</span></div>
+  <div class="product-emoji">&#128132;</div>
+  <div class="product-info">
+    <div class="product-brand">The Saem</div>
+    <div class="product-name">THE SAEM Cover Perfection Triple Pot Concealer</div>
+    <div class="product-name-ko">더샘 커버 퍼펙션 트리플 팟 컨실러 글로우</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
+<div class="product-card" data-category="haircare">
+  <div class="product-rank ">23<span class="rc rc-up">&#9650;1</span></div>
+  <div class="product-emoji">&#128135;</div>
+  <div class="product-info">
+    <div class="product-brand">Unove</div>
+    <div class="product-name">UNOVE Deep Damage Treatment EX</div>
+    <div class="product-name-ko">어노브 딥 데미지 헤어 트리트먼트 EX</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=UNOVE%20Deep%20Damage%20Treatment%20EX&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=UNOVE%20Deep%20Damage%20Treatment%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=UNOVE%20Deep%20Damage%20Treatment%20EX&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=UNOVE%20Deep%20Damage%20Treatment%20EX" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
+<div class="product-card" data-category="skincare">
+  <div class="product-rank ">24<span class="rc rc-new">NEW</span></div>
+  <div class="product-emoji">&#128167;</div>
+  <div class="product-info">
+    <div class="product-brand">Dong-A Pharmaceutical</div>
+    <div class="product-name">DONG-A Pharm Pigmentation Pro Cream</div>
+    <div class="product-name-ko">동아제약 색소침착 프로 크림제</div>
+    <div class="product-badges"></div>
+  </div>
+  <div class="product-right">
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
 <div class="product-card" data-category="suncare">
-  <div class="product-rank ">23<span class="rc rc-down">&#9660;17</span></div>
+  <div class="product-rank ">25<span class="rc rc-down">&#9660;8</span></div>
   <div class="product-emoji">&#9728;&#65039;</div>
   <div class="product-info">
     <div class="product-brand">Round Lab</div>
@@ -719,47 +759,7 @@
   </div>
 </div>
 <div class="product-card" data-category="makeup">
-  <div class="product-rank ">24<span class="rc rc-down">&#9660;19</span></div>
-  <div class="product-emoji">&#128132;</div>
-  <div class="product-info">
-    <div class="product-brand">The Saem</div>
-    <div class="product-name">THE SAEM Cover Perfection Triple Pot Concealer</div>
-    <div class="product-name-ko">더샘 커버 퍼펙션 트리플 팟 컨실러 글로우</div>
-    <div class="product-badges"></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=THE%20SAEM%20Cover%20Perfection%20Triple%20Pot%20Concealer" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
-  </div>
-</div>
-<div class="product-card" data-category="skincare">
-  <div class="product-rank ">25<span class="rc rc-new">NEW</span></div>
-  <div class="product-emoji">&#128167;</div>
-  <div class="product-info">
-    <div class="product-brand">Dong-A Pharmaceutical</div>
-    <div class="product-name">DONG-A Pharm Pigmentation Pro Cream</div>
-    <div class="product-name-ko">동아제약 색소침착 프로 크림제</div>
-    <div class="product-badges"></div>
-  </div>
-  <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=DONG-A%20Pharm%20Pigmentation%20Pro%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
-  </div>
-</div>
-<div class="product-card" data-category="makeup">
-  <div class="product-rank ">26<span class="rc rc-down">&#9660;25</span></div>
+  <div class="product-rank ">26<span class="rc rc-down">&#9660;24</span></div>
   <div class="product-emoji">&#128132;</div>
   <div class="product-info">
     <div class="product-brand">Laneige</div>
@@ -819,7 +819,7 @@
   </div>
 </div>
 <div class="product-card" data-category="skincare">
-  <div class="product-rank ">29<span class="rc rc-down">&#9660;2</span></div>
+  <div class="product-rank ">29<span class="rc rc-down">&#9660;7</span></div>
   <div class="product-emoji">&#128167;</div>
   <div class="product-info">
     <div class="product-brand">Dr.G</div>
@@ -862,7 +862,7 @@
   <div class="disc-title">&#128640; Rising</div>
   <div class="disc-desc">สินค้าที่อันดับสูงขึ้นมากจากครั้งก่อน</div>
   <div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#3 <span class="rc rc-up">&#9650;17</span></div>
+  <div class="disc-rank">#3 <span class="rc rc-up">&#9650;11</span></div>
   <div class="disc-emoji">&#128167;</div>
   <div class="disc-info">
     <div class="product-brand">La Roche-Posay</div>
@@ -882,7 +882,7 @@
   </div>
 </div>
 <div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#7 <span class="rc rc-up">&#9650;16</span></div>
+  <div class="disc-rank">#6 <span class="rc rc-up">&#9650;12</span></div>
   <div class="disc-emoji">&#128167;</div>
   <div class="disc-info">
     <div class="product-brand">d'Alba</div>
@@ -901,11 +901,31 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
+<div class="disc-card" data-category="maskpack">
+  <div class="disc-rank">#9 <span class="rc rc-up">&#9650;16</span></div>
+  <div class="disc-emoji">&#129526;</div>
+  <div class="disc-info">
+    <div class="product-brand">Biodance</div>
+    <div class="product-name">BIODANCE Bio-Collagen Real Deep Mask</div>
+    <div class="product-name-ko">바이오던스 바이오 콜라겐 리얼 딥 마스크</div>
+    <div class="product-badges"><span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span></div>
+  </div>
+  <div class="disc-right">
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
 </div><div class="disc-section disc-buzz" id="disc-sec-buzz">
   <div class="disc-title">&#9203; รอติดตาม</div>
   <div class="disc-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</div>
   <div class="disc-card" data-category="makeup">
-  <div class="disc-rank">#13 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-rank">#10 <span class="rc rc-up">&#9650;19</span></div>
   <div class="disc-emoji">&#128132;</div>
   <div class="disc-info">
     <div class="product-brand">Coringco</div>
@@ -925,7 +945,7 @@
   </div>
 </div>
 <div class="disc-card" data-category="cleansing">
-  <div class="disc-rank">#14 <span class="rc rc-up">&#9650;12</span></div>
+  <div class="disc-rank">#12 <span class="rc rc-up">&#9650;8</span></div>
   <div class="disc-emoji">&#10024;</div>
   <div class="disc-info">
     <div class="product-brand">Ma:nyo</div>
@@ -944,8 +964,28 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
+<div class="disc-card" data-category="skincare">
+  <div class="disc-rank">#13 <span class="rc rc-up">&#9650;10</span></div>
+  <div class="disc-emoji">&#128167;</div>
+  <div class="disc-info">
+    <div class="product-brand">S.Nature</div>
+    <div class="product-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
+    <div class="product-name-ko">에스네이처 아쿠아 스쿠알란 수분크림</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span></div>
+  </div>
+  <div class="disc-right">
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=S.NATURE%20Aqua%20Squalane%20Moisturizing%20Cream" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
 <div class="disc-card" data-category="suncare">
-  <div class="disc-rank">#15 <span class="rc rc-up">&#9650;14</span></div>
+  <div class="disc-rank">#19 <span class="rc rc-up">&#9650;8</span></div>
   <div class="disc-emoji">&#9728;&#65039;</div>
   <div class="disc-info">
     <div class="product-brand">d'Alba</div>
@@ -961,6 +1001,26 @@
     <a href="https://www.lazada.co.th/catalog/?q=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
     <a href="https://www.yesstyle.com/en/search.html?keyword=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <a href="https://www.amazon.com/s?k=d%27Alba%20Waterfull%20Tone-Up%20Sun%20Cream%20Pink" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+  </div>
+</div>
+<div class="disc-card" data-category="skincare">
+  <div class="disc-rank">#21 <span class="rc rc-up">&#9650;9</span></div>
+  <div class="disc-emoji">&#128167;</div>
+  <div class="disc-info">
+    <div class="product-brand">Mediheal</div>
+    <div class="product-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
+    <div class="product-name-ko">메디힐 마데카소사이드 흔적 리페어 세럼</div>
+    <div class="product-badges"><span class="badge badge-buzz" title="เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม">&#9203; รอติดตาม</span><span class="badge-desc">เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม</span></div>
+  </div>
+  <div class="disc-right">
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
+  </div>
+  <div class="buy-links">
+    <a href="https://shopee.co.th/search?keyword=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.lazada.co.th/catalog/?q=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
+    <a href="https://www.yesstyle.com/en/search.html?keyword=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
+    <a href="https://www.amazon.com/s?k=MEDIHEAL%20Madecassoside%20Blemish%20Repair%20Serum" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
@@ -996,7 +1056,7 @@
   </div>
 </div>
 <div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#10 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-rank">#8 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
   <div class="disc-info">
     <div class="product-brand">Torriden</div>
@@ -1015,28 +1075,8 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
-<div class="disc-card" data-category="maskpack">
-  <div class="disc-rank">#11 <span class="rc rc-new">NEW</span></div>
-  <div class="disc-emoji">&#129526;</div>
-  <div class="disc-info">
-    <div class="product-brand">Biodance</div>
-    <div class="product-name">BIODANCE Bio-Collagen Real Deep Mask</div>
-    <div class="product-name-ko">바이오던스 바이오 콜라겐 리얼 딥 마스크</div>
-    <div class="product-badges"></div>
-  </div>
-  <div class="disc-right">
-    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>ซื้อสินค้า &#9662;</button>
-  </div>
-  <div class="buy-links">
-    <a href="https://shopee.co.th/search?keyword=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask&amp;af_id=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.lazada.co.th/catalog/?q=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Lazada TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
-    <a href="https://www.yesstyle.com/en/search.html?keyword=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask&amp;ref=kbeautyth" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <a href="https://www.amazon.com/s?k=BIODANCE%20Bio-Collagen%20Real%20Deep%20Mask" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
-    <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
-  </div>
-</div>
 <div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#12 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-rank">#11 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
   <div class="disc-info">
     <div class="product-brand">Medicube</div>
@@ -1056,7 +1096,7 @@
   </div>
 </div>
 <div class="disc-card" data-category="makeup">
-  <div class="disc-rank">#17 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-rank">#15 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
   <div class="disc-info">
     <div class="product-brand">Dear Dahlia</div>
@@ -1075,9 +1115,8 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
-<div class="disc-more-wrap" id="disc-more-new" style="display:none">
 <div class="disc-card" data-category="makeup">
-  <div class="disc-rank">#21 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-rank">#18 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
   <div class="disc-info">
     <div class="product-brand">Dear Dahlia</div>
@@ -1096,8 +1135,9 @@
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
 </div>
+<div class="disc-more-wrap" id="disc-more-new" style="display:none">
 <div class="disc-card" data-category="makeup">
-  <div class="disc-rank">#22 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-rank">#20 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128132;</div>
   <div class="disc-info">
     <div class="product-brand">Wakemake</div>
@@ -1117,7 +1157,7 @@
   </div>
 </div>
 <div class="disc-card" data-category="skincare">
-  <div class="disc-rank">#25 <span class="rc rc-new">NEW</span></div>
+  <div class="disc-rank">#24 <span class="rc rc-new">NEW</span></div>
   <div class="disc-emoji">&#128167;</div>
   <div class="disc-info">
     <div class="product-brand">Dong-A Pharmaceutical</div>
@@ -1197,7 +1237,7 @@
   </div>
 </div>
 </div>
-<button class="disc-more-btn" onclick="var w=document.getElementById('disc-more-new');w.style.display=w.style.display==='none'?'block':'none';this.textContent=w.style.display==='none'?'+ ดูเพิ่ม (6)':'- ซ่อน'">+ ดูเพิ่ม (6)</button>
+<button class="disc-more-btn" onclick="var w=document.getElementById('disc-more-new');w.style.display=w.style.display==='none'?'block':'none';this.textContent=w.style.display==='none'?'+ ดูเพิ่ม (5)':'- ซ่อน'">+ ดูเพิ่ม (5)</button>
 </div></div>
 </div>
 
@@ -1276,15 +1316,11 @@
 
 <!-- Tab 3: Seller -->
 <div class="panel" id="p-seller">
-  <div class="ss ss-buzz"><h3>&#9203; รอติดตาม (3 รายการ)</h3>
+  <div class="ss ss-buzz"><h3>&#9203; รอติดตาม (5 รายการ)</h3>
   <p class="ss-desc">สินค้าที่ยังต้องรอดูข้อมูลเพิ่มเติม ดูรายละเอียดใน Pro</p>
   <p class="ss-teaser">&#128274; ดูรายชื่อทั้งหมดได้ที่แท็บ <a href="#" onclick="document.querySelectorAll('.tab-btn')[3].click();return false" style="color:#e8547a;font-weight:700">รายงาน Pro</a></p>
-</div><div class="ss ss-dropped"><h3>&#128308; สินค้าที่หลุดจาก TOP 30 ครั้งนี้ (12)</h3>
+</div><div class="ss ss-dropped"><h3>&#128308; สินค้าที่หลุดจาก TOP 30 ครั้งนี้ (10)</h3>
   <p class="ss-desc">สินค้าที่อยู่ใน TOP 30 ครั้งก่อนแต่หลุดออกแล้ว</p><div class="si si-dropped">
-  <div class="si-name"></div>
-</div><div class="si si-dropped">
-  <div class="si-name"></div>
-</div><div class="si si-dropped">
   <div class="si-name"></div>
 </div><div class="si si-dropped">
   <div class="si-name"></div>
@@ -1399,12 +1435,14 @@
     <div class="email-thanks" id="pro-thanks">ขอบคุณ! เราจะส่งรายงานให้คุณเร็วๆ นี้ &#127881;</div>
   </div>
   <div class="ss ss-buzz" style="margin-top:16px">
-    <h3>&#9203; รอติดตาม (3 รายการ)</h3>
+    <h3>&#9203; รอติดตาม (5 รายการ)</h3>
     <p class="ss-desc">สินค้าที่ยังต้องรอดูข้อมูลเพิ่มเติม</p>
     <div class="blur-wrap">
       <div class="blur-list"><div class="si si-buzz"><div class="si-name">CORINGCO Toktok Hara No Glue Eyelash</div>
   <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">ma:nyo Pure Cleansing Oil</div>
+  <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
   <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">d'Alba Waterfull Tone-Up Sun Cream Pink</div>
+  <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div><div class="si si-buzz"><div class="si-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
   <div class="si-reason">รอดูข้อมูลเพิ่มเติม</div></div></div>
       <a href="#" class="blur-cta" onclick="this.parentElement.querySelector('.blur-list').classList.remove('blur-list');this.remove();return false">&#128275; ปลดล็อกดูรายชื่อ</a>
     </div>
