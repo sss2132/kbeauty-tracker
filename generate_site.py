@@ -140,7 +140,7 @@ def build_product_cards(products):
     <div class="product-badges">{badges}</div>
   </div>
   <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด &amp; รายละเอียด &amp; ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -230,7 +230,7 @@ def build_discover_html(products):
     <div class="product-badges">{badges}</div>
   </div>
   <div class="disc-right">
-    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">ซื้อสินค้า &#9662;</button>
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">รายละเอียด &amp; รายละเอียด &amp; ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -258,7 +258,8 @@ def build_discover_html(products):
   <div class="disc-desc">{desc}</div>
   {cards}
 </div>'''
-    return html
+    section_counts = {s[0]: len(s[3]) for s in sections}
+    return html, section_counts
 
 
 def build_keywords_html(data):
@@ -363,7 +364,7 @@ def build_seller_html(data):
             items += f'''<div class="src-item">
   <span class="src-rank">#{i}</span>
   <div class="src-info"><div class="src-name">{nm}</div><div class="src-note">{note}</div></div>
-  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">รายละเอียด &amp; ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -394,7 +395,7 @@ def generate_html(data):
     warning_html = build_warning_banner(data_status)
 
     product_cards = build_product_cards(products)
-    discover_html = build_discover_html(products)
+    discover_html, disc_counts = build_discover_html(products)
     keywords_html = build_keywords_html(data)
     seller_html = build_seller_html(data)
 
@@ -661,11 +662,11 @@ def generate_html(data):
 <!-- Tab 1: Rankings -->
 <div class="panel active" id="p-ranking">
   <div class="stats">
-    <div class="st" onclick="goDiscover('rising')"><div class="st-v">{sum(1 for p in products if p.get("signal") == "rising")}</div><div class="st-l">&#128640; Rising</div></div>
-    <div class="st" onclick="goDiscover('buzz')"><div class="st-v">{stats["buzz_trap_count"]}</div><div class="st-l">&#9203; รอติดตาม</div></div>
-    <div class="st" onclick="goDiscover('gem')"><div class="st-v">{stats["hidden_gem_count"]}</div><div class="st-l">Hidden Gem</div></div>
-    <div class="st" onclick="goDiscover('steady')"><div class="st-v">{stats.get("steady_seller_count", 0)}</div><div class="st-l">Steady Seller</div></div>
-    <div class="st" onclick="goDiscover('new')"><div class="st-v">{stats.get("new_entries", 0)}</div><div class="st-l">&#127381; New Entry</div></div>
+    <div class="st" onclick="goDiscover('rising')"><div class="st-v">{disc_counts.get("rising", 0)}</div><div class="st-l">&#128640; Rising</div></div>
+    <div class="st" onclick="goDiscover('buzz')"><div class="st-v">{disc_counts.get("buzz", 0)}</div><div class="st-l">&#9203; รอติดตาม</div></div>
+    <div class="st" onclick="goDiscover('gem')"><div class="st-v">{disc_counts.get("gem", 0)}</div><div class="st-l">Hidden Gem</div></div>
+    <div class="st" onclick="goDiscover('steady')"><div class="st-v">{disc_counts.get("steady", 0)}</div><div class="st-l">Steady Seller</div></div>
+    <div class="st" onclick="goDiscover('new')"><div class="st-v">{disc_counts.get("new", 0)}</div><div class="st-l">&#127381; New Entry</div></div>
   </div>
   <div class="fbar">
     <button class="fbtn active" data-cat="all">ทั้งหมด</button>
@@ -912,7 +913,7 @@ TH_TO_EN = [
     ("สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย", "Consistently selling well with many reviews"),
     ("เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม", "Social buzz high but sales data still uncertain"),
     # Buy buttons
-    ("ซื้อสินค้า", "Buy"),
+    ("รายละเอียด &amp; ซื้อ", "Details &amp; Buy"),
     ("ซื้อ", "Buy"),
     # Tabs (keep Thai for index.html, these translate for en.html)
     ("คีย์เวิร์ดยอดนิยม", "Rising Keywords"),
