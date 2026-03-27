@@ -1,8 +1,13 @@
 """
-K-Beauty Trend Tracker - 종합 트렌드 점수 계산기 v6
+K-Beauty Trend Tracker - 종합 트렌드 점수 계산기 v7
 3소스 체계: OY 45% + NS 30% + YT 25%
-로그 스케일 정규화 + 상위 보너스.
+순위 기반 스코어링: 세 소스 모두 동일 스케일 (rank당 2점, 100~0).
 Buzz Trap / Hidden Gem / RISING 감지.
+
+v7 변경:
+- 네이버/유튜브: 로그 정규화+보너스 → 순위 기반 2점/rank로 변경
+- 프로모션 패널티: 오특/1+1 고정 0.5 → 2입 할인율 기반 단계적 적용
+- PROMOTION_PENALTY 상수 제거, get_promotion_penalty() 통합
 
 v6 변경:
 - 매일 독립 스코어 → 구간 평균 방식
@@ -19,7 +24,7 @@ import sys
 from collections import OrderedDict
 from datetime import datetime, timedelta
 
-from config import make_affiliate_url, PROMOTION_PENALTY
+from config import make_affiliate_url
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 DAILY_DIR = os.path.join(DATA_DIR, "daily")
@@ -45,23 +50,15 @@ def calc_oliveyoung_score(rank, review_count):
     return min(100, base + bonus)
 
 
-def log_normalize_with_bonus(values):
-    """로그 정규화 + 상위 보너스."""
+def rank_based_scoring(values):
+    """순위 기반 스코어링: 값을 내림차순 정렬하여 1위=100, 2위=98... (rank당 2점)."""
     if not values:
         return []
-    log_values = [math.log(v + 1) if v > 0 else 0 for v in values]
-    min_val = min(log_values)
-    max_val = max(log_values)
-    if max_val == min_val:
-        return [50] * len(values)
-    normalized = [(v - min_val) / (max_val - min_val) * 85 for v in log_values]
-
-    sorted_indices = sorted(range(len(values)), key=lambda i: values[i], reverse=True)
-    bonuses = {}
-    for idx, bonus in zip(sorted_indices[:5], [15, 10, 7, 4, 2]):
-        bonuses[idx] = bonus
-
-    return [min(100, round(normalized[i] + bonuses.get(i, 0))) for i in range(len(values))]
+    indexed = sorted(enumerate(values), key=lambda x: x[1], reverse=True)
+    scores = [0] * len(values)
+    for rank_idx, (orig_idx, _val) in enumerate(indexed):
+        scores[orig_idx] = max(0, 102 - (rank_idx + 1) * 2)
+    return scores
 
 
 def calc_youtube_bonus(video_count):
@@ -496,8 +493,8 @@ def compute_single_day_scores(date_obj, period_dates):
         nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
         yt_views.append(yt.get("total_views", 0) or 0)
 
-    nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(cosmetic_items)
-    yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(cosmetic_items)
+    nv_norm = rank_based_scoring(nv_volumes) if nv_data else [0] * len(cosmetic_items)
+    yt_norm = rank_based_scoring(yt_views) if yt_data else [0] * len(cosmetic_items)
 
     # data_status for weight computation
     data_status = {
@@ -515,18 +512,15 @@ def compute_single_day_scores(date_obj, period_dates):
         yt = yt_map.get(code, {})
 
         oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
-        is_promo = oy.get("is_promotion", oy.get("is_oteuk", False))
-        is_11 = is_buy_one_get_one(oy.get("name", ""))
-        if is_promo or is_11:
-            oy_score = round(oy_score * PROMOTION_PENALTY)
+        penalty = get_promotion_penalty(oy)
+        if penalty < 1.0:
+            oy_score = round(oy_score * penalty)
 
         nv_score = nv_norm[idx] if nv_data else 0
 
         yt_product_available = yt.get("youtube_available", True) if yt_data else False
         if yt_data and yt_product_available:
-            yt_base = yt_norm[idx]
-            yt_bonus = calc_youtube_bonus(yt.get("video_count", 0))
-            yt_score = min(100, yt_base + yt_bonus)
+            yt_score = yt_norm[idx]
             if yt.get("fallback_discount"):
                 yt_score = round(yt_score * yt["fallback_discount"])
         else:
@@ -909,8 +903,8 @@ def main(use_period=True):
             nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
             yt_views.append(yt.get("total_views", 0) or 0)
 
-        nv_norm = log_normalize_with_bonus(nv_volumes) if nv_data else [0] * len(cosmetic_items)
-        yt_norm = log_normalize_with_bonus(yt_views) if yt_data else [0] * len(cosmetic_items)
+        nv_norm = rank_based_scoring(nv_volumes) if nv_data else [0] * len(cosmetic_items)
+        yt_norm = rank_based_scoring(yt_views) if yt_data else [0] * len(cosmetic_items)
 
         for idx, oy in enumerate(cosmetic_items):
             code = oy["product_code"]
@@ -918,16 +912,15 @@ def main(use_period=True):
             yt = yt_map.get(code, {})
 
             oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
-            if oy.get("is_promotion", oy.get("is_oteuk", False)) or is_buy_one_get_one(oy.get("name", "")):
-                oy_score = round(oy_score * PROMOTION_PENALTY)
+            penalty = get_promotion_penalty(oy)
+            if penalty < 1.0:
+                oy_score = round(oy_score * penalty)
 
             nv_score = nv_norm[idx] if nv_data else 0
 
             yt_product_available = yt.get("youtube_available", True) if yt_data else False
             if yt_data and yt_product_available:
-                yt_base = yt_norm[idx]
-                yt_bonus = calc_youtube_bonus(yt.get("video_count", 0))
-                yt_score = min(100, yt_base + yt_bonus)
+                yt_score = yt_norm[idx]
                 # 폴백 키워드 할인 적용
                 if yt.get("fallback_discount"):
                     yt_score = round(yt_score * yt["fallback_discount"])

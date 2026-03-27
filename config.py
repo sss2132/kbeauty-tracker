@@ -12,8 +12,8 @@ YOUTUBE_API_KEY_2 = os.environ.get("YOUTUBE_API_KEY_2")
 YOUTUBE_API_KEY_3 = os.environ.get("YOUTUBE_API_KEY_3")
 YOUTUBE_API_KEYS = [k for k in [YOUTUBE_API_KEY_3, YOUTUBE_API_KEY, YOUTUBE_API_KEY_2] if k]
 
-# 오특(오늘의 특가) 프로모션 패널티 계수
-PROMOTION_PENALTY = 0.5
+# 프로모션 패널티는 score_calculator.get_promotion_penalty()에서 관리
+# (오특/1+1=0.5, 2입 할인율 기반 0.5~0.9)
 
 # 제휴 파라미터 (승인 후 실제 값으로 교체)
 SHOPEE_TH_AFFILIATE_ID = "kbeautyth"
