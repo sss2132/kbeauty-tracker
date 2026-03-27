@@ -191,7 +191,7 @@ def build_discover_html(products):
 
     html = ""
     for sec_type, title, desc, items in sections:
-        cards = ""
+        card_list = []
         for p in items:
             rank = p["rank"]
             brand_en = esc(p.get("brand_en", p["brand"]))
@@ -220,7 +220,7 @@ def build_discover_html(products):
             yesstyle = esc(p.get("yesstyle_url", "#"))
             amazon = esc(p.get("amazon_url", "#"))
 
-            cards += f'''<div class="disc-card" data-category="{cat}">
+            card_list.append(f'''<div class="disc-card" data-category="{cat}">
   <div class="disc-rank">#{rank} {rc_html}</div>
   <div class="disc-emoji">{cat_emoji}</div>
   <div class="disc-info">
@@ -239,17 +239,20 @@ def build_discover_html(products):
     <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
   </div>
-</div>'''
-        if not cards:
+</div>''')
+        if not card_list:
             cards = '<div class="disc-empty-sec">ยังไม่มีในครั้งนี้</div>'
-        # 5개 초과 시 접기/펼치기
-        if len(items) > 5:
-            card_list = cards.split('</div>\n<div class="disc-card"')
-            visible = '</div>\n<div class="disc-card"'.join(card_list[:5])
-            hidden = '</div>\n<div class="disc-card"'.join(card_list[5:])
+        elif len(card_list) > 5:
+            visible = "\n".join(card_list[:5])
+            hidden = "\n".join(card_list[5:])
+            extra = len(card_list) - 5
             cards = f'''{visible}
-<div class="disc-more-wrap" id="disc-more-{sec_type}" style="display:none"><div class="disc-card"{hidden}</div>
-<button class="disc-more-btn" onclick="var w=document.getElementById('disc-more-{sec_type}');w.style.display=w.style.display==='none'?'block':'none';this.textContent=w.style.display==='none'?'+ ดูเพิ่ม ({len(items)-5})':'- ซ่อน'">+ ดูเพิ่ม ({len(items)-5})</button>'''
+<div class="disc-more-wrap" id="disc-more-{sec_type}" style="display:none">
+{hidden}
+</div>
+<button class="disc-more-btn" onclick="var w=document.getElementById('disc-more-{sec_type}');w.style.display=w.style.display==='none'?'block':'none';this.textContent=w.style.display==='none'?'+ ดูเพิ่ม ({extra})':'- ซ่อน'">+ ดูเพิ่ม ({extra})</button>'''
+        else:
+            cards = "\n".join(card_list)
         html += f'''<div class="disc-section disc-{sec_type}" id="disc-sec-{sec_type}">
   <div class="disc-title">{title}</div>
   <div class="disc-desc">{desc}</div>
@@ -786,20 +789,26 @@ def generate_html(data):
 
 <script>
 function goDiscover(secType){{
-  /* Stats 클릭 → Discover 탭 열고 해당 섹션으로 스크롤 */
+  /* Stats 클릭 → Ranking 탭 유지 + Discover 뷰 전환 + 해당 섹션 스크롤 */
   var tabs=document.querySelectorAll('.tab-btn'),panels=document.querySelectorAll('.panel');
+  /* Ranking 탭 활성화 (이미 active일 수 있지만 확실히) */
   tabs.forEach(function(t){{t.classList.remove('active')}});
   panels.forEach(function(p){{p.classList.remove('active')}});
   tabs[0].classList.add('active');
   document.getElementById('p-ranking').classList.add('active');
   /* Discover 뷰로 전환 */
+  var rv=document.querySelector('.ranking-view');
+  var dv=document.querySelector('.discover-view');
   var vtBtns=document.querySelectorAll('.vt-btn');
-  if(vtBtns.length>=2){{vtBtns[1].click()}}
+  if(rv)rv.style.display='none';
+  if(dv)dv.style.display='block';
+  vtBtns.forEach(function(b){{b.classList.remove('active')}});
+  if(vtBtns.length>=2)vtBtns[1].classList.add('active');
   /* 해당 섹션 스크롤 */
   setTimeout(function(){{
     var sec=document.getElementById('disc-sec-'+secType);
     if(sec){{sec.scrollIntoView({{behavior:'smooth',block:'start'}})}}
-  }},100);
+  }},150);
 }}
 (function(){{
   /* Tabs */
@@ -1024,7 +1033,7 @@ TH_TO_EN = [
 
 LANG_TOGGLE_TH = '<a href="en.html" class="lang-toggle">&#127468;&#127463; EN</a>'
 LANG_TOGGLE_EN = '<a href="index.html" class="lang-toggle">&#127481;&#127469; TH</a>'
-LANG_TOGGLE_CSS = ".lang-toggle{background:rgba(255,255,255,.25);color:#fff;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.4)}.hdr-top{display:flex;justify-content:space-between;align-items:center;padding:0 4px}"
+LANG_TOGGLE_CSS = ".lang-toggle{background:rgba(255,255,255,.25);color:#fff;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.4);position:absolute;right:16px;top:16px}.hdr-top{position:relative;text-align:center;padding:0 4px}"
 
 
 EN_MONTHS = {
