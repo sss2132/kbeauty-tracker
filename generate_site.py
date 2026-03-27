@@ -140,7 +140,7 @@ def build_product_cards(products):
     <div class="product-badges">{badges}</div>
   </div>
   <div class="product-right">
-    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด &amp; รายละเอียด &amp; ซื้อ &#9662;</button>
+    <button class="btn-buy" onclick="this.parentElement.parentElement.querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>&amp; ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -230,7 +230,7 @@ def build_discover_html(products):
     <div class="product-badges">{badges}</div>
   </div>
   <div class="disc-right">
-    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">รายละเอียด &amp; รายละเอียด &amp; ซื้อ &#9662;</button>
+    <button class="btn-buy" onclick="this.closest('.disc-card').querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>&amp; ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -364,7 +364,7 @@ def build_seller_html(data):
             items += f'''<div class="src-item">
   <span class="src-rank">#{i}</span>
   <div class="src-info"><div class="src-name">{nm}</div><div class="src-note">{note}</div></div>
-  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">รายละเอียด &amp; ซื้อ &#9662;</button>
+  <div class="src-right"><button class="btn-buy-sm" onclick="this.closest('.src-item').querySelector('.buy-links').classList.toggle('open')">รายละเอียด<br>&amp; ซื้อ &#9662;</button>
   </div>
   <div class="buy-links">
     <a href="{shopee}" target="_blank" rel="noopener"><span class="bl-icon">&#128722;</span><span class="bl-name">Shopee TH</span><span class="bl-desc">จัดส่งในไทย</span></a>
@@ -502,7 +502,7 @@ def generate_html(data):
 .product-right{{text-align:center;flex-shrink:0;min-width:58px}}
 .rank-big{{font-size:22px;font-weight:700;color:#e8547a}}
 .score-small{{font-size:12px;color:#999;margin-top:1px}}
-.btn-buy{{display:block;margin-top:3px;padding:5px 12px;background:#e8547a;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}}
+.btn-buy{{display:block;margin-top:3px;padding:4px 10px;background:#e8547a;color:#fff;border:none;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;line-height:1.3;text-align:center}}
 
 /* Buy links dropdown */
 .buy-links{{display:none;width:100%;padding:6px 0 0}}.buy-links.open{{display:block}}
@@ -913,7 +913,7 @@ TH_TO_EN = [
     ("สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย", "Consistently selling well with many reviews"),
     ("เป็นกระแสในโซเชียล แต่ข้อมูลการขายยังต้องรอดูเพิ่ม", "Social buzz high but sales data still uncertain"),
     # Buy buttons
-    ("รายละเอียด &amp; ซื้อ", "Details &amp; Buy"),
+    ("รายละเอียด<br>&amp; ซื้อ", "Details<br>&amp; Buy"),
     ("ซื้อ", "Buy"),
     # Tabs (keep Thai for index.html, these translate for en.html)
     ("คีย์เวิร์ดยอดนิยม", "Rising Keywords"),
