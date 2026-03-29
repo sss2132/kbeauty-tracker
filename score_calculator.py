@@ -837,7 +837,7 @@ def main(use_period=True):
     data_status = {
         "oliveyoung": {
             "available": bool(oy_data),
-            "product_count": len(oy_data),
+            "product_count": min(len(oy_data), 50),
             "source": "api" if oy_real else "sample",
         },
         "naver_search": {
