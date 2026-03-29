@@ -716,6 +716,20 @@ def main(use_period=True):
         except (json.JSONDecodeError, KeyError):
             pass
 
+    # 이전 weekly_ranking에서 영문명 참조 (keywords 파일 삭제 후 재실행 시 fallback)
+    prev_en_names = {}
+    prev_ranking_files = sorted(glob.glob(os.path.join(DATA_DIR, "weekly_ranking_*.json")))
+    if prev_ranking_files:
+        try:
+            with open(prev_ranking_files[-1], "r", encoding="utf-8") as f:
+                prev_ranking = json.load(f)
+            for p in prev_ranking.get("products", []):
+                en = p.get("name_en", "")
+                if en and not any(ord(c) >= 0xAC00 for c in en):  # 한글이 없는 경우만
+                    prev_en_names[p["product_code"]] = en
+        except (json.JSONDecodeError, KeyError):
+            pass
+
     # 신제품 목록 로드 (daily 메타데이터에서)
     all_new_launches = set()
     for folder in sorted(os.listdir(DAILY_DIR)) if os.path.isdir(DAILY_DIR) else []:
@@ -876,7 +890,7 @@ def main(use_period=True):
             note = seller_note(scores, flags)
 
             kw_entry = kw_map.get(code, {}) if kw_map else {}
-            name_en_val = en_override.get(code) or kw_entry.get("english_name") or sk
+            name_en_val = en_override.get(code) or kw_entry.get("english_name") or prev_en_names.get(code) or sk
             name_ko_val = ko_override.get(code) or p["name_ko"]
 
             product = {
@@ -986,7 +1000,7 @@ def main(use_period=True):
             note = seller_note(scores, flags)
 
             kw_entry = kw_map.get(code, {}) if kw_map else {}
-            name_en_val = en_override.get(code) or kw_entry.get("english_name") or sk
+            name_en_val = en_override.get(code) or kw_entry.get("english_name") or prev_en_names.get(code) or sk
             name_ko_val = ko_override.get(code) or name_ko_val
 
             product = {
@@ -1024,7 +1038,7 @@ def main(use_period=True):
             # rising keywords는 아래에서 순위 기반으로 계산
 
     # Sort by total score
-    all_products.sort(key=lambda p: p["scores"]["total"], reverse=True)
+    all_products.sort(key=lambda p: (-p["scores"]["total"], p.get("oliveyoung_rank", 999), p["product_code"]))
 
     # Assign ranks
     for i, p in enumerate(all_products, 1):
@@ -1072,7 +1086,7 @@ def main(use_period=True):
             p["seller_note"] = seller_note(p["scores"], p["flags"])
 
         # 보너스 적용 후 재정렬
-        all_products.sort(key=lambda p: p["scores"]["total"], reverse=True)
+        all_products.sort(key=lambda p: (-p["scores"]["total"], p.get("oliveyoung_rank", 999), p["product_code"]))
         for i, p in enumerate(all_products, 1):
             p["rank"] = i
 
@@ -1221,7 +1235,7 @@ def main(use_period=True):
         }
 
     output = {
-        "week": today.strftime("%G-W%V"),
+        "week": current_period["end"].strftime("%G-W%V") if current_period else today.strftime("%G-W%V"),
         "updated": current_period["end"].isoformat() if current_period else today.strftime("%Y-%m-%d"),
         "period_info": period_info,
         "data_status": data_status,
