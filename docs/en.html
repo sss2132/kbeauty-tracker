@@ -57,6 +57,8 @@
 .product-info{flex:1;min-width:0}
 .product-brand{font-size:12px;font-weight:700;color:#e8547a;text-transform:uppercase}
 .product-name{font-size:14px;color:#2d3436;margin-top:2px;line-height:1.3}
+.product-name-th{font-size:11px;color:#636e72;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.product-name-th:empty{display:none}
 .product-name-ko{font-size:11px;color:#999;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .product-scores{display:flex;gap:4px;margin-top:3px}
 .sb{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px}
@@ -203,7 +205,7 @@
   .stats{grid-template-columns:repeat(3,1fr)}
   .product-card{gap:6px;padding:10px}.product-emoji{width:30px;height:30px;font-size:18px}.rank-big{font-size:18px}
   .tab-btn{font-size:11px;padding:9px 1px}
-  .product-name{font-size:13px}.product-brand{font-size:11px}.product-name-ko{font-size:10px}
+  .product-name{font-size:13px}.product-brand{font-size:11px}.product-name-th{font-size:10px}.product-name-ko{font-size:10px}
   .sb{font-size:9px}.badge{font-size:8px}
 }
 </style>
@@ -267,6 +269,7 @@
   <div class="product-info">
     <div class="product-brand">Mediheal</div>
     <div class="product-name">MEDIHEAL Essential Mask Sheet</div>
+    <div class="product-name-th">Mediheal มาสก์แผ่น Essential 10 แผ่น 7 สูตร</div>
     <div class="product-name-ko">메디힐 에센셜 마스크팩</div>
     <div class="product-badges"></div>
   </div>
@@ -288,6 +291,7 @@
   <div class="product-info">
     <div class="product-brand">Menokin</div>
     <div class="product-name">MENOKIN 30 Seconds Quick Bubble Mask</div>
+    <div class="product-name-th">Menokin มาสก์บับเบิล Quick Bubble Mask</div>
     <div class="product-name-ko">메노킨 30초 퀵 버블 마스크</div>
     <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span></div>
   </div>
@@ -309,6 +313,7 @@
   <div class="product-info">
     <div class="product-brand">Mediheal</div>
     <div class="product-name">MEDIHEAL Toner Pad</div>
+    <div class="product-name-th">Mediheal แพดผิว Derma 200 แผ่น</div>
     <div class="product-name-ko">메디힐 더마 패드</div>
     <div class="product-badges"></div>
   </div>
@@ -330,6 +335,7 @@
   <div class="product-info">
     <div class="product-brand">Jung Saem Mool</div>
     <div class="product-name">JUNGSAEMMOOL Essential Skin Nuder Cushion</div>
+    <div class="product-name-th">Jung Saem Mool คุชชั่น Essential Skin Nuder</div>
     <div class="product-name-ko">정샘물 에센셜 스킨 누더 쿠션</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -351,6 +357,7 @@
   <div class="product-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Soft Blurring Eye Palette</div>
+    <div class="product-name-th">WAKEMAKE ซอฟต์ เบลอริ่ง อายพาเลตต์</div>
     <div class="product-name-ko">웨이크메이크 소프트 블러링 아이팔레트</div>
     <div class="product-badges"></div>
   </div>
@@ -372,6 +379,7 @@
   <div class="product-info">
     <div class="product-brand">S.Nature</div>
     <div class="product-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
+    <div class="product-name-th">esNature ครีม Aqua Squalane 60ml</div>
     <div class="product-name-ko">에스네이처 아쿠아 스쿠알란 수분크림</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -393,6 +401,7 @@
   <div class="product-info">
     <div class="product-brand">La Roche-Posay</div>
     <div class="product-name">La Roche-Posay Cicaplast Baume B5+</div>
+    <div class="product-name-th">La Roche-Posay บาล์ม Cicaplast Baume B5+</div>
     <div class="product-name-ko">라로슈포제 시카플라스트 밤 B5+</div>
     <div class="product-badges"></div>
   </div>
@@ -414,6 +423,7 @@
   <div class="product-info">
     <div class="product-brand">Coringco</div>
     <div class="product-name">CORINGCO Toktok Hara No Glue Eyelash</div>
+    <div class="product-name-th">CORINGCO ต๊อกต๊อก ฮาร่า ขนตาปลอมไม่ใช้กาว</div>
     <div class="product-name-ko">코링코 톡톡하라 노글루 속눈썹</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -435,6 +445,7 @@
   <div class="product-info">
     <div class="product-brand">Biodance</div>
     <div class="product-name">BIODANCE Real Deep Mask</div>
+    <div class="product-name-th">Biodance มาสก์แผ่น Real Deep 7+1 แผ่น</div>
     <div class="product-name-ko">바이오던스 리얼 딥 마스크</div>
     <div class="product-badges"></div>
   </div>
@@ -456,6 +467,7 @@
   <div class="product-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Soft Blurring Balm Stick</div>
+    <div class="product-name-th">WAKEMAKE ซอฟต์ เบลอริ่ง บาล์มสติ๊ก</div>
     <div class="product-name-ko">웨이크메이크 소프트 블러링 밤 스틱</div>
     <div class="product-badges"></div>
   </div>
@@ -477,6 +489,7 @@
   <div class="product-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Hello Kitty Lip &amp; Eye Kit</div>
+    <div class="product-name-th">WAKEMAKE เฮลโล คิตตี้ ลิป แอนด์ อาย คิท</div>
     <div class="product-name-ko">웨이크메이크 헬로키티 립 앤 아이키트(아이 팔레트+밤 스틱)</div>
     <div class="product-badges"></div>
   </div>
@@ -498,6 +511,7 @@
   <div class="product-info">
     <div class="product-brand">d'Alba</div>
     <div class="product-name">d'Alba White Truffle First Spray Serum</div>
+    <div class="product-name-th">d'Alba เซรั่มสเปรย์ First Spray 100ml</div>
     <div class="product-name-ko">달바 화이트 트러플 퍼스트 스프레이 세럼</div>
     <div class="product-badges"></div>
   </div>
@@ -519,6 +533,7 @@
   <div class="product-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Healthy Glow Balm Stick</div>
+    <div class="product-name-th">WAKEMAKE เฮลท์ตี้ โกลว์ บาล์มสติ๊ก</div>
     <div class="product-name-ko">웨이크메이크 헬시 글로우 밤 스틱</div>
     <div class="product-badges"></div>
   </div>
@@ -540,6 +555,7 @@
   <div class="product-info">
     <div class="product-brand">d'Alba</div>
     <div class="product-name">d'Alba Waterfull Tone-up Sunscreen Purple</div>
+    <div class="product-name-th">d'Alba ครีมSuncare Waterfull Tone-up Purple</div>
     <div class="product-name-ko">달바 퍼플 톤업 선크림</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -561,6 +577,7 @@
   <div class="product-info">
     <div class="product-brand">Wellage</div>
     <div class="product-name">WELLAGE Real Hyaluronic Blue 100 Ampoule</div>
+    <div class="product-name-th">Wellage แอมพูล Real Hyaluronic Blue 100 75ml</div>
     <div class="product-name-ko">웰라쥬 리얼 히알루로닉 블루 100 앰플</div>
     <div class="product-badges"></div>
   </div>
@@ -582,6 +599,7 @@
   <div class="product-info">
     <div class="product-brand">d'Alba</div>
     <div class="product-name">d'Alba Waterfull Tone-Up Sun Cream Pink</div>
+    <div class="product-name-th">d'Alba ครีมSuncare Waterfull Tone-up Pink</div>
     <div class="product-name-ko">달바 핑크 톤업 선크림</div>
     <div class="product-badges"></div>
   </div>
@@ -603,6 +621,7 @@
   <div class="product-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Shaking Blur Cheek</div>
+    <div class="product-name-th">WAKEMAKE เชคกิ้ง เบลอ ชีค</div>
     <div class="product-name-ko">웨이크메이크 쉐이킹 블러 치크</div>
     <div class="product-badges"></div>
   </div>
@@ -624,6 +643,7 @@
   <div class="product-info">
     <div class="product-brand">Dong-A Pharmaceutical</div>
     <div class="product-name">DONG-A Pharm Pigmentation Pro Cream</div>
+    <div class="product-name-th">DONG-A Pharm พิกเมนเทชั่น โปร ครีม</div>
     <div class="product-name-ko">동아제약 색소침착 프로 크림제</div>
     <div class="product-badges"></div>
   </div>
@@ -645,6 +665,7 @@
   <div class="product-info">
     <div class="product-brand">Mediheal</div>
     <div class="product-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
+    <div class="product-name-th">Mediheal เซรั่ม Madecassoside ลดรอย 40ml</div>
     <div class="product-name-ko">메디힐 마데카소사이드 흔적 리페어 세럼</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -666,6 +687,7 @@
   <div class="product-info">
     <div class="product-brand">Dr.G</div>
     <div class="product-name">Dr.G Green Mild Up Sun+</div>
+    <div class="product-name-th">Dr.G กรีน มายด์ อัพ ซัน+</div>
     <div class="product-name-ko">닥터지 그린 마일드 업 선 플러스</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -687,6 +709,7 @@
   <div class="product-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Water Glow Coating Balm</div>
+    <div class="product-name-th">WAKEMAKE วอเตอร์ โกลว์ โคทติ้ง บาล์ม</div>
     <div class="product-name-ko">웨이크메이크 워터 글로우 코팅밤</div>
     <div class="product-badges"></div>
   </div>
@@ -708,6 +731,7 @@
   <div class="product-info">
     <div class="product-brand">Medicube</div>
     <div class="product-name">medicube PDRN Pink Peptide Ampoule</div>
+    <div class="product-name-th">Medicube แอมพูล PDRN Pink 30ml</div>
     <div class="product-name-ko">메디큐브 PDRN 핑크 펩타이드 앰플</div>
     <div class="product-badges"></div>
   </div>
@@ -729,6 +753,7 @@
   <div class="product-info">
     <div class="product-brand">Torriden</div>
     <div class="product-name">Torriden DIVE-IN Low Molecule Hyaluronic Acid Serum</div>
+    <div class="product-name-th">Torriden DIVE-IN เซรั่มไฮยาลูโรนิก โมเลกุลต่ำ</div>
     <div class="product-name-ko">토리든 다이브인 저분자 히알루론산 세럼</div>
     <div class="product-badges"></div>
   </div>
@@ -750,6 +775,7 @@
   <div class="product-info">
     <div class="product-brand">Ma:nyo</div>
     <div class="product-name">ma:nyo Pure Cleansing Oil</div>
+    <div class="product-name-th">Ma:nyo ออยล์ทำความสะอาด Pure 200ml</div>
     <div class="product-name-ko">마녀공장 퓨어 클렌징오일</div>
     <div class="product-badges"></div>
   </div>
@@ -771,6 +797,7 @@
   <div class="product-info">
     <div class="product-brand">Torriden</div>
     <div class="product-name">Torriden Dive In Hyaluronic Acid Soothing Cream</div>
+    <div class="product-name-th">Torriden Dive In ไฮยาลูโรนิก แอซิด ซูทติ้ง ครีม</div>
     <div class="product-name-ko">토리든 다이브인 히알루론산 수딩 크림</div>
     <div class="product-badges"></div>
   </div>
@@ -792,6 +819,7 @@
   <div class="product-info">
     <div class="product-brand">Make P:rem</div>
     <div class="product-name">Make P:rem Safe Me Relief Moisture Cleansing Milk</div>
+    <div class="product-name-th">Make P:rem เซฟ มี รีลีฟ มอยส์เจอร์ คลีนซิ่ง มิลค์</div>
     <div class="product-name-ko">메이크프렘 세이프 미 릴리프 모이스처 클렌징밀크</div>
     <div class="product-badges"></div>
   </div>
@@ -813,6 +841,7 @@
   <div class="product-info">
     <div class="product-brand">Dong-A Pharmaceutical</div>
     <div class="product-name">DONG-A Pharm Pigmentation Pro Liquid</div>
+    <div class="product-name-th">DONG-A Pharm พิกเมนเทชั่น โปร ลิควิด</div>
     <div class="product-name-ko">동아제약 색소침착 프로 액제</div>
     <div class="product-badges"></div>
   </div>
@@ -834,6 +863,7 @@
   <div class="product-info">
     <div class="product-brand">Round Lab</div>
     <div class="product-name">ROUND LAB Birch Juice Moisturizing Tone Up Sun Cream</div>
+    <div class="product-name-th">ROUND LAB เบิร์ช จูซ มอยส์เจอร์ไรซิ่ง โทนอัพ ซันครีม</div>
     <div class="product-name-ko">라운드랩 자작나무 수분 톤업 선크림</div>
     <div class="product-badges"></div>
   </div>
@@ -855,6 +885,7 @@
   <div class="product-info">
     <div class="product-brand">VDL</div>
     <div class="product-name">VDL Cover Stain Perfecting Foundation</div>
+    <div class="product-name-th">VDL คัฟเวอร์สเตน เพอร์เฟคติ้ง ฟาวเดชั่น</div>
     <div class="product-name-ko">VDL 커버스테인 퍼펙팅 파운데이션</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -876,6 +907,7 @@
   <div class="product-info">
     <div class="product-brand">CLIO</div>
     <div class="product-name">CLIO Sharp So Simple Waterproof Pencil Liner</div>
+    <div class="product-name-th">CLIO ชาร์ป โซ ซิมเปิ้ล วอเตอร์พรูฟ เพนซิล ไลเนอร์</div>
     <div class="product-name-ko">클리오 샤프 쏘 심플 워터프루프 펜슬라이너</div>
     <div class="product-badges"></div>
   </div>
@@ -900,6 +932,7 @@
   <div class="disc-info">
     <div class="product-brand">Menokin</div>
     <div class="product-name">MENOKIN 30 Seconds Quick Bubble Mask</div>
+    <div class="product-name-th">Menokin มาสก์บับเบิล Quick Bubble Mask</div>
     <div class="product-name-ko">메노킨 30초 퀵 버블 마스크</div>
     <div class="product-badges"><span class="badge badge-rising" title="Rose significantly from last period">RISING</span><span class="badge-desc">Rose significantly from last period</span></div>
   </div>
@@ -924,6 +957,7 @@
   <div class="disc-info">
     <div class="product-brand">Jung Saem Mool</div>
     <div class="product-name">JUNGSAEMMOOL Essential Skin Nuder Cushion</div>
+    <div class="product-name-th">Jung Saem Mool คุชชั่น Essential Skin Nuder</div>
     <div class="product-name-ko">정샘물 에센셜 스킨 누더 쿠션</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -945,6 +979,7 @@
   <div class="disc-info">
     <div class="product-brand">S.Nature</div>
     <div class="product-name">S.NATURE Aqua Squalane Moisturizing Cream</div>
+    <div class="product-name-th">esNature ครีม Aqua Squalane 60ml</div>
     <div class="product-name-ko">에스네이처 아쿠아 스쿠알란 수분크림</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -966,6 +1001,7 @@
   <div class="disc-info">
     <div class="product-brand">Coringco</div>
     <div class="product-name">CORINGCO Toktok Hara No Glue Eyelash</div>
+    <div class="product-name-th">CORINGCO ต๊อกต๊อก ฮาร่า ขนตาปลอมไม่ใช้กาว</div>
     <div class="product-name-ko">코링코 톡톡하라 노글루 속눈썹</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -987,6 +1023,7 @@
   <div class="disc-info">
     <div class="product-brand">d'Alba</div>
     <div class="product-name">d'Alba Waterfull Tone-up Sunscreen Purple</div>
+    <div class="product-name-th">d'Alba ครีมSuncare Waterfull Tone-up Purple</div>
     <div class="product-name-ko">달바 퍼플 톤업 선크림</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -1008,6 +1045,7 @@
   <div class="disc-info">
     <div class="product-brand">Mediheal</div>
     <div class="product-name">MEDIHEAL Madecassoside Blemish Repair Serum</div>
+    <div class="product-name-th">Mediheal เซรั่ม Madecassoside ลดรอย 40ml</div>
     <div class="product-name-ko">메디힐 마데카소사이드 흔적 리페어 세럼</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -1030,6 +1068,7 @@
   <div class="disc-info">
     <div class="product-brand">Dr.G</div>
     <div class="product-name">Dr.G Green Mild Up Sun+</div>
+    <div class="product-name-th">Dr.G กรีน มายด์ อัพ ซัน+</div>
     <div class="product-name-ko">닥터지 그린 마일드 업 선 플러스</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -1051,6 +1090,7 @@
   <div class="disc-info">
     <div class="product-brand">VDL</div>
     <div class="product-name">VDL Cover Stain Perfecting Foundation</div>
+    <div class="product-name-th">VDL คัฟเวอร์สเตน เพอร์เฟคติ้ง ฟาวเดชั่น</div>
     <div class="product-name-ko">VDL 커버스테인 퍼펙팅 파운데이션</div>
     <div class="product-badges"><span class="badge badge-buzz" title="Social buzz high but sales data still uncertain">&#9203; Buzz Trap</span><span class="badge-desc">Social buzz high but sales data still uncertain</span></div>
   </div>
@@ -1085,6 +1125,7 @@
   <div class="disc-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Soft Blurring Eye Palette</div>
+    <div class="product-name-th">WAKEMAKE ซอฟต์ เบลอริ่ง อายพาเลตต์</div>
     <div class="product-name-ko">웨이크메이크 소프트 블러링 아이팔레트</div>
     <div class="product-badges"></div>
   </div>
@@ -1106,6 +1147,7 @@
   <div class="disc-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Soft Blurring Balm Stick</div>
+    <div class="product-name-th">WAKEMAKE ซอฟต์ เบลอริ่ง บาล์มสติ๊ก</div>
     <div class="product-name-ko">웨이크메이크 소프트 블러링 밤 스틱</div>
     <div class="product-badges"></div>
   </div>
@@ -1127,6 +1169,7 @@
   <div class="disc-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Hello Kitty Lip &amp; Eye Kit</div>
+    <div class="product-name-th">WAKEMAKE เฮลโล คิตตี้ ลิป แอนด์ อาย คิท</div>
     <div class="product-name-ko">웨이크메이크 헬로키티 립 앤 아이키트(아이 팔레트+밤 스틱)</div>
     <div class="product-badges"></div>
   </div>
@@ -1148,6 +1191,7 @@
   <div class="disc-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Healthy Glow Balm Stick</div>
+    <div class="product-name-th">WAKEMAKE เฮลท์ตี้ โกลว์ บาล์มสติ๊ก</div>
     <div class="product-name-ko">웨이크메이크 헬시 글로우 밤 스틱</div>
     <div class="product-badges"></div>
   </div>
@@ -1169,6 +1213,7 @@
   <div class="disc-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Shaking Blur Cheek</div>
+    <div class="product-name-th">WAKEMAKE เชคกิ้ง เบลอ ชีค</div>
     <div class="product-name-ko">웨이크메이크 쉐이킹 블러 치크</div>
     <div class="product-badges"></div>
   </div>
@@ -1191,6 +1236,7 @@
   <div class="disc-info">
     <div class="product-brand">Wakemake</div>
     <div class="product-name">WAKEMAKE Water Glow Coating Balm</div>
+    <div class="product-name-th">WAKEMAKE วอเตอร์ โกลว์ โคทติ้ง บาล์ม</div>
     <div class="product-name-ko">웨이크메이크 워터 글로우 코팅밤</div>
     <div class="product-badges"></div>
   </div>
@@ -1212,6 +1258,7 @@
   <div class="disc-info">
     <div class="product-brand">Torriden</div>
     <div class="product-name">Torriden Dive In Hyaluronic Acid Soothing Cream</div>
+    <div class="product-name-th">Torriden Dive In ไฮยาลูโรนิก แอซิด ซูทติ้ง ครีม</div>
     <div class="product-name-ko">토리든 다이브인 히알루론산 수딩 크림</div>
     <div class="product-badges"></div>
   </div>
@@ -1233,6 +1280,7 @@
   <div class="disc-info">
     <div class="product-brand">Make P:rem</div>
     <div class="product-name">Make P:rem Safe Me Relief Moisture Cleansing Milk</div>
+    <div class="product-name-th">Make P:rem เซฟ มี รีลีฟ มอยส์เจอร์ คลีนซิ่ง มิลค์</div>
     <div class="product-name-ko">메이크프렘 세이프 미 릴리프 모이스처 클렌징밀크</div>
     <div class="product-badges"></div>
   </div>
@@ -1254,6 +1302,7 @@
   <div class="disc-info">
     <div class="product-brand">Dong-A Pharmaceutical</div>
     <div class="product-name">DONG-A Pharm Pigmentation Pro Liquid</div>
+    <div class="product-name-th">DONG-A Pharm พิกเมนเทชั่น โปร ลิควิด</div>
     <div class="product-name-ko">동아제약 색소침착 프로 액제</div>
     <div class="product-badges"></div>
   </div>
@@ -1275,6 +1324,7 @@
   <div class="disc-info">
     <div class="product-brand">Round Lab</div>
     <div class="product-name">ROUND LAB Birch Juice Moisturizing Tone Up Sun Cream</div>
+    <div class="product-name-th">ROUND LAB เบิร์ช จูซ มอยส์เจอร์ไรซิ่ง โทนอัพ ซันครีม</div>
     <div class="product-name-ko">라운드랩 자작나무 수분 톤업 선크림</div>
     <div class="product-badges"></div>
   </div>
@@ -1296,6 +1346,7 @@
   <div class="disc-info">
     <div class="product-brand">CLIO</div>
     <div class="product-name">CLIO Sharp So Simple Waterproof Pencil Liner</div>
+    <div class="product-name-th">CLIO ชาร์ป โซ ซิมเปิ้ล วอเตอร์พรูฟ เพนซิล ไลเนอร์</div>
     <div class="product-name-ko">클리오 샤프 쏘 심플 워터프루프 펜슬라이너</div>
     <div class="product-badges"></div>
   </div>

@@ -133,6 +133,7 @@ def build_product_cards(products):
   <div class="product-info">
     <div class="product-brand">{brand_en}</div>
     <div class="product-name">{display_name}</div>
+    <div class="product-name-th">{name_th}</div>
     <div class="product-name-ko">{name_ko}</div>
     <div class="product-badges">{badges}</div>
   </div>
@@ -224,6 +225,7 @@ def build_discover_html(products):
   <div class="disc-info">
     <div class="product-brand">{brand_en}</div>
     <div class="product-name">{display_name}</div>
+    <div class="product-name-th">{name_th}</div>
     <div class="product-name-ko">{name_ko}</div>
     <div class="product-badges">{badges}</div>
   </div>
@@ -489,6 +491,8 @@ def generate_html(data):
 .product-info{{flex:1;min-width:0}}
 .product-brand{{font-size:12px;font-weight:700;color:#e8547a;text-transform:uppercase}}
 .product-name{{font-size:14px;color:#2d3436;margin-top:2px;line-height:1.3}}
+.product-name-th{{font-size:11px;color:#636e72;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.product-name-th:empty{{display:none}}
 .product-name-ko{{font-size:11px;color:#999;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 .product-scores{{display:flex;gap:4px;margin-top:3px}}
 .sb{{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px}}
@@ -635,7 +639,7 @@ def generate_html(data):
   .stats{{grid-template-columns:repeat(3,1fr)}}
   .product-card{{gap:6px;padding:10px}}.product-emoji{{width:30px;height:30px;font-size:18px}}.rank-big{{font-size:18px}}
   .tab-btn{{font-size:11px;padding:9px 1px}}
-  .product-name{{font-size:13px}}.product-brand{{font-size:11px}}.product-name-ko{{font-size:10px}}
+  .product-name{{font-size:13px}}.product-brand{{font-size:11px}}.product-name-th{{font-size:10px}}.product-name-ko{{font-size:10px}}
   .sb{{font-size:9px}}.badge{{font-size:8px}}
 }}
 </style>
