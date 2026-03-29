@@ -102,6 +102,7 @@ def main():
 
     # Output as JSON
     output = json.dumps(products, ensure_ascii=False, indent=2)
+    sys.stdout.reconfigure(encoding='utf-8')
     print(output)
 
     # Save to file

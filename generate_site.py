@@ -442,6 +442,9 @@ def generate_html(data):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-02E7LG4RJ3"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-02E7LG4RJ3');</script>
 <title>K-Beauty Trend Tracker Thailand</title>
 <meta name="description" content="ติดตามเทรนด์เครื่องสำอางเกาหลียอดนิยม อัปเดตทุก 3 วัน พร้อมคะแนนจาก Olive Young, Naver Shopping และ YouTube">
 <link rel="preconnect" href="https://fonts.googleapis.com">

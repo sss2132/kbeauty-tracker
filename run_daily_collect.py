@@ -54,6 +54,16 @@ PROJECT_ROOT = os.path.dirname(BASE_DIR)
 SCREENSHOT_DIR = os.path.join(PROJECT_ROOT, "Oliveyoung collection")
 PERIOD_DAYS = 3
 CLAUDE_EXE = os.path.join(os.path.expanduser("~"), ".local", "bin", "claude.exe")
+AGENTS_DIR = os.path.join(BASE_DIR, "agents")
+
+
+def load_agent_rules(filename):
+    """agents/ 디렉토리에서 agent별 규칙 MD 파일을 읽어 반환."""
+    path = os.path.join(AGENTS_DIR, filename)
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+    return ""
 
 
 # ================================================================
@@ -131,53 +141,27 @@ def run_keyword_agent(oy_path, timeout=600):
     """claude -p로 최적 검색 키워드 생성. 실패 시 None 반환."""
     today_str = datetime.now().strftime("%Y%m%d")
     gn_path = os.path.join(DATA_DIR, f"_global_names_{today_str}.json")
-    if os.path.exists(gn_path):
-        global_names_ref = os.path.abspath(gn_path)
-    else:
-        global_names_ref = "(파일 없음 — 한국어 제품명을 영어로 번역해서 사용)"
+    if not os.path.exists(gn_path):
+        safe_print("[KEYWORD] FAIL - 글로벌몰 영문명 파일 없음. Step 3 Phase 0(fetch_global_names) 먼저 실행 필요.")
+        return None
+    global_names_ref = os.path.abspath(gn_path)
 
-    prompt = f"""너는 K-Beauty 제품 검색 키워드 전문가야.
+    rules = load_agent_rules("step3_keyword.md")
+
+    prompt = f"""{rules}
+
+---
+
+## 작업
 올리브영 제품 데이터를 읽고, 각 제품의 최적 검색 키워드를 생성해.
 
 파일: {os.path.abspath(oy_path)}
 
-## 핵심 원칙: 제품명 변조 금지
-- 원본 name 필드에 있는 제품 핵심 이름을 절대 바꾸지 마
-- 키워드 생성은 "앞뒤 프로모션/용량/패키징 텍스트를 제거"하는 것이지, "제품명을 요약하거나 재작성"하는 게 아님
-- 제거 대상: 앞쪽 [대괄호 프로모션], 용량(ml, g, 매), 수량(+1, 더블, 2입), 기획/한정/리필, 증정 정보
-- 유지 대상: 브랜드명 + 제품 라인명 + 제품 고유명 (이것들은 원본 그대로 유지)
-- 잘못된 예: "메디힐 마데카소사이드 흔적 리페어 세럼" → "메디힐 마데카소사이드 세럼" (X, "흔적 리페어" 삭제됨)
-- 잘못된 예: "메디힐 더마 패드" → "메디힐 토닝패드" (X, 제품명 자체를 바꿈)
-
-## 네이버 키워드 규칙 (naver_keyword)
-- 한국 소비자가 네이버에서 실제로 검색할 법한 키워드
-- 브랜드명(한국어) + 제품 라인명 (2~3단어). 너무 구체적이면 네이버 API에서 검색량 0이 됨
-- 같은 라인의 다른 패키징(용량, 세트, 기획)은 같은 키워드 공유 OK
-- 예: "메디힐 에센셜 마스크팩 10+1/10매 기획 7종 골라담기" → "메디힐 마스크팩"
-- 예: "토리든 다이브인 저분자 히알루론산 세럼 50ml 한정 리필 기획" → "토리든 다이브인 세럼"
-- 예: "아누아 피디알엔 히알루론산 캡슐 100 세럼 30ml 더블 기획" → "아누아 세럼"
-- 예: "바이오힐보 프로바이오덤 콜라겐 에센스 선크림 50ml+50ml" → "바이오힐보 선크림"
-- 예: "클리오 킬커버 파운웨어 쿠션 기획" → "클리오 킬커버 쿠션"
-
-## 유튜브 키워드 규칙 (youtube_keyword)
-- 한국어 키워드로 검색 (한국 트렌드 기준이므로 한국어 영상을 정확히 잡아야 함)
-- 네이버 키워드보다 조금 더 구체적으로: 브랜드명 + 제품 라인명 + 제품 타입
-- 예: "달바 워터풀 톤업 선크림 핑크", "메디힐 마데카소사이드 세럼", "토리든 다이브인 세럼"
-- 번들/골라담기 제품은 CLAUDE.md의 "확정된 번들 제품 키워드" 참조 (한글 키워드도 동일 원칙: 공통 상위 키워드 사용)
-
-## 영문명 규칙 (english_name)
-- 올리브영 글로벌 몰 공식 영문명 파일 반드시 참조: {global_names_ref}
-  - 파일의 products 객체에서 product_code로 검색, global_name 필드가 공식 영문명
-  - 공식 영문명에서 용량/기획/세트 정보를 제거하고 핵심 제품명만 사용
-  - 파일에 없는 제품은 한국어 제품명을 영어로 번역
-- 이 영문명은 YouTube 검색이 아닌 웹사이트 게시용으로 사용됨
-- 예: "메디힐 마데카소사이드 세럼" → english_name: "MEDIHEAL Madecassoside Blemish Repair Serum"
-- 예: "클리오 킬커버 파운웨어 쿠션" → english_name: "CLIO Kill Cover Founwear Cushion"
-
-## 비화장품 제외 규칙
-- 건강기능식품(비타민, 단백질쉐이크, 콜라겐 영양제 등), 과자/스낵(베이글칩 등), 의료기기는 제외
-- 콜라겐 "패치"나 콜라겐 "세럼"은 화장품이므로 포함
-- 판단 기준: 피부에 바르거나 붙이는 제품 = 화장품, 먹는 제품 = 비화장품
+## 글로벌몰 영문명 참조 파일
+{global_names_ref}
+- products 객체에서 product_code로 검색, global_name 필드가 공식 영문명
+- 공식 영문명에서 용량/기획/세트 정보를 제거하고 핵심 제품명만 사용
+- 파일에 없는 제품은 한국어 제품명을 영어로 번역
 
 화장품인 제품만(최대 50개) product_code, naver_keyword, youtube_keyword, english_name을 생성해.
 비화장품은 keywords 배열에서 완전히 제외해."""
@@ -263,29 +247,14 @@ def verify_english_names(oy_path, keywords_path, timeout=600):
 
     compare_text = "\n".join(compare_lines)
 
-    prompt = f"""너는 K-Beauty 제품의 영문명 검증 전문가야.
+    rules = load_agent_rules("step3_en_verify.md")
+
+    prompt = f"""{rules}
+
+---
+
+## 작업
 아래 목록에서 각 제품의 한글 풀네임(KO)과 영문명(EN)이 같은 제품을 가리키는지 확인해.
-
-## 검증 기준
-1. **제품 타입 일치**: 세럼↔Serum, 크림↔Cream, 쿠션↔Cushion, 패드↔Pad, 마스크↔Mask, 틴트↔Tint 등
-2. **제품 라인명 일치**: 한글 제품명의 핵심 키워드가 영문명에 반영되어야 함
-   - 예: "누더 쿠션" → "Nuder Cushion" (O), "Radiant Cushion" (X - 다른 제품)
-   - 예: "핑크 톤업 선크림" → "Pink Tone-Up Sun Cream" (O), "Waterfull Tone-Up Sun Cream" (X - 다른 라인)
-   - 예: "시트 마스크" → "Mask Sheet" (O), "Dive In Low Molecular Hyaluronic Acid Mask Sheet" (X - 너무 구체적, 다른 제품 이름)
-3. **브랜드 일치**: 영문명의 브랜드가 한글 브랜드와 같아야 함
-4. **한글이 영문명에 그대로 들어가 있으면 mismatch**: 영문명 필드에 한글 문자가 포함되어 있으면 번역이 안 된 것
-
-## 판단 원칙
-- 용량(ml, g, 매)이나 프로모션(기획, 더블, 2입) 텍스트는 무시
-- 같은 브랜드의 다른 제품 라인이 영문명에 들어가 있으면 mismatch
-- 영문명이 한글 제품의 핵심 특성(라인명, 제품타입)을 정확히 반영하면 ok
-- 영문명에 한글명에 없는 단어가 추가되어 있으면 "needs_confirm" (예: 한글 "퍼스트 스프레이 세럼"인데 영문 "White Truffle First Spray Serum"처럼 White Truffle이 추가된 경우)
-- mismatch인 경우 corrected_name에 올바른 영문명을 제시 (브랜드 영문명 + 제품명 영역)
-- needs_confirm인 경우 corrected_name은 비우고, reason에 아래 내용을 모두 포함:
-  1. 어떤 단어가 한글명에 없고 영문명에만 있는지
-  2. 글로벌몰/공식몰에서 검색한 결과 (해당 단어가 공식 이름에 포함되는지)
-  3. 올리브영 국내몰이 축약 표기한 건지, 아예 다른 제품인지 판단 근거
-  예: "한글명 '퍼스트 스프레이 세럼'에 없는 'White Truffle'이 영문명에 포함. 글로벌몰(global.oliveyoung.com)에서 'd'Alba First Spray Serum' 검색 결과 공식 이름이 'd'Alba White Truffle First Spray Serum'으로 확인. 올리브영 국내몰이 축약 표기한 것으로 판단."
 
 ## 제품 목록
 {compare_text}
@@ -485,21 +454,21 @@ def handle_verification_result(result, step_name):
 # ================================================================
 
 def run_step1():
-    """올리브영 랭킹 페이지 캡처 + 제품 추출 안내."""
+    """올리브영 랭킹 페이지 캡처 + DOM 추출 + 데이터 보강 Agent."""
     today_str = datetime.now().strftime("%Y%m%d")
     safe_print(f"\n{'=' * 50}")
     safe_print(f"  Step 1: 올리브영 캡처 + 추출")
     safe_print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     safe_print(f"{'=' * 50}\n")
 
-    # 캡처 실행
-    script = os.path.join(SCRIPTS_DIR, "capture_oliveyoung.py")
-    if not os.path.exists(script):
+    # Phase 1: 캡처 실행
+    capture_script = os.path.join(SCRIPTS_DIR, "capture_oliveyoung.py")
+    if not os.path.exists(capture_script):
         safe_print("[CAPTURE] SKIP - capture_oliveyoung.py 없음")
     else:
         try:
             result = subprocess.run(
-                [sys.executable, script],
+                [sys.executable, capture_script],
                 capture_output=True, text=True, timeout=300,
                 encoding="utf-8", errors="replace"
             )
@@ -515,39 +484,89 @@ def run_step1():
             safe_print("[CAPTURE] FAIL - 타임아웃 (300초)")
             return False
 
+    # Phase 2: DOM 추출 실행
+    extract_script = os.path.join(SCRIPTS_DIR, "extract_dom.py")
+    if not os.path.exists(extract_script):
+        safe_print("[EXTRACT] SKIP - extract_dom.py 없음")
+    else:
+        try:
+            result = subprocess.run(
+                [sys.executable, extract_script],
+                capture_output=True, text=True, timeout=120,
+                encoding="utf-8", errors="replace"
+            )
+            if result.returncode == 0:
+                safe_print("[EXTRACT] OK")
+            else:
+                safe_print(f"[EXTRACT] FAIL - {result.stderr[:300]}")
+                return False
+        except subprocess.TimeoutExpired:
+            safe_print("[EXTRACT] FAIL - 타임아웃 (120초)")
+            return False
+
+    # Phase 3: 데이터 보강 Agent
+    raw_path = os.path.join(DATA_DIR, f"_dom_extract_{today_str}.json")
+    oy_path = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
     screenshots = sorted(
         glob.glob(os.path.join(SCREENSHOT_DIR, f"oliveyoung_{today_str}_*.png"))
     )
+    ss_paths = "\n".join(screenshots) if screenshots else "(스크린샷 없음)"
     ss_count = len(screenshots)
-    safe_print(f"\n스크린샷 {ss_count}장 저장됨")
+    safe_print(f"\n스크린샷 {ss_count}장, raw 데이터: {os.path.basename(raw_path)}")
 
-    # 추출 안내
-    safe_print(f"\n{'=' * 50}")
-    safe_print("  다음: 제품 추출")
-    safe_print(f"{'=' * 50}")
-    safe_print("""
-Claude Code가 스크린샷 또는 DOM에서 제품 추출합니다.
-추출 결과: data/oliveyoung_{today}.json
+    if not os.path.exists(raw_path):
+        safe_print(f"[ERROR] {raw_path} 없음. DOM 추출 실패.")
+        return False
 
-=== search_keyword 규칙 ===
-- 브랜드 영문명 + 제품 라인명만 (용량/기획/한정 제외)
-- 같은 브랜드 다른 제품은 반드시 구분
+    rules = load_agent_rules("step1_extract.md")
+    prompt = f"""{rules}
 
-=== 오특(오늘의 특가) 식별 ===
-- 초록색 순위 숫자 있음 = 일반 제품
-- "오늘의 특가" 빨간 배너, 순위 숫자 없음 = 오특 (is_oteuk: true)
-- 오특 rank는 앞뒤 순위에서 유추
+---
 
-=== 번들/중복 제품 감지 (필수) ===
-- "N종 골라담기", "N종 택1", "N종 중 택" 등이 포함된 제품은 번들 제품으로 표시
-- 같은 제품이 다른 기획(예: 10매 vs 1매, 단품 vs 세트)으로 여러 순위에 등장하면 중복으로 표시
-- search_keyword가 동일한 제품이 여러 개 있으면 반드시 확인 후 표시
-- CLAUDE.md의 "번들/골라담기 제품 처리 규칙" 참조하여 확정된 키워드가 있으면 사용
+## 작업 대상
+- raw DOM 추출 결과: {os.path.abspath(raw_path)}
+- 스크린샷 ({ss_count}장):
+{ss_paths}
 
-추출 완료 후: python run_daily_collect.py step2
-""".strip())
+## 출력
+- 보강된 JSON을 다음 경로에 저장: {os.path.abspath(oy_path)}
+- 50개 제품 배열 (rank 1~50), 위 규칙의 필드 전부 포함
+- raw 데이터와 스크린샷을 대조하여 정확성 확보
+- 문제가 있으면 파일은 생성하되, 콘솔에 issues를 출력"""
 
-    return True
+    safe_print(f"\n[ENRICH] 데이터 보강 Agent 호출 중...")
+
+    cmd = [
+        CLAUDE_EXE, "-p",
+        "--allowed-tools", "Read,Write,Glob",
+        "--no-session-persistence",
+        prompt,
+    ]
+
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True, text=True, timeout=600,
+            encoding="utf-8", errors="replace",
+            cwd=PROJECT_ROOT,
+        )
+    except subprocess.TimeoutExpired:
+        safe_print("[ENRICH] FAIL - 타임아웃 (600초)")
+        return False
+
+    if result.returncode != 0:
+        safe_print(f"[ENRICH] FAIL - {(result.stderr or '')[:500]}")
+        return False
+
+    if os.path.exists(oy_path):
+        safe_print(f"[ENRICH] OK - {os.path.basename(oy_path)} 생성됨")
+        # raw 파일은 중간 산출물이므로 유지 (Step 5에서 cleanup)
+        return True
+    else:
+        safe_print(f"[ENRICH] FAIL - {os.path.basename(oy_path)} 미생성")
+        if result.stdout:
+            safe_print(f"  Agent 출력: {result.stdout[:500]}")
+        return False
 
 
 # ================================================================
@@ -568,16 +587,15 @@ def build_oy_verification_prompt(today_str):
     # 스크린샷 경로를 절대경로로
     ss_paths = "\n".join(screenshots) if screenshots else "(스크린샷 없음)"
 
-    return f"""너는 K-Beauty Trend Tracker의 데이터 검증자야.
-다른 agent가 올리브영 베스트 랭킹 페이지에서 추출한 데이터를 처음 보는 상태에서 검증해.
+    rules = load_agent_rules("step2_oy_verify.md")
 
-## 프로젝트 배경
-- 올리브영 베스트 랭킹 TOP 60 제품을 매일 수집
-- 스크린샷 5장 (4열x3행 = 12제품/장, 총 60제품)
-- "오특(오늘의 특가)": 랭킹 사이에 삽입되는 프로모션 슬롯
-  - 일반 제품: 초록색 원 안에 순위 숫자(01, 02, ...)가 있음
-  - 오특 제품: 순위 숫자 대신 "오늘의 특가" 빨간 배너가 있음
-  - 오특도 JSON에 포함, is_oteuk: true로 표기
+    return f"""{rules}
+
+---
+
+## 역할
+너는 K-Beauty Trend Tracker의 데이터 검증자야.
+다른 agent가 올리브영 베스트 랭킹 페이지에서 추출한 데이터를 처음 보는 상태에서 검증해.
 
 ## 검증 대상
 스크린샷 파일 ({ss_count}장):
@@ -587,37 +605,15 @@ JSON 파일:
 {os.path.abspath(oy_path)}
 
 ## 검증 항목
-1. 스크린샷의 각 제품 순위 번호가 JSON rank와 일치하는지 (전수 검사 불필요, 1장당 3-4개 샘플링)
-2. 제품명이 정확한지 (유사 제품 혼동 없는지: 선스틱 vs 선세럼, 크림 vs 로션)
+1. 스크린샷의 각 제품 순위 번호가 JSON rank와 일치하는지 (1장당 3-4개 샘플링)
+2. 제품명 변조 여부 (가장 중요): JSON name이 스크린샷 실제 제품명과 일치하는지 엄격 대조
 3. 오특 제품이 is_oteuk: true로 올바르게 태그되었는지
-   - 스크린샷에서 초록색 순위 숫자가 없는 슬롯 = 오특
-   - 반대로 is_oteuk: true인데 순위 숫자가 보이면 오류
 4. 스크린샷에 있는데 JSON에 빠진 제품이 없는지
-5. search_keyword 품질 (제품별로 하나하나 대조):
-   - 원칙: search_keyword에는 "브랜드 + 제품 고유 이름 + 제품 타입"만 남아야 함
-   - 제품의 정체성이 아닌 것은 모두 제거되어야 함: 수량, 컬러 수, 구매 옵션, 패키징 정보 등
-   - 각 제품의 원본 name과 search_keyword를 대조해서, name에서 무엇이 제거되었고 무엇이 남았는지 판단
-   - 남아있으면 안 되는 것이 남아있으면 issues에 포함
-   - 같은 브랜드의 "다른 제품"이 같은 keyword로 묶이면 안 됨
-   - 단, 같은 제품의 패키징 변형(용량, 세트, 기획)은 같은 keyword가 맞음
-6. 제품명 변조 여부 (가장 중요):
-   - JSON의 name 필드가 스크린샷의 실제 제품명과 일치하는지 엄격히 대조
-   - 스크린샷에 보이는 제품명의 핵심 부분(브랜드+라인명+제품고유명)이 JSON에 정확히 반영되었는지
-   - 제품명이 요약/축소/변경되었으면 반드시 issues에 포함하고 스크린샷 원본 텍스트를 명시
-7. 번들/골라담기 제품 감지:
-   - 제품명에 "골라담기", "택1", "N종" 등이 포함된 제품을 모두 찾아서 보고
-   - 해당 제품의 search_keyword가 하위 제품군을 포괄하는 공통 키워드인지 확인
-   - CLAUDE.md의 "확정된 번들 제품 키워드" 표와 대조하여, 확정 키워드가 있으면 일치하는지 검증
-   - 표에 없는 새로운 번들 제품이 발견되면 issues에 포함하여 보고
-8. 중복 제품 감지:
-   - 같은 제품이 다른 기획(10매 vs 1매, 단품 vs 세트 등)으로 여러 순위에 등장하는지 확인
-   - search_keyword가 동일한 제품 쌍이 있으면 모두 보고 (합산 대상)
-   - 이전 날짜 데이터가 있으면 비교: 어제 없던 제품이 갑자기 나타났는데, 어제 있던 유사 제품이 사라진 경우 → 같은 제품의 이름 변경 가능성 보고
-9. 비화장품 제품 감지:
-   - 건강기능식품(단백질 쉐이크, 비타민, 영양제, 콜라겐 음료 등), 식품/스낵(베이글칩 등), 음반/앨범, 구강용품(칫솔, 치아미백 등)이 포함되어 있는지 확인
-   - 판단 기준: 피부에 바르거나 붙이는 제품 = 화장품, 먹는 제품/먹는 영양제 = 비화장품
-   - 콜라겐 "패치"나 콜라겐 "세럼"은 화장품이므로 OK
-   - 비화장품이 발견되면 issues에 포함하여 product_code와 제품명을 명시
+5. search_keyword 품질: 위 규칙의 기준에 따라 제품별 대조
+6. 번들/골라담기: 위 규칙의 확정 테이블과 대조, 새 번들은 보고
+7. 중복 제품: search_keyword 동일한 쌍 모두 보고
+8. 비화장품: 위 규칙 기준으로 감지하여 보고
+9. 기획상품 유형: 1+1, 더블, 리필, 2입 등 기획 유형 식별하여 보고
 
 ## 출력 형식
 반드시 아래 JSON 형식으로만 응답해:
@@ -719,9 +715,11 @@ def run_step3():
     keywords_path = os.path.join(DATA_DIR, f"_keywords_{today_str}.json")
     kw_result = run_keyword_agent(oy_path)
     if kw_result and "keywords" in kw_result:
+        # 50개 하드컷 (에이전트가 초과 반환해도 상위 50개만 저장)
+        kw_list = kw_result["keywords"][:50]
         with open(keywords_path, "w", encoding="utf-8") as f:
-            json.dump(kw_result["keywords"], f, ensure_ascii=False, indent=2)
-        safe_print(f"[KEYWORD] {len(kw_result['keywords'])}개 키워드 생성 완료")
+            json.dump(kw_list, f, ensure_ascii=False, indent=2)
+        safe_print(f"[KEYWORD] {len(kw_list)}개 키워드 생성 완료")
     else:
         safe_print("[KEYWORD] 키워드 생성 실패 - 기본 키워드로 진행")
 
@@ -847,8 +845,14 @@ def run_step3():
 
 def build_api_verification_prompt(oy_path, nv_path, yt_path):
     """API 데이터 검증 프롬프트 생성."""
-    parts = [f"""너는 K-Beauty Trend Tracker의 데이터 검증자야.
-수집 agent가 올리브영 랭킹 기반으로 네이버/유튜브 API 데이터를 수집했어.
+    rules = load_agent_rules("step4_api_verify.md")
+
+    parts = [f"""{rules}
+
+---
+
+## 역할
+너는 K-Beauty Trend Tracker의 데이터 검증자야.
 수집 과정을 전혀 모르는 상태에서, 결과 파일만 보고 검증해.
 
 ## 검증 대상 파일
@@ -871,36 +875,7 @@ def build_api_verification_prompt(oy_path, nv_path, yt_path):
 
     parts.append(f"""
 ## 검증 항목
-
-### 네이버 API 데이터 검증
-- 검색량(search_volume 또는 search_volume_this_week)이 0인 제품 비율: 90% 이상이면 API 이상
-- 직전 날짜 데이터 대비 평균 검색량 변동이 10배 이상이면 이상
-- 파일명에 "sample"이 포함되어 있으면 샘플 데이터
-
-### 유튜브 API 데이터 검증
-- api_error: true인 제품이 있으면 issues에 명시 (API 에러로 -1 반환된 제품)
-- 파일명에 "sample"이 포함되어 있으면 샘플 데이터
-
-### video_count_3month 합리성 검증
-- video_count_3month 필드가 있는 제품에 대해:
-  - video_count_3month가 video_count(2주)보다 작으면 이상 (3개월이 2주보다 적을 수 없음)
-  - video_count_3month가 -1이면 API 에러 (issues에 포함)
-  - video_count_3month가 1000 이상이면 키워드가 너무 일반적일 가능성 (확인 필요)
-
-### 전체 데이터 품질
-- 네이버+유튜브 둘 다 결과가 0인 제품이 전체의 50% 이상이면 이상
-- 네이버/유튜브 파일 모두 없으면 passed: false
-
-### 신제품 감지 (new_launches)
-다음 두 경로로 신제품 후보를 수집하고 웹검색으로 검증해:
-
-경로 1: 올리브영 JSON의 name_full 필드에 "[NEW" 또는 "선런칭" 또는 "런칭"이 포함된 제품
-경로 2: 유튜브 JSON에서 is_new_product_candidate: true인 제품
-
-위 후보에 대해 웹검색("[브랜드명] [제품명] 출시일" 등)으로 실제 출시일을 확인해:
-- 1주 이내 출시 확인 → new_launches 배열에 product_code 추가
-- 1주 초과 또는 출시일 불명 → 신제품 아님 (추가하지 않음)
-- 올리브영이 [NEW]를 붙여도 실제로는 리뉴얼이거나 기획 변경일 수 있으므로 반드시 웹검색 확인
+위 규칙 파일의 기준에 따라 네이버/유튜브 데이터를 검증하고, 신제품을 감지해.
 
 ## 출력 형식
 반드시 아래 JSON 형식으로만 응답해:
@@ -1460,13 +1435,8 @@ def run_full_pipeline():
     if not run_step1():
         return False
 
-    # Step 1은 캡처만 하고 추출은 별도 (Claude Code 또는 DOM 스크래핑)
+    # Step 1이 캡처 + 추출 + 보강까지 완료함
     today_str = datetime.now().strftime("%Y%m%d")
-    oy_path = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
-    if not os.path.exists(oy_path):
-        safe_print(f"\n[대기] oliveyoung_{today_str}.json 추출 후 다시 실행하세요.")
-        safe_print(f"  또는: python run_daily_collect.py step2  (추출 완료 후)")
-        return True
 
     # Step 2: 올리브영 검증
     if not run_step2(today_str):
