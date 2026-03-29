@@ -1112,6 +1112,44 @@ def run_step5():
         for day, missing in incomplete_days:
             safe_print(f"  {day}: {', '.join(missing)} 누락")
 
+    # 영문명 영구 저장 (score_calculator 전에 override에 반영해야 함)
+    kw_tmp_path = os.path.join(DATA_DIR, f"_keywords_{today_str}.json")
+    if os.path.exists(kw_tmp_path):
+        try:
+            with open(kw_tmp_path, "r", encoding="utf-8") as f:
+                kw_data = json.load(f)
+            if isinstance(kw_data, dict) and "keywords" in kw_data:
+                kw_data = kw_data["keywords"]
+            en_names_daily = {}
+            for kw in kw_data:
+                code = kw.get("product_code", "")
+                en = kw.get("english_name", "")
+                if code and en:
+                    en_names_daily[code] = en
+            # daily 폴더에 영문명 저장
+            if en_names_daily:
+                en_daily_path = os.path.join(daily_path, f"english_names_{today_str}.json")
+                with open(en_daily_path, "w", encoding="utf-8") as f:
+                    json.dump(en_names_daily, f, ensure_ascii=False, indent=2)
+                safe_print(f"  -> daily/{date_folder}/english_names_{today_str}.json ({len(en_names_daily)}개)")
+            # english_names_override.json에 누적 (한글 포함 건 제외)
+            override_path = os.path.join(DATA_DIR, "english_names_override.json")
+            en_override = {}
+            if os.path.exists(override_path):
+                with open(override_path, "r", encoding="utf-8") as f:
+                    en_override = json.load(f)
+            added = 0
+            for code, en in en_names_daily.items():
+                if code not in en_override and not any(ord(c) >= 0xAC00 for c in en):
+                    en_override[code] = en
+                    added += 1
+            if added > 0:
+                with open(override_path, "w", encoding="utf-8") as f:
+                    json.dump(en_override, f, ensure_ascii=False, indent=2)
+                safe_print(f"[EN] 영문명 {added}개 신규 누적 (총 {len(en_override)}개)")
+        except (json.JSONDecodeError, KeyError) as e:
+            safe_print(f"[EN] 영문명 저장 실패: {e}")
+
     if complete_count >= PERIOD_DAYS:
         # 마지막 사이트 갱신 이후 새 데이터가 3일 이상 쌓였는지 확인
         site_update_path = os.path.join(DATA_DIR, "_last_site_update.json")
@@ -1197,44 +1235,6 @@ def run_step5():
         remaining = PERIOD_DAYS - complete_count
         safe_print(f"\n사이트 갱신 불가: 네이버/유튜브 데이터 누락 "
                     f"({complete_count}/{PERIOD_DAYS}일 완전 수집, {remaining}일 더 필요)")
-
-    # 영문명 영구 저장 (키워드 파일 삭제 전에 추출)
-    kw_tmp_path = os.path.join(DATA_DIR, f"_keywords_{today_str}.json")
-    if os.path.exists(kw_tmp_path):
-        try:
-            with open(kw_tmp_path, "r", encoding="utf-8") as f:
-                kw_data = json.load(f)
-            if isinstance(kw_data, dict) and "keywords" in kw_data:
-                kw_data = kw_data["keywords"]
-            # daily 폴더에 영문명 저장
-            en_names_daily = {}
-            for kw in kw_data:
-                code = kw.get("product_code", "")
-                en = kw.get("english_name", "")
-                if code and en:
-                    en_names_daily[code] = en
-            if en_names_daily:
-                en_daily_path = os.path.join(daily_path, f"english_names_{today_str}.json")
-                with open(en_daily_path, "w", encoding="utf-8") as f:
-                    json.dump(en_names_daily, f, ensure_ascii=False, indent=2)
-                safe_print(f"  -> daily/{date_folder}/english_names_{today_str}.json ({len(en_names_daily)}개)")
-            # english_names_override.json에 누적 (한글 포함 건 제외)
-            override_path = os.path.join(DATA_DIR, "english_names_override.json")
-            en_override = {}
-            if os.path.exists(override_path):
-                with open(override_path, "r", encoding="utf-8") as f:
-                    en_override = json.load(f)
-            added = 0
-            for code, en in en_names_daily.items():
-                if code not in en_override and not any(ord(c) >= 0xAC00 for c in en):
-                    en_override[code] = en
-                    added += 1
-            if added > 0:
-                with open(override_path, "w", encoding="utf-8") as f:
-                    json.dump(en_override, f, ensure_ascii=False, indent=2)
-                safe_print(f"[EN] 영문명 {added}개 신규 누적 (총 {len(en_override)}개)")
-        except (json.JSONDecodeError, KeyError) as e:
-            safe_print(f"[EN] 영문명 저장 실패: {e}")
 
     # 임시 파일 정리
     for tmp in [state_path, vr_path, kw_tmp_path,

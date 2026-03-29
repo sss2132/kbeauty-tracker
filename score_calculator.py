@@ -674,61 +674,26 @@ def main(use_period=True):
         print(f"[calc] 다음 갱신: {PERIOD_DAYS}일치 모이면 ({needed_end} 이후)")
         return None
 
-    # Load translations
-    trans_path = os.path.join(DATA_DIR, "translations.json")
-    translations = {}
-    if os.path.exists(trans_path):
-        with open(trans_path, "r", encoding="utf-8") as f:
-            translations = json.load(f)
-
-    # Load Thai names (Shopee Thailand에서 수집한 태국어 제품명)
+    # Load Thai names
     thai_names_path = os.path.join(DATA_DIR, "thai_names.json")
     thai_names = {}
     if os.path.exists(thai_names_path):
         with open(thai_names_path, "r", encoding="utf-8") as f:
             thai_names = json.load(f)
 
-    # 영문명 override 로드 (사용자 확인된 영문명, 글로벌몰 매칭 실패분)
+    # 영문명 override 로드
     en_override = {}
     override_path = os.path.join(DATA_DIR, "english_names_override.json")
     if os.path.exists(override_path):
         with open(override_path, "r", encoding="utf-8") as f:
             en_override = json.load(f)
 
-    # 한글명 override 로드 (올리브영이 축약 표기한 제품의 공식 정식 이름)
+    # 한글명 override 로드
     ko_override = {}
     ko_override_path = os.path.join(DATA_DIR, "korean_names_override.json")
     if os.path.exists(ko_override_path):
         with open(ko_override_path, "r", encoding="utf-8") as f:
             ko_override = json.load(f)
-
-    # 키워드 맵 로드 (english_name 용)
-    kw_map = {}
-    kw_files = sorted(glob.glob(os.path.join(DATA_DIR, "_keywords_*.json")))
-    if kw_files:
-        try:
-            with open(kw_files[-1], "r", encoding="utf-8") as f:
-                kw_list = json.load(f)
-                if isinstance(kw_list, list):
-                    kw_map = {k["product_code"]: k for k in kw_list}
-                elif isinstance(kw_list, dict) and "keywords" in kw_list:
-                    kw_map = {k["product_code"]: k for k in kw_list["keywords"]}
-        except (json.JSONDecodeError, KeyError):
-            pass
-
-    # 이전 weekly_ranking에서 영문명 참조 (keywords 파일 삭제 후 재실행 시 fallback)
-    prev_en_names = {}
-    prev_ranking_files = sorted(glob.glob(os.path.join(DATA_DIR, "weekly_ranking_*.json")))
-    if prev_ranking_files:
-        try:
-            with open(prev_ranking_files[-1], "r", encoding="utf-8") as f:
-                prev_ranking = json.load(f)
-            for p in prev_ranking.get("products", []):
-                en = p.get("name_en", "")
-                if en and not any(ord(c) >= 0xAC00 for c in en):  # 한글이 없는 경우만
-                    prev_en_names[p["product_code"]] = en
-        except (json.JSONDecodeError, KeyError):
-            pass
 
     # 신제품 목록 로드 (daily 메타데이터에서)
     all_new_launches = set()
@@ -868,7 +833,6 @@ def main(use_period=True):
     all_products = []
     naver_rising = []
     youtube_rising = []
-    translation_lines = []
 
     if averaged_products:
         # v6: 매일 스코어 평균 결과에서 제품 리스트 구성
@@ -889,8 +853,7 @@ def main(use_period=True):
             flags = detect_flags(scores, video_count_3month=yt_6m)
             note = seller_note(scores, flags)
 
-            kw_entry = kw_map.get(code, {}) if kw_map else {}
-            name_en_val = en_override.get(code) or kw_entry.get("english_name") or prev_en_names.get(code) or sk
+            name_en_val = en_override.get(code) or sk
             name_ko_val = ko_override.get(code) or p["name_ko"]
 
             product = {
@@ -901,7 +864,7 @@ def main(use_period=True):
                 "name_ko": name_ko_val,
                 "name_en": name_en_val,
                 "search_keyword": sk,
-                "name_th": thai_names.get(code, "") or translations.get(code, {}).get("name_th", ""),
+                "name_th": thai_names.get(code, ""),
                 "category": p["category"],
                 "scores": scores,
                 "naver_change_rate": nv_change,
@@ -928,7 +891,6 @@ def main(use_period=True):
                 product["merged_oy_ranks"] = p["merged_oy_ranks"]
 
             all_products.append(product)
-            translation_lines.append(f'{code}|{p.get("brand_en", "")}|{p.get("name", "")}')
 
             # rising keywords는 아래에서 순위 기반으로 계산
 
@@ -999,8 +961,7 @@ def main(use_period=True):
             flags = detect_flags(scores, video_count_3month=yt_6m)
             note = seller_note(scores, flags)
 
-            kw_entry = kw_map.get(code, {}) if kw_map else {}
-            name_en_val = en_override.get(code) or kw_entry.get("english_name") or prev_en_names.get(code) or sk
+            name_en_val = en_override.get(code) or sk
             name_ko_val = ko_override.get(code) or name_ko_val
 
             product = {
@@ -1011,7 +972,7 @@ def main(use_period=True):
                 "name_ko": name_ko_val,
                 "name_en": name_en_val,
                 "search_keyword": sk,
-                "name_th": thai_names.get(code, "") or translations.get(code, {}).get("name_th", ""),
+                "name_th": thai_names.get(code, ""),
                 "category": oy["category"],
                 "scores": scores,
                 "naver_change_rate": nv_change,
@@ -1033,7 +994,6 @@ def main(use_period=True):
                 "consecutive_periods": 0,
             }
             all_products.append(product)
-            translation_lines.append(f'{code}|{oy.get("brand_en", "")}|{oy["name"]}')
 
             # rising keywords는 아래에서 순위 기반으로 계산
 
@@ -1138,12 +1098,8 @@ def main(use_period=True):
     naver_rising = []
     youtube_rising = []
 
-    # 영문명 조회용 맵 (all_products + en_override 전체 + kw_map)
-    en_name_map = dict(en_override)  # override가 가장 우선
-    if kw_map:
-        for code, kw_entry in kw_map.items():
-            if code not in en_name_map and kw_entry.get("english_name"):
-                en_name_map[code] = kw_entry["english_name"]
+    # 영문명 조회용 맵 (en_override + all_products)
+    en_name_map = dict(en_override)
     for p in all_products:
         if p["product_code"] not in en_name_map:
             en_name_map[p["product_code"]] = p.get("name_en", "")
@@ -1263,10 +1219,6 @@ def main(use_period=True):
     out_path = os.path.join(DATA_DIR, f"weekly_ranking_{date_str}.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-
-    trans_path = os.path.join(DATA_DIR, "translation_needed.txt")
-    with open(trans_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(translation_lines))
 
     # Print summary
     print(f"[calc] saved: {out_path}")
