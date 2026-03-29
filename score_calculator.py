@@ -336,8 +336,8 @@ def is_buy_one_get_one(name):
     m = re.search(r'(\d+)(ml|mL|ML|g|G)\+\1\2', name)
     if m:
         return True
-    # 더블/듀오 기획
-    if re.search(r'더블기획|더블 기획|듀오 기획|듀오기획', name):
+    # 더블/듀오/리필 기획
+    if re.search(r'더블기획|더블 기획|듀오 기획|듀오기획|리필기획|리필 기획', name):
         return True
     return False
 
@@ -345,33 +345,57 @@ def is_buy_one_get_one(name):
 def get_promotion_penalty(item):
     """오특/1+1/2입 등 프로모션 유형에 따른 패널티 계수 반환.
 
+    Step 1 agent가 설정한 promotion_type 필드를 우선 참조.
+    필드가 없으면 기존 regex 기반 감지로 fallback.
+
     Returns:
         float: 1.0 (패널티 없음), 0.9, 0.7, 0.5 (최대 패널티)
     """
     import re
+
+    # Step 1 agent가 설정한 promotion_type 우선 참조
+    promo = item.get("promotion_type", "")
+    if promo in ("bogo", "double", "refill", "oteuk"):
+        return 0.5
+    if promo == "multi_pack":
+        price = int(item.get("price", 0) or 0)
+        original = int(item.get("original_price", 0) or 0)
+        if original > 0 and price > 0:
+            discount_rate = 1 - (price / original)
+            if discount_rate >= 0.5:
+                return 0.5
+            elif discount_rate >= 0.3:
+                return 0.7
+            else:
+                return 0.9
+        return 0.7
+    if promo == "ambiguous":
+        return 0.7  # 사용자 승인 전 기본값
+    if promo == "none":
+        return 1.0
+
+    # fallback: promotion_type 필드 없는 레거시 데이터
     name = item.get("name", "")
 
-    # 오특 또는 명시적 1+1/더블기획 → 0.5
     if item.get("is_promotion", item.get("is_oteuk", False)):
         return 0.5
     if is_buy_one_get_one(name):
         return 0.5
 
-    # 2입/2개 기획 감지 → 할인율 기반 판단
     if re.search(r'2입|2개 기획|2개기획', name):
         price = int(item.get("price", 0) or 0)
         original = int(item.get("original_price", 0) or 0)
         if original > 0 and price > 0:
             discount_rate = 1 - (price / original)
             if discount_rate >= 0.5:
-                return 0.5   # 50% 이상 할인 = 사실상 1+1
+                return 0.5
             elif discount_rate >= 0.3:
-                return 0.7   # 30~50% 할인
+                return 0.7
             else:
-                return 0.9   # 30% 미만 = 일반 번들
-        return 0.7  # 가격 정보 없으면 중간값
+                return 0.9
+        return 0.7
 
-    return 1.0  # 패널티 없음
+    return 1.0
 
 
 def clean_product_name(name):
@@ -629,16 +653,17 @@ def compute_single_day_scores(date_obj, period_dates):
 
 def main(use_period=True):
     today = datetime.now()
-    date_str = today.strftime("%Y%m%d")
 
     # ── 3일 구간 확인 ──
     daily_dates = get_daily_dates()
     periods = compute_periods(daily_dates)
     current_period = None
+    date_str = today.strftime("%Y%m%d")  # fallback (use_period=False)
     all_period_rankings = []  # 각 구간별 정렬된 제품 리스트
 
     if use_period and periods:
         current_period = periods[-1]
+        date_str = current_period["end"].strftime("%Y%m%d")
         print(f"[calc] 구간 {len(periods)}개 감지, 현재 구간: {current_period['start']} ~ {current_period['end']}")
     elif use_period and daily_dates:
         # 3일치 안 모임
@@ -1203,7 +1228,7 @@ def main(use_period=True):
 
     output = {
         "week": today.strftime("%G-W%V"),
-        "updated": today.strftime("%Y-%m-%d"),
+        "updated": current_period["end"].isoformat() if current_period else today.strftime("%Y-%m-%d"),
         "period_info": period_info,
         "data_status": data_status,
         "active_weights": active_weights,

@@ -17,9 +17,13 @@ TH_MONTHS = {
     9: "ก.ย.", 10: "ต.ค.", 11: "พ.ย.", 12: "ธ.ค."
 }
 
-def get_thai_date():
-    now = datetime.now()
-    return f"{now.day} {TH_MONTHS[now.month]} {now.year}"
+def get_thai_date(date_str=None):
+    """date_str이 주어지면 그 날짜를, 아니면 현재 날짜를 태국어로 변환"""
+    if date_str:
+        d = datetime.strptime(date_str, "%Y-%m-%d")
+    else:
+        d = datetime.now()
+    return f"{d.day} {TH_MONTHS[d.month]} {d.year}"
 
 DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -148,6 +152,7 @@ def build_product_cards(products):
     <a href="{yesstyle}" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+    <div class="bl-note">ลิงก์บางส่วนเป็นลิงก์พันธมิตร</div>
   </div>
 </div>''')
     return "\n".join(cards)
@@ -238,6 +243,7 @@ def build_discover_html(products):
     <a href="{yesstyle}" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+    <div class="bl-note">ลิงก์บางส่วนเป็นลิงก์พันธมิตร</div>
   </div>
 </div>''')
         if not card_list:
@@ -372,6 +378,7 @@ def build_seller_html(data):
     <a href="{yesstyle}" target="_blank" rel="noopener"><span class="bl-icon">&#127760;</span><span class="bl-name">YesStyle</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <a href="{amazon}" target="_blank" rel="noopener"><span class="bl-icon">&#128230;</span><span class="bl-name">Amazon</span><span class="bl-desc">จัดส่งทั่วโลก</span></a>
     <div class="bl-note">อาจไม่มีสินค้าในบางแพลตฟอร์ม</div>
+    <div class="bl-note">ลิงก์บางส่วนเป็นลิงก์พันธมิตร</div>
   </div>
 </div>'''
         html += f'<div class="ss"><h3>&#127942; แนะนำซื้อขาย TOP 5</h3>{items}</div>'
@@ -382,7 +389,7 @@ def generate_html(data):
     products = data["products"]
     stats = data["stats"]
     updated = data["updated"]
-    date_th = get_thai_date()
+    date_th = get_thai_date(updated)
     w = data.get("active_weights", data.get("source_weights", {"oliveyoung": 0.45, "naver_search": 0.30, "youtube": 0.25}))
     oy_pct = int(w.get("oliveyoung", 0) * 100)
     ns_pct = int(w.get("naver_search", 0) * 100)
@@ -947,6 +954,7 @@ TH_TO_EN = [
     ("จัดส่งในไทย", "Ships to Thailand"),
     ("จัดส่งทั่วโลก", "Ships worldwide"),
     ("อาจไม่มีสินค้าในบางแพลตฟอร์ม", "May not be available on all platforms"),
+    ("ลิงก์บางส่วนเป็นลิงก์พันธมิตร", "Some links are affiliate links"),
     # Pro report
     ("รายงานเทรนด์ K-Beauty", "K-Beauty Trend Report"),
     ("สำหรับเซลเลอร์และอินฟลูเอนเซอร์", "For sellers and influencers"),
