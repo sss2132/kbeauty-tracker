@@ -492,7 +492,6 @@ def generate_html(data):
 .product-brand{{font-size:12px;font-weight:700;color:#e8547a;text-transform:uppercase}}
 .product-name{{font-size:14px;color:#2d3436;margin-top:2px;line-height:1.3}}
 .product-name-th{{font-size:11px;color:#636e72;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
-.product-name-th:empty{{display:none}}
 .product-name-ko{{font-size:11px;color:#999;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 .product-scores{{display:flex;gap:4px;margin-top:3px}}
 .sb{{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px}}

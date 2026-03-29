@@ -1312,6 +1312,14 @@ def main(use_period=True):
         src_type = info.get("source", "none")
         print(f"  {src}: {status} ({src_type}, {info['product_count']})")
 
+    # 태국어 이름 누락 경고
+    missing_th = [p for p in products_top if not p.get("name_th")]
+    if missing_th:
+        print(f"\n=== WARNING: 태국어 이름 누락 ({len(missing_th)}개) ===")
+        for p in missing_th:
+            print(f"  #{p['rank']} {p['product_code']} | {p['name_ko']}")
+        print("  → thai_names.json에 추가 필요")
+
     return out_path
 
 
