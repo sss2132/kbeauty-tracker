@@ -459,6 +459,7 @@ def generate_html(data):
 .hdr{{background:linear-gradient(135deg,#e8547a,#ff6b9d);color:#fff;padding:16px 20px;text-align:center}}
 .hdr h1{{font-size:22px;font-weight:700;letter-spacing:.5px}}.hdr .sub{{font-size:13px;opacity:.85;margin-top:4px}}.hdr .tagline{{font-size:11px;opacity:.7;margin-top:4px;letter-spacing:.3px}}
 .update-cycle{{font-size:10px;opacity:.6;margin-top:4px;text-align:center}}.update-date{{font-size:10px;opacity:.6;margin-top:2px;text-align:center}}
+.about-link{{display:inline-block;margin-top:4px;font-size:10px;color:rgba(255,255,255,.7);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3)}}.about-link:hover{{color:#fff;border-bottom-color:#fff}}
 
 /* Tabs */
 .tab-bar{{display:flex;background:#fff;border-bottom:2px solid #eee;position:sticky;top:0;z-index:100}}
@@ -656,6 +657,7 @@ def generate_html(data):
   <div class="tagline">อ้างอิงข้อมูลจริงจาก Olive Young &#183; Naver Shopping &#183; YouTube</div>
   <div class="update-cycle">อัปเดตทุก 3 วัน | ไม่ใช่โฆษณา ไม่รับสปอนเซอร์</div>
   <div class="update-date">อัปเดตล่าสุด: {date_th}</div>
+  <a href="about.html" class="about-link">เกี่ยวกับเรา (About)</a>
 </div>
 
 <div class="tab-bar">
