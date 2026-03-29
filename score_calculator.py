@@ -681,6 +681,13 @@ def main(use_period=True):
         with open(trans_path, "r", encoding="utf-8") as f:
             translations = json.load(f)
 
+    # Load Thai names (Shopee Thailand에서 수집한 태국어 제품명)
+    thai_names_path = os.path.join(DATA_DIR, "thai_names.json")
+    thai_names = {}
+    if os.path.exists(thai_names_path):
+        with open(thai_names_path, "r", encoding="utf-8") as f:
+            thai_names = json.load(f)
+
     # 영문명 override 로드 (사용자 확인된 영문명, 글로벌몰 매칭 실패분)
     en_override = {}
     override_path = os.path.join(DATA_DIR, "english_names_override.json")
@@ -880,7 +887,7 @@ def main(use_period=True):
                 "name_ko": name_ko_val,
                 "name_en": name_en_val,
                 "search_keyword": sk,
-                "name_th": translations.get(code, {}).get("name_th", ""),
+                "name_th": thai_names.get(code, "") or translations.get(code, {}).get("name_th", ""),
                 "category": p["category"],
                 "scores": scores,
                 "naver_change_rate": nv_change,
@@ -990,7 +997,7 @@ def main(use_period=True):
                 "name_ko": name_ko_val,
                 "name_en": name_en_val,
                 "search_keyword": sk,
-                "name_th": translations.get(code, {}).get("name_th", ""),
+                "name_th": thai_names.get(code, "") or translations.get(code, {}).get("name_th", ""),
                 "category": oy["category"],
                 "scores": scores,
                 "naver_change_rate": nv_change,
