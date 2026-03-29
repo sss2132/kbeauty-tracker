@@ -108,7 +108,7 @@
 | 제품 | search_keyword | 비고 |
 |---|---|---|
 | 메디힐 더마 패드 (7종 골라담기) | MEDIHEAL Pad | 하위 8종의 공통명 |
-| 토리든 시트 마스크 (4종) | Torriden Mask Sheet | 4종 포괄 |
+| 토리든 시트 마스크 (4종) | Torriden Mask Sheet | Dive-In/Balanceful/Cellmazing 4종 포괄 |
 | 이지덤 스팟패치 (4종 택1) | Easyderm Beauty Patch | 스팟패치 3종 포괄 |
 | 메노킨 퀵 버블 마스크 (6종 택1) | Menokin Quick Bubble Mask | 향만 다른 동일 제품 |
 
