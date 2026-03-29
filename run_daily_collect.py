@@ -727,6 +727,33 @@ def run_step3():
     if os.path.exists(keywords_path):
         verify_english_names(oy_path, keywords_path)
 
+    # Phase 1.6: 영문명을 english_names_override.json에 자동 누적
+    #   키워드 파일은 중간 산출물이라 Step 5에서 삭제되므로,
+    #   확정된 영문명을 영구 파일에 보존한다.
+    if os.path.exists(keywords_path):
+        override_path = os.path.join(DATA_DIR, "english_names_override.json")
+        en_override = {}
+        if os.path.exists(override_path):
+            with open(override_path, "r", encoding="utf-8") as f:
+                en_override = json.load(f)
+        with open(keywords_path, "r", encoding="utf-8") as f:
+            kw_data = json.load(f)
+        if isinstance(kw_data, dict) and "keywords" in kw_data:
+            kw_data = kw_data["keywords"]
+        added = 0
+        for kw in kw_data:
+            code = kw.get("product_code", "")
+            en = kw.get("english_name", "")
+            if code and en and code not in en_override:
+                # 한글이 포함된 영문명은 저장하지 않음
+                if not any(ord(c) >= 0xAC00 for c in en):
+                    en_override[code] = en
+                    added += 1
+        if added > 0:
+            with open(override_path, "w", encoding="utf-8") as f:
+                json.dump(en_override, f, ensure_ascii=False, indent=2)
+            safe_print(f"[KEYWORD] 영문명 {added}개 신규 누적 → english_names_override.json (총 {len(en_override)}개)")
+
     results = {}
 
     # Phase 2: 네이버 API
