@@ -121,18 +121,6 @@ def seller_note(scores, flags):
     return " / ".join(parts)
 
 
-def seller_grade(total, flags):
-    if "buzz_trap" in flags:
-        return "hold"
-    if total >= 80 and "hidden_gem" in flags:
-        return "source_now"
-    if "steady_seller" in flags:
-        return "proven"
-    if 60 <= total <= 79:
-        return "watch"
-    return ""
-
-
 def load_json(pattern_or_name):
     """Load latest dated JSON or fall back to sample."""
     if "*" in pattern_or_name:
@@ -878,7 +866,6 @@ def main(use_period=True):
             if yt_6m == -1:
                 yt_6m = 0
             flags = detect_flags(scores, video_count_3month=yt_6m)
-            grade = seller_grade(scores["total"], flags)
             note = seller_note(scores, flags)
 
             kw_entry = kw_map.get(code, {}) if kw_map else {}
@@ -900,7 +887,6 @@ def main(use_period=True):
                 "youtube_change_rate": yt_change,
                 "signal": "",
                 "flags": flags,
-                "seller_grade": grade,
                 "rank_change": "0",
                 "product_code": code,
                 "oliveyoung_url": p.get("url", ""),
@@ -990,7 +976,6 @@ def main(use_period=True):
             if yt_6m == -1:
                 yt_6m = 0
             flags = detect_flags(scores, video_count_3month=yt_6m)
-            grade = seller_grade(total, flags)
             note = seller_note(scores, flags)
 
             kw_entry = kw_map.get(code, {}) if kw_map else {}
@@ -1012,7 +997,6 @@ def main(use_period=True):
                 "youtube_change_rate": yt_change,
                 "signal": "",
                 "flags": flags,
-                "seller_grade": grade,
                 "rank_change": "0",
                 "product_code": code,
                 "oliveyoung_url": oy.get("url", ""),
@@ -1078,7 +1062,6 @@ def main(use_period=True):
                 yt_6m = 0
             p["flags"] = detect_flags(p["scores"], video_count_3month=yt_6m,
                                       consecutive_periods=consecutive)
-            p["seller_grade"] = seller_grade(p["scores"]["total"], p["flags"])
             p["seller_note"] = seller_note(p["scores"], p["flags"])
 
         # 보너스 적용 후 재정렬
@@ -1103,18 +1086,10 @@ def main(use_period=True):
             rank_diff = prev_rank_map[code] - p["rank"]
             if rank_diff >= 10:
                 p["signal"] = "rising"
-            elif t >= 85:
-                p["signal"] = "hot"
             else:
                 p["signal"] = ""
-        elif prev_rank_map and code not in prev_rank_map:
-            # 신규 진입 - RISING 아님 (NEW로 표시됨)
-            if t >= 85:
-                p["signal"] = "hot"
         else:
-            # 직전 구간 없음 (첫 구간) - RISING 판정 안 함
-            if t >= 85:
-                p["signal"] = "hot"
+            p["signal"] = ""
 
     # Split TOP 30 / extended
     products_top = all_products[:TOP_N]

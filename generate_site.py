@@ -112,9 +112,7 @@ def build_product_cards(products):
         rc = {1: "rank-gold", 2: "rank-silver", 3: "rank-bronze"}.get(rank, "")
 
         badges = ""
-        if p.get("signal") == "hot":
-            badges += '<span class="badge badge-hot" title="สินค้าขายดีและเป็นกระแสบนโซเชียล">HOT</span><span class="badge-desc">สินค้าขายดีและเป็นกระแสบนโซเชียล</span>'
-        elif p.get("signal") == "rising":
+        if p.get("signal") == "rising":
             badges += '<span class="badge badge-rising" title="อันดับสูงขึ้นมากจากครั้งก่อน">RISING</span><span class="badge-desc">อันดับสูงขึ้นมากจากครั้งก่อน</span>'
         for f in p.get("flags", []):
             if f == "buzz_trap":
@@ -123,11 +121,6 @@ def build_product_cards(products):
                 badges += '<span class="badge badge-gem" title="สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล">HIDDEN GEM</span><span class="badge-desc">สินค้าขายดีในเกาหลี แต่ยังไม่เป็นกระแสในโซเชียล</span>'
             elif f == "steady_seller":
                 badges += '<span class="badge badge-steady" title="สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย">STEADY SELLER</span><span class="badge-desc">สินค้าขายดีสม่ำเสมอ มีรีวิวมากมาย</span>'
-        g = p.get("seller_grade", "")
-        if g:
-            gc = {"source_now": "grade-now", "watch": "grade-watch", "hold": "grade-hold", "proven": "grade-proven"}.get(g, "")
-            label = {"source_now": "ซื้อเลย", "watch": "จับตา", "hold": "รอดู", "proven": "การันตี"}.get(g, g)
-            badges += f'<span class="seller-grade {gc}">{esc(label)}</span>'
 
         shopee = esc(p.get("shopee_url", "#"))
         lazada = esc(p.get("lazada_url", "#"))
@@ -503,13 +496,11 @@ def generate_html(data):
 .trend-tag{{font-size:9px;font-weight:700}}
 .product-badges{{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;align-items:center}}
 .badge{{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.3px}}
-.badge-hot{{background:#ff4757;color:#fff}}.badge-rising{{background:#8854d0;color:#fff}}
+.badge-rising{{background:#8854d0;color:#fff}}
 .badge-buzz{{background:#ffa502;color:#fff}}.badge-gem{{background:#2ed573;color:#fff}}.badge-steady{{background:#3742fa;color:#fff}}
 .rising-detail{{font-size:10px;color:#8854d0;font-weight:600}}
 .badge-desc{{font-size:0.75rem;color:#999;display:block;margin-top:1px}}
 @media(max-width:480px){{.badge-desc{{display:none}}}}
-.seller-grade{{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px}}
-.grade-now{{background:#2ed573;color:#fff}}.grade-watch{{background:#3742fa;color:#fff}}.grade-hold{{background:#ffa502;color:#fff}}.grade-proven{{background:#5352ed;color:#fff}}
 .product-right{{text-align:center;flex-shrink:0;min-width:58px}}
 .rank-big{{font-size:22px;font-weight:700;color:#e8547a}}
 .score-small{{font-size:12px;color:#999;margin-top:1px}}
@@ -950,11 +941,6 @@ TH_TO_EN = [
     ("สินค้าที่หลุดจาก TOP 30 ครั้งนี้", "Dropped from TOP 30 this period"),
     ("สินค้าที่อยู่ใน TOP 30 ครั้งก่อนแต่หลุดออกแล้ว", "Was in TOP 30 last period but dropped out"),
     ("แนะนำซื้อขาย TOP 5", "TOP 5 Recommended to Source"),
-    # Seller grades
-    ("ซื้อเลย", "Source Now"),
-    ("จับตา", "Watch"),
-    ("รอดู", "Hold"),
-    ("การันตี", "Proven"),
     # Buy links
     ("จัดส่งในไทย", "Ships to Thailand"),
     ("จัดส่งทั่วโลก", "Ships worldwide"),
