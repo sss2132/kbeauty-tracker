@@ -1,0 +1,335 @@
+[
+  {
+    "product_code": "A000000250773",
+    "keyword": "넘버즈인 3번 세럼",
+    "search_volume": 185.19,
+    "search_volume_last_week": 128.32,
+    "change_rate": 44.3
+  },
+  {
+    "product_code": "A000000217765",
+    "keyword": "일리윤 세라마이드 로션",
+    "search_volume": 51.85,
+    "search_volume_last_week": 25.66,
+    "change_rate": 102.1
+  },
+  {
+    "product_code": "A000000250467",
+    "keyword": "조선미녀 맑은쌀 선크림",
+    "search_volume": 62.96,
+    "search_volume_last_week": 111.5,
+    "change_rate": -43.5
+  },
+  {
+    "product_code": "A000000162114",
+    "keyword": "쏘내추럴 세팅 픽서",
+    "search_volume": 0.0,
+    "search_volume_last_week": 0.0,
+    "change_rate": 0.0
+  },
+  {
+    "product_code": "A000000224657",
+    "keyword": "조선미녀 맑은쌀 선크림",
+    "search_volume": 62.96,
+    "search_volume_last_week": 111.5,
+    "change_rate": -43.5
+  },
+  {
+    "product_code": "A000000234394",
+    "keyword": "얼터너티브스테레오 립 포션",
+    "search_volume": 0.0,
+    "search_volume_last_week": 0.0,
+    "change_rate": 0.0
+  },
+  {
+    "product_code": "A000000250214",
+    "keyword": "바이오힐보 콜라겐 세럼",
+    "search_volume": 14.81,
+    "search_volume_last_week": 2.65,
+    "change_rate": 458.9
+  },
+  {
+    "product_code": "A000000211119",
+    "keyword": "메디힐 마데카소사이드 흔적 리페어 세럼",
+    "search_volume": 3.7,
+    "search_volume_last_week": 0.0,
+    "change_rate": 100.0,
+    "keyword_original": "메디힐 마데카소사이드 세럼",
+    "keyword_source": "retry"
+  },
+  {
+    "product_code": "A000000180532",
+    "keyword": "웨이크메이크 아이팔레트",
+    "search_volume": 7.41,
+    "search_volume_last_week": 7.08,
+    "change_rate": 4.7
+  },
+  {
+    "product_code": "A000000250154",
+    "keyword": "웨이크메이크 헬로키티",
+    "search_volume": 74.07,
+    "search_volume_last_week": 53.98,
+    "change_rate": 37.2
+  },
+  {
+    "product_code": "A000000250445",
+    "keyword": "무지개맨션 오브제 틴트",
+    "search_volume": 14.81,
+    "search_volume_last_week": 2.65,
+    "change_rate": 458.9
+  },
+  {
+    "product_code": "A000000171427",
+    "keyword": "메디힐 패드",
+    "search_volume": 55.56,
+    "search_volume_last_week": 82.3,
+    "change_rate": -32.5
+  },
+  {
+    "product_code": "A000000252115",
+    "keyword": "웨이크메이크 헬로키티",
+    "search_volume": 74.07,
+    "search_volume_last_week": 53.98,
+    "change_rate": 37.2
+  },
+  {
+    "product_code": "A000000250664",
+    "keyword": "투쿨포스쿨 스킨 틴트",
+    "search_volume": 14.81,
+    "search_volume_last_week": 18.58,
+    "change_rate": -20.3
+  },
+  {
+    "product_code": "A000000137964",
+    "keyword": "릴리바이레드 러브빔 치크밤",
+    "search_volume": 0.0,
+    "search_volume_last_week": 0.0,
+    "change_rate": 0.0
+  },
+  {
+    "product_code": "A000000249969",
+    "keyword": "셀라딕스 앰플",
+    "search_volume": 25.93,
+    "search_volume_last_week": 14.16,
+    "change_rate": 83.1
+  },
+  {
+    "product_code": "A000000222215",
+    "keyword": "피지오겔 DMT 크림",
+    "search_volume": 18.52,
+    "search_volume_last_week": 25.66,
+    "change_rate": -27.8
+  },
+  {
+    "product_code": "A000000250859",
+    "keyword": "클레어스 블루드롭",
+    "search_volume": 81.48,
+    "search_volume_last_week": 36.28,
+    "change_rate": 124.6
+  },
+  {
+    "product_code": "A000000164470",
+    "keyword": "롱테이크 샴푸",
+    "search_volume": 22.22,
+    "search_volume_last_week": 1.77,
+    "change_rate": 1155.4
+  },
+  {
+    "product_code": "A000000200673",
+    "keyword": "리얼베리어 선크림",
+    "search_volume": 22.22,
+    "search_volume_last_week": 12.39,
+    "change_rate": 79.3
+  },
+  {
+    "product_code": "A000000199889",
+    "keyword": "리얼베리어 익스트림 크림",
+    "search_volume": 33.33,
+    "search_volume_last_week": 42.48,
+    "change_rate": -21.5
+  },
+  {
+    "product_code": "A000000250253",
+    "keyword": "아이소이 브라이트닝 세럼",
+    "search_volume": 29.63,
+    "search_volume_last_week": 25.66,
+    "change_rate": 15.5
+  },
+  {
+    "product_code": "A000000199182",
+    "keyword": "투쿨포스쿨 트임 라이너",
+    "search_volume": 70.37,
+    "search_volume_last_week": 34.51,
+    "change_rate": 103.9
+  },
+  {
+    "product_code": "A000000238485",
+    "keyword": "라운드랩 자작나무 선크림",
+    "search_volume": 44.44,
+    "search_volume_last_week": 81.42,
+    "change_rate": -45.4
+  },
+  {
+    "product_code": "A000000231499",
+    "keyword": "웨이크메이크 블러링 밤스틱",
+    "search_volume": 0.0,
+    "search_volume_last_week": 0.0,
+    "change_rate": 0.0
+  },
+  {
+    "product_code": "A000000217620",
+    "keyword": "메디힐 마스크팩",
+    "search_volume": 733.33,
+    "search_volume_last_week": 471.68,
+    "change_rate": 55.5
+  },
+  {
+    "product_code": "A000000250978",
+    "keyword": "넘버즈인 3번 세럼팩",
+    "search_volume": 0.0,
+    "search_volume_last_week": 0.0,
+    "change_rate": 0.0
+  },
+  {
+    "product_code": "A000000238634",
+    "keyword": "에스트라 아토베리어 크림",
+    "search_volume": 118.52,
+    "search_volume_last_week": 76.11,
+    "change_rate": 55.7
+  },
+  {
+    "product_code": "A000000250339",
+    "keyword": "어뮤즈 미니 가챠",
+    "search_volume": 0.0,
+    "search_volume_last_week": 0.0,
+    "change_rate": 0.0
+  },
+  {
+    "product_code": "A000000234422",
+    "keyword": "메노킨 버블 마스크",
+    "search_volume": 11.11,
+    "search_volume_last_week": 26.55,
+    "change_rate": -58.2
+  },
+  {
+    "product_code": "A000000226241",
+    "keyword": "웨이크메이크 밤 스틱",
+    "search_volume": 7.41,
+    "search_volume_last_week": 23.89,
+    "change_rate": -69.0
+  },
+  {
+    "product_code": "A000000231339",
+    "keyword": "웨이크메이크 블러 치크",
+    "search_volume": 33.33,
+    "search_volume_last_week": 2.65,
+    "change_rate": 1157.7
+  },
+  {
+    "product_code": "A000000243677",
+    "keyword": "피지오겔 데일리뮨 앰플",
+    "search_volume": 22.22,
+    "search_volume_last_week": 32.74,
+    "change_rate": -32.1
+  },
+  {
+    "product_code": "A000000238406",
+    "keyword": "믹순 히알레배 세럼",
+    "search_volume": 29.63,
+    "search_volume_last_week": 7.08,
+    "change_rate": 318.5
+  },
+  {
+    "product_code": "A000000250772",
+    "keyword": "넘버즈인 3번 패드",
+    "search_volume": 29.63,
+    "search_volume_last_week": 15.04,
+    "change_rate": 97.0
+  },
+  {
+    "product_code": "A000000200357",
+    "keyword": "어뮤즈 세라믹 쿠션",
+    "search_volume": 40.74,
+    "search_volume_last_week": 14.16,
+    "change_rate": 187.7
+  },
+  {
+    "product_code": "A000000235247",
+    "keyword": "웰라쥬 히알루로닉 앰플",
+    "search_volume": 37.04,
+    "search_volume_last_week": 15.93,
+    "change_rate": 132.5
+  },
+  {
+    "product_code": "A000000233390",
+    "keyword": "바이오힐보 콜라겐 세럼",
+    "search_volume": 14.81,
+    "search_volume_last_week": 2.65,
+    "change_rate": 458.9
+  },
+  {
+    "product_code": "A000000223414",
+    "keyword": "메디힐 마스크팩",
+    "search_volume": 733.33,
+    "search_volume_last_week": 471.68,
+    "change_rate": 55.5
+  },
+  {
+    "product_code": "A000000213943",
+    "keyword": "연작 베이스프렙",
+    "search_volume": 474.07,
+    "search_volume_last_week": 493.81,
+    "change_rate": -4.0
+  },
+  {
+    "product_code": "A000000250098",
+    "keyword": "라로슈포제 시카플라스트 크림",
+    "search_volume": 0.0,
+    "search_volume_last_week": 0.0,
+    "change_rate": 0.0
+  },
+  {
+    "product_code": "A000000230821",
+    "keyword": "라곰 폼 클렌저",
+    "search_volume": 3.7,
+    "search_volume_last_week": 9.73,
+    "change_rate": -62.0
+  },
+  {
+    "product_code": "A000000226081",
+    "keyword": "바이오더마 하이드라비오 토너",
+    "search_volume": 7.41,
+    "search_volume_last_week": 0.0,
+    "change_rate": 100.0,
+    "keyword_original": "바이오더마 하이드라비오 토너",
+    "keyword_source": "retry"
+  },
+  {
+    "product_code": "A000000252485",
+    "keyword": "롬앤 쥬시 플래시 립오일",
+    "search_volume": 29.63,
+    "search_volume_last_week": 2.65,
+    "change_rate": 1018.1
+  },
+  {
+    "product_code": "A000000226498",
+    "keyword": "메디큐브 PDRN 핑크 앰플",
+    "search_volume": 3.7,
+    "search_volume_last_week": 2.65,
+    "change_rate": 39.6
+  },
+  {
+    "product_code": "A000000158991",
+    "keyword": "크리니크 치크 팝",
+    "search_volume": 137.04,
+    "search_volume_last_week": 142.48,
+    "change_rate": -3.8
+  },
+  {
+    "product_code": "A000000250337",
+    "keyword": "어뮤즈 립앤치크 밤",
+    "search_volume": 0.0,
+    "search_volume_last_week": 0.0,
+    "change_rate": 0.0
+  }
+]

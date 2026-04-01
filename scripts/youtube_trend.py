@@ -13,7 +13,7 @@ import requests
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import YOUTUBE_API_KEY, YOUTUBE_API_KEYS
-from score_calculator import clean_product_name
+
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
@@ -187,14 +187,10 @@ def run_with_api(products):
 
     for i, product in enumerate(products):
         pc = product["product_code"]
-        # 풀네임: ko_override > clean_product_name(원본)
-        fullname = ko_override.get(pc) or clean_product_name(product.get("name", ""))
-        # 축약 키워드: keyword agent 생성 or search_keyword
-        if pc in keyword_map:
-            short_keyword = keyword_map[pc]["youtube_keyword"]
-        else:
-            short_keyword = product.get("search_keyword",
-                                        product.get("brand_en", product["brand"]) + " " + product["name"])
+        # 풀네임: ko_override > name (이미 정리된 핵심명)
+        fullname = ko_override.get(pc) or product.get("name", "")
+        # 축약 키워드: name에서 자동 축약 (브랜드 + 핵심 2단어)
+        short_keyword = _shorten_keyword(fullname) or fullname
 
         # Phase 1: 풀네임으로 먼저 검색
         print(f"  [{i+1}/{len(products)}] {fullname}...", end=" ")

@@ -253,11 +253,16 @@ def main():
     nv_path = os.path.join(DATA_DIR, f"naver_{today}.json")
     yt_path = os.path.join(DATA_DIR, f"youtube_{today}.json")
 
+    # 인자로 naver/youtube만 지정 가능 (병렬 실행용)
+    target = sys.argv[1] if len(sys.argv) > 1 else "all"
+    run_naver = target in ("all", "naver")
+    run_youtube = target in ("all", "youtube")
+
     nv_updated = 0
     yt_updated = 0
 
     # 네이버 재시도
-    if os.path.exists(nv_path):
+    if run_naver and os.path.exists(nv_path):
         with open(nv_path, "r", encoding="utf-8") as f:
             nv_data = json.load(f)
 
@@ -289,7 +294,7 @@ def main():
             print("[RETRY] 네이버 검색량 0 없음 — 스킵")
 
     # 유튜브 재시도
-    if os.path.exists(yt_path):
+    if run_youtube and os.path.exists(yt_path):
         with open(yt_path, "r", encoding="utf-8") as f:
             yt_data = json.load(f)
 

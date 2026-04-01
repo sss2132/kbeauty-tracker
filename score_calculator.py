@@ -565,8 +565,16 @@ def compute_single_day_scores(date_obj, period_dates):
         total = calc_total_score(scores, product_weights)
         scores["total"] = total
 
-        sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
         brand_en = oy.get("brand_en", "")
+        # search_keyword 자동 파생: brand_en + name에서 한글 브랜드 제거
+        # 과거 데이터는 search_keyword 필드 그대로 사용 (하위 호환)
+        if "search_keyword" in oy:
+            sk = oy["search_keyword"]
+        else:
+            name_val = oy.get("name", "")
+            brand_ko = oy.get("brand", "")
+            core = name_val[len(brand_ko):].strip() if name_val.startswith(brand_ko) else name_val
+            sk = f"{brand_en} {core}".strip() if brand_en else name_val
 
         day_products[code] = {
             "product_code": code,
@@ -948,8 +956,14 @@ def main(use_period=True):
             total = calc_total_score(scores, product_weights)
             scores["total"] = total
 
-            sk = oy.get("search_keyword", oy.get("brand_en", "") + " " + oy["name"])
             brand_en = oy.get("brand_en", "")
+            if "search_keyword" in oy:
+                sk = oy["search_keyword"]
+            else:
+                name_val = oy.get("name", "")
+                brand_ko = oy.get("brand", "")
+                core = name_val[len(brand_ko):].strip() if name_val.startswith(brand_ko) else name_val
+                sk = f"{brand_en} {core}".strip() if brand_en else name_val
             name_ko_val = clean_product_name(oy.get("name", ""))
 
             nv_change = nv.get("change_rate", None)
