@@ -1064,6 +1064,147 @@ def run_step4():
 
 
 # ================================================================
+#  태국어 이름 자동 생성
+# ================================================================
+
+def generate_thai_names():
+    """score_calculator 출력(weekly_ranking)에서 최종 30위 제품 중
+    thai_names.json에 없는 제품의 태국어 이름을 claude -p로 생성."""
+    thai_path = os.path.join(DATA_DIR, "thai_names.json")
+    thai_names = {}
+    if os.path.exists(thai_path):
+        with open(thai_path, "r", encoding="utf-8") as f:
+            thai_names = json.load(f)
+
+    # 최신 weekly_ranking 파일에서 최종 30위 제품 읽기
+    ranking_files = sorted(glob.glob(os.path.join(DATA_DIR, "weekly_ranking_*.json")))
+    if not ranking_files:
+        safe_print("[TH] weekly_ranking 파일 없음 — 스킵")
+        return
+
+    try:
+        with open(ranking_files[-1], "r", encoding="utf-8") as f:
+            ranking = json.load(f)
+        products = ranking.get("products", [])
+    except (json.JSONDecodeError, KeyError):
+        safe_print("[TH] weekly_ranking 파싱 실패 — 스킵")
+        return
+
+    # code -> name_ko 매핑 (최종 30위만)
+    products_by_code = {}
+    for p in products:
+        code = p.get("product_code", "")
+        name = p.get("name_ko", "")
+        if code and name:
+            products_by_code[code] = name
+
+    # thai_names.json에 없는 제품만 필터
+    missing = {code: name for code, name in products_by_code.items()
+               if code not in thai_names or not thai_names[code]}
+
+    if not missing:
+        safe_print(f"[TH] 최종 {len(products_by_code)}개 제품 모두 태국어 이름 있음")
+        return
+
+    safe_print(f"[TH] 태국어 이름 누락 {len(missing)}개 — 번역 시작")
+
+    # claude -p로 번역
+    product_list = json.dumps(
+        [{"product_code": code, "name": name} for code, name in missing.items()],
+        ensure_ascii=False, indent=2
+    )
+
+    prompt = f"""아래 한국어 화장품 제품명을 태국어로 번역해줘.
+
+규칙:
+- 브랜드명은 영어 그대로 유지 (예: Torriden, CLIO, rom&nd)
+- 제품 고유명/라인명도 영어면 영어 유지 (예: DIVE-IN, Kill Cover)
+- 한국어 일반명사(세럼, 크림, 쿠션, 마스크팩 등)만 태국어로 번역
+- 용량, 수량, 기획 정보는 절대 포함하지 않음
+- 자연스러운 태국어 표현 사용
+
+제품 목록:
+{product_list}
+
+JSON으로 응답해. 형식:
+{{"translations": [{{"product_code": "...", "name_th": "..."}}]}}"""
+
+    schema = json.dumps({
+        "type": "object",
+        "properties": {
+            "translations": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "product_code": {"type": "string"},
+                        "name_th": {"type": "string"}
+                    },
+                    "required": ["product_code", "name_th"]
+                }
+            }
+        },
+        "required": ["translations"]
+    })
+
+    try:
+        result = subprocess.run(
+            [CLAUDE_EXE, "-p", prompt, "--output-format", "json",
+             "--max-turns", "2", "--allowed-tools", "", "--json-schema", schema],
+            capture_output=True, text=True, timeout=120,
+            encoding="utf-8", errors="replace",
+            cwd=BASE_DIR
+        )
+        if result.returncode != 0:
+            safe_print(f"[TH] 번역 실패: {result.stderr[:200]}")
+            return
+
+        response = json.loads(result.stdout)
+        # structured_output에 JSON schema 응답이 들어옴
+        parsed = response.get("structured_output", {})
+        if not parsed:
+            # fallback: result에서 JSON 추출 시도
+            text = response.get("result", "")
+            parsed = json.loads(text)
+        translations = parsed.get("translations", [])
+
+        added = 0
+        for item in translations:
+            code = item.get("product_code", "")
+            name_th = item.get("name_th", "")
+            if code and name_th and code in missing:
+                thai_names[code] = name_th
+                added += 1
+                safe_print(f"  + {missing[code]} -> {name_th}")
+
+        if added > 0:
+            with open(thai_path, "w", encoding="utf-8") as f:
+                json.dump(thai_names, f, ensure_ascii=False, indent=2)
+            safe_print(f"[TH] {added}개 태국어 이름 추가 (총 {len(thai_names)}개)")
+
+            # weekly_ranking에도 name_th 반영 (score_calculator 재실행 불필요)
+            try:
+                with open(ranking_files[-1], "r", encoding="utf-8") as f:
+                    ranking = json.load(f)
+                for p in ranking.get("products", []):
+                    code = p.get("product_code", "")
+                    if code in thai_names and not p.get("name_th"):
+                        p["name_th"] = thai_names[code]
+                with open(ranking_files[-1], "w", encoding="utf-8") as f:
+                    json.dump(ranking, f, ensure_ascii=False, indent=2)
+                safe_print("[TH] weekly_ranking에 name_th 반영 완료")
+            except (json.JSONDecodeError, KeyError):
+                safe_print("[TH] weekly_ranking 업데이트 실패 — generate_site에서 누락될 수 있음")
+        else:
+            safe_print("[TH] 번역 결과 없음")
+
+    except subprocess.TimeoutExpired:
+        safe_print("[TH] 번역 타임아웃 (120s)")
+    except (json.JSONDecodeError, KeyError) as e:
+        safe_print(f"[TH] 응답 파싱 실패: {e}")
+
+
+# ================================================================
 #  Step 5: daily 저장 + 3일치 확인 + 갱신
 # ================================================================
 
@@ -1303,6 +1444,9 @@ def run_step5():
             else:
                 safe_print(f"[CALC] FAIL - {calc.stderr[:200]}")
                 return False
+
+            # 태국어 이름 생성 (최종 30위 제품 중 누락분)
+            generate_thai_names()
 
             # generate_site
             site_script = os.path.join(BASE_DIR, "generate_site.py")
