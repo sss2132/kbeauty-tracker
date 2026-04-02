@@ -1313,21 +1313,30 @@ def generate_thai_names():
                    f"수정: {corrected_count}, 미검증: {added - verified_count}) "
                    f"— 총 {len(thai_names)}개")
 
-        # weekly_ranking에도 name_th 반영
-        try:
-            with open(ranking_files[-1], "r", encoding="utf-8") as f:
-                ranking = json.load(f)
-            for p in ranking.get("products", []):
-                code = p.get("product_code", "")
-                if code in thai_names and not p.get("name_th"):
-                    p["name_th"] = thai_names[code]
-            with open(ranking_files[-1], "w", encoding="utf-8") as f:
-                json.dump(ranking, f, ensure_ascii=False, indent=2)
-            safe_print("[TH] weekly_ranking에 name_th 반영 완료")
-        except (json.JSONDecodeError, KeyError):
-            safe_print("[TH] weekly_ranking 업데이트 실패")
     else:
         safe_print("[TH] 결과 없음")
+
+    # weekly_ranking의 name_th를 thai_names.json 기준으로 동기화
+    # (누락 제품이 없더라도, 기존 name_th가 오래된 값이면 갱신)
+    try:
+        with open(ranking_files[-1], "r", encoding="utf-8") as f:
+            ranking = json.load(f)
+        synced = 0
+        for p in ranking.get("products", []):
+            code = p.get("product_code", "")
+            if code in thai_names:
+                correct = thai_names[code]
+                if p.get("name_th") != correct:
+                    p["name_th"] = correct
+                    synced += 1
+        if synced > 0:
+            with open(ranking_files[-1], "w", encoding="utf-8") as f:
+                json.dump(ranking, f, ensure_ascii=False, indent=2)
+            safe_print(f"[TH] weekly_ranking 동기화: {synced}개 name_th 갱신")
+        else:
+            safe_print("[TH] weekly_ranking 동기화 완료 (변경 없음)")
+    except (json.JSONDecodeError, KeyError):
+        safe_print("[TH] weekly_ranking 동기화 실패")
 
 
 # ================================================================
