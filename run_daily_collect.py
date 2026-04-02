@@ -1067,9 +1067,81 @@ def run_step4():
 #  태국어 이름 자동 생성
 # ================================================================
 
+def _verify_thai_batch(batch, batch_idx):
+    """번역된 태국어 이름으로 Shopee 검색해서 동일 제품인지 검증. 병렬 실행용."""
+    product_list = json.dumps(batch, ensure_ascii=False, indent=2)
+
+    prompt = f"""아래 화장품의 태국어 번역명이 정확한지 Shopee Thailand에서 검증해줘.
+
+## 작업 순서
+각 제품마다:
+1. name_th(번역된 태국어 이름)로 Shopee Thailand 검색
+   - WebFetch로 https://shopee.co.th/search?keyword={{name_th에서 핵심 2-3단어}} 검색
+2. 검색 결과에서 동일 제품이 나오는지 확인
+3. 결과:
+   - 동일 제품 확인됨 → verified: true, Shopee에서 쓰는 태국어 이름이 다르면 corrected_name_th에 수정
+   - 동일 제품 못 찾음 → verified: false, 번역명 그대로 유지
+   - Shopee에서 더 자연스러운 이름을 쓰고 있으면 corrected_name_th에 그 이름 기록 (용량/수량 제거)
+
+## 규칙
+- 용량(ml, g), 수량, 프로모션 정보는 절대 포함하지 않음
+- Shopee 검색 결과에서 브랜드+제품 핵심명만 추출
+
+제품 목록:
+{product_list}"""
+
+    schema = json.dumps({
+        "type": "object",
+        "properties": {
+            "verifications": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "product_code": {"type": "string"},
+                        "verified": {"type": "boolean"},
+                        "corrected_name_th": {"type": "string"}
+                    },
+                    "required": ["product_code", "verified"]
+                }
+            }
+        },
+        "required": ["verifications"]
+    })
+
+    try:
+        result = subprocess.run(
+            [CLAUDE_EXE, "-p", prompt, "--output-format", "json",
+             "--max-turns", "8", "--allowed-tools", "WebFetch",
+             "--json-schema", schema],
+            capture_output=True, text=True, timeout=240,
+            encoding="utf-8", errors="replace",
+            cwd=BASE_DIR
+        )
+        if result.returncode != 0:
+            safe_print(f"[TH] 검증 배치 {batch_idx} 실패 (returncode={result.returncode})")
+            return []
+
+        response = json.loads(result.stdout)
+        parsed = response.get("structured_output", {})
+        if not parsed:
+            text = response.get("result", "")
+            parsed = json.loads(text)
+        return parsed.get("verifications", [])
+
+    except subprocess.TimeoutExpired:
+        safe_print(f"[TH] 검증 배치 {batch_idx} 타임아웃 (240s)")
+        return []
+    except (json.JSONDecodeError, KeyError) as e:
+        safe_print(f"[TH] 검증 배치 {batch_idx} 파싱 실패: {e}")
+        return []
+
+
 def generate_thai_names():
     """score_calculator 출력(weekly_ranking)에서 최종 30위 제품 중
-    thai_names.json에 없는 제품의 태국어 이름을 claude -p로 생성."""
+    thai_names.json에 없는 제품의 태국어 이름을 생성.
+    Phase 1: claude -p로 한국어→태국어 번역 (도구 없음, 빠름)
+    Phase 2: 번역명으로 Shopee 검색해서 검증 (병렬 배치)"""
     thai_path = os.path.join(DATA_DIR, "thai_names.json")
     thai_names = {}
     if os.path.exists(thai_path):
@@ -1090,46 +1162,36 @@ def generate_thai_names():
         safe_print("[TH] weekly_ranking 파싱 실패 — 스킵")
         return
 
-    # code -> name_ko 매핑 (최종 30위만)
-    products_by_code = {}
+    # thai_names.json에 없는 제품만 필터
+    missing = []
     for p in products:
         code = p.get("product_code", "")
         name = p.get("name_ko", "")
-        if code and name:
-            products_by_code[code] = name
-
-    # thai_names.json에 없는 제품만 필터
-    missing = {code: name for code, name in products_by_code.items()
-               if code not in thai_names or not thai_names[code]}
+        if code and name and (code not in thai_names or not thai_names[code]):
+            missing.append({"product_code": code, "name": name})
 
     if not missing:
-        safe_print(f"[TH] 최종 {len(products_by_code)}개 제품 모두 태국어 이름 있음")
+        safe_print(f"[TH] 최종 {len(products)}개 제품 모두 태국어 이름 있음")
         return
 
-    safe_print(f"[TH] 태국어 이름 누락 {len(missing)}개 — 번역 시작")
+    safe_print(f"[TH] 태국어 이름 누락 {len(missing)}개")
 
-    # claude -p로 번역
-    product_list = json.dumps(
-        [{"product_code": code, "name": name} for code, name in missing.items()],
-        ensure_ascii=False, indent=2
-    )
+    # ── Phase 1: 번역 (도구 없음, 전체 한번에) ──
+    safe_print("[TH] Phase 1: 한국어 → 태국어 번역")
+    product_list = json.dumps(missing, ensure_ascii=False, indent=2)
 
-    prompt = f"""아래 한국어 화장품 제품명을 태국어로 번역해줘.
+    translate_prompt = f"""아래 한국어 화장품 제품명을 태국어로 번역해줘.
 
 규칙:
 - 브랜드명은 영어 그대로 유지 (예: Torriden, CLIO, rom&nd)
 - 제품 고유명/라인명도 영어면 영어 유지 (예: DIVE-IN, Kill Cover)
 - 한국어 일반명사(세럼, 크림, 쿠션, 마스크팩 등)만 태국어로 번역
 - 용량, 수량, 기획 정보는 절대 포함하지 않음
-- 자연스러운 태국어 표현 사용
 
 제품 목록:
-{product_list}
+{product_list}"""
 
-JSON으로 응답해. 형식:
-{{"translations": [{{"product_code": "...", "name_th": "..."}}]}}"""
-
-    schema = json.dumps({
+    translate_schema = json.dumps({
         "type": "object",
         "properties": {
             "translations": {
@@ -1149,59 +1211,123 @@ JSON으로 응답해. 형식:
 
     try:
         result = subprocess.run(
-            [CLAUDE_EXE, "-p", prompt, "--output-format", "json",
-             "--max-turns", "2", "--allowed-tools", "", "--json-schema", schema],
+            [CLAUDE_EXE, "-p", translate_prompt, "--output-format", "json",
+             "--max-turns", "2", "--allowed-tools", "",
+             "--json-schema", translate_schema],
             capture_output=True, text=True, timeout=120,
             encoding="utf-8", errors="replace",
             cwd=BASE_DIR
         )
         if result.returncode != 0:
-            safe_print(f"[TH] 번역 실패: {result.stderr[:200]}")
+            safe_print("[TH] Phase 1 번역 실패")
             return
 
         response = json.loads(result.stdout)
-        # structured_output에 JSON schema 응답이 들어옴
         parsed = response.get("structured_output", {})
         if not parsed:
-            # fallback: result에서 JSON 추출 시도
-            text = response.get("result", "")
-            parsed = json.loads(text)
+            parsed = json.loads(response.get("result", "{}"))
         translations = parsed.get("translations", [])
+    except (subprocess.TimeoutExpired, json.JSONDecodeError, KeyError) as e:
+        safe_print(f"[TH] Phase 1 실패: {e}")
+        return
 
-        added = 0
-        for item in translations:
-            code = item.get("product_code", "")
-            name_th = item.get("name_th", "")
-            if code and name_th and code in missing:
-                thai_names[code] = name_th
-                added += 1
-                safe_print(f"  + {missing[code]} -> {name_th}")
+    if not translations:
+        safe_print("[TH] Phase 1 번역 결과 없음")
+        return
 
-        if added > 0:
-            with open(thai_path, "w", encoding="utf-8") as f:
-                json.dump(thai_names, f, ensure_ascii=False, indent=2)
-            safe_print(f"[TH] {added}개 태국어 이름 추가 (총 {len(thai_names)}개)")
+    # 번역 결과를 code -> name_th 매핑
+    translated = {}
+    missing_codes = {item["product_code"] for item in missing}
+    for item in translations:
+        code = item.get("product_code", "")
+        name_th = item.get("name_th", "")
+        if code and name_th and code in missing_codes:
+            translated[code] = name_th
 
-            # weekly_ranking에도 name_th 반영 (score_calculator 재실행 불필요)
+    safe_print(f"[TH] Phase 1 완료: {len(translated)}개 번역")
+    for code, name_th in translated.items():
+        ko = next((m["name"] for m in missing if m["product_code"] == code), "")
+        safe_print(f"  {ko} -> {name_th}")
+
+    # ── Phase 2: Shopee 검증 (병렬 배치) ──
+    safe_print("[TH] Phase 2: Shopee 검색으로 검증")
+
+    # 검증할 제품 목록 구성
+    verify_items = []
+    for code, name_th in translated.items():
+        ko = next((m["name"] for m in missing if m["product_code"] == code), "")
+        verify_items.append({
+            "product_code": code, "name_ko": ko, "name_th": name_th
+        })
+
+    BATCH_SIZE = 3
+    batches = [verify_items[i:i + BATCH_SIZE]
+               for i in range(0, len(verify_items), BATCH_SIZE)]
+    all_verifications = []
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=min(len(batches), 3)) as executor:
+        futures = {
+            executor.submit(_verify_thai_batch, batch, idx): idx
+            for idx, batch in enumerate(batches)
+        }
+        for future in concurrent.futures.as_completed(futures):
+            batch_idx = futures[future]
             try:
-                with open(ranking_files[-1], "r", encoding="utf-8") as f:
-                    ranking = json.load(f)
-                for p in ranking.get("products", []):
-                    code = p.get("product_code", "")
-                    if code in thai_names and not p.get("name_th"):
-                        p["name_th"] = thai_names[code]
-                with open(ranking_files[-1], "w", encoding="utf-8") as f:
-                    json.dump(ranking, f, ensure_ascii=False, indent=2)
-                safe_print("[TH] weekly_ranking에 name_th 반영 완료")
-            except (json.JSONDecodeError, KeyError):
-                safe_print("[TH] weekly_ranking 업데이트 실패 — generate_site에서 누락될 수 있음")
-        else:
-            safe_print("[TH] 번역 결과 없음")
+                result = future.result()
+                all_verifications.extend(result)
+                safe_print(f"  검증 배치 {batch_idx} 완료: {len(result)}개")
+            except Exception as e:
+                safe_print(f"  검증 배치 {batch_idx} 에러: {e}")
 
-    except subprocess.TimeoutExpired:
-        safe_print("[TH] 번역 타임아웃 (120s)")
-    except (json.JSONDecodeError, KeyError) as e:
-        safe_print(f"[TH] 응답 파싱 실패: {e}")
+    # ── 결과 병합: 검증된 이름 우선, 아니면 번역명 사용 ──
+    verification_map = {v["product_code"]: v for v in all_verifications}
+    added = 0
+    verified_count = 0
+    corrected_count = 0
+
+    for code, name_th in translated.items():
+        v = verification_map.get(code)
+        final_name = name_th
+        tag = "[번역]"
+
+        if v:
+            corrected = v.get("corrected_name_th", "").strip()
+            if v.get("verified"):
+                if corrected:
+                    final_name = corrected
+                    tag = "[Shopee 수정]"
+                    corrected_count += 1
+                else:
+                    tag = "[Shopee 확인]"
+                verified_count += 1
+
+        thai_names[code] = final_name
+        added += 1
+        ko = next((m["name"] for m in missing if m["product_code"] == code), code)
+        safe_print(f"  + {tag} {ko} -> {final_name}")
+
+    if added > 0:
+        with open(thai_path, "w", encoding="utf-8") as f:
+            json.dump(thai_names, f, ensure_ascii=False, indent=2)
+        safe_print(f"[TH] {added}개 추가 (Shopee 확인: {verified_count}, "
+                   f"수정: {corrected_count}, 미검증: {added - verified_count}) "
+                   f"— 총 {len(thai_names)}개")
+
+        # weekly_ranking에도 name_th 반영
+        try:
+            with open(ranking_files[-1], "r", encoding="utf-8") as f:
+                ranking = json.load(f)
+            for p in ranking.get("products", []):
+                code = p.get("product_code", "")
+                if code in thai_names and not p.get("name_th"):
+                    p["name_th"] = thai_names[code]
+            with open(ranking_files[-1], "w", encoding="utf-8") as f:
+                json.dump(ranking, f, ensure_ascii=False, indent=2)
+            safe_print("[TH] weekly_ranking에 name_th 반영 완료")
+        except (json.JSONDecodeError, KeyError):
+            safe_print("[TH] weekly_ranking 업데이트 실패")
+    else:
+        safe_print("[TH] 결과 없음")
 
 
 # ================================================================
