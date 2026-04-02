@@ -141,7 +141,7 @@ def compute_file_hash(filepath):
     return h.hexdigest()
 
 
-def run_keyword_agent(oy_path, timeout=600):
+def run_keyword_agent(oy_path, timeout=180):
     """claude -p로 최적 검색 키워드 생성 (배치 분할). 실패 시 None 반환."""
     today_str = datetime.now().strftime("%Y%m%d")
     gn_path = os.path.join(DATA_DIR, f"_global_names_{today_str}.json")
@@ -176,6 +176,8 @@ def run_keyword_agent(oy_path, timeout=600):
 ## 글로벌몰 영문명 참조 파일
 {global_names_ref}
 - products 객체에서 product_code로 검색, global_name 필드가 공식 영문명
+- 매칭된 건은 용량/기획 텍스트만 제거하고 그대로 사용
+- 매칭 안 된 건은 한국어 name을 자연스러운 영어로 번역 (WebFetch 하지 않음)
 
 화장품인 제품만 product_code, naver_keyword, english_name을 생성해.
 비화장품은 keywords 배열에서 완전히 제외해."""
@@ -184,7 +186,7 @@ def run_keyword_agent(oy_path, timeout=600):
             CLAUDE_EXE, "-p",
             "--output-format", "json",
             "--json-schema", KEYWORD_SCHEMA,
-            "--allowed-tools", "Read,WebFetch",
+            "--allowed-tools", "Read",
             "--no-session-persistence",
             prompt,
         ]
