@@ -18,7 +18,6 @@ v6 변경:
 
 import glob
 import json
-import math
 import os
 import sys
 from collections import OrderedDict

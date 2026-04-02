@@ -8,7 +8,6 @@ data_status 경고 배너, rank_change 표시, dropped_products
 import glob
 import json
 import os
-import urllib.parse
 from datetime import datetime
 
 TH_MONTHS = {
