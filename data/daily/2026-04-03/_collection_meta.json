@@ -1,0 +1,29 @@
+{
+  "collected_at": "2026-04-03 19:00:00",
+  "collected_by": "run_daily_collect.py pipeline",
+  "sources": {
+    "oliveyoung": {
+      "file": "oliveyoung_20260403.json",
+      "products": 48
+    },
+    "naver": {
+      "file": "naver_20260403.json"
+    },
+    "youtube": {
+      "file": "youtube_20260403.json"
+    }
+  },
+  "verified": true,
+  "verified_at": "2026-04-03 23:50:00",
+  "verified_by": "claude -p verification agent (independent process)",
+  "file_hashes": {
+    "oliveyoung": "a95e4d697cdf7c6703020a098dd5df48d711be77e8d8956eff25e561ec82cfb1",
+    "naver": "d8f44a9c8ffb10f673626e4ae389d8919dab792e7427eb8f7504f777419ea18f",
+    "youtube": "2536095a74c2339195c747ce8cae8c5327a503f591e6f20e9aa9645d7ae4de81"
+  },
+  "new_launches": [
+    "A000000250214",
+    "A000000251265"
+  ],
+  "notes": "네이버 키워드 3-4단어 통일 규칙 적용, 2티어 스코어링(4단어>3단어>0) 도입"
+}

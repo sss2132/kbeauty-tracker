@@ -171,6 +171,7 @@ def run_with_api(products):
             "search_volume": norm_this,
             "search_volume_last_week": norm_last,
             "change_rate": change_rate,
+            "keyword_tier": "4word",
         })
 
     api_calls = len(batches)

@@ -113,24 +113,24 @@ def shorten_keyword(keyword):
     return variants
 
 
-def verify_keyword_on_oliveyoung(keyword, target_brand):
-    """올리브영 검색으로 축소 키워드가 타겟 제품만 나오는지 검증.
+def shorten_to_3words(keyword):
+    """4단어 이상 키워드를 3단어로 강제 축소. 브랜드 + 핵심 제품명 2단어."""
+    words = keyword.split()
+    if len(words) <= 3:
+        return []
+    brand = words[0]
+    rest = words[1:]
+    variants = []
+    # 브랜드 + 마지막 2단어
+    variants.append(f"{brand} {rest[-2]} {rest[-1]}")
+    # 브랜드 + 첫 단어 + 마지막 단어
+    if len(rest) >= 3:
+        variants.append(f"{brand} {rest[0]} {rest[-1]}")
+    # 브랜드 + 마지막 단어만 (2단어)
+    variants.append(f"{brand} {rest[-1]}")
+    return variants
 
-    Returns: True if most results are from target brand (safe to use)
-    """
-    url = f"https://www.oliveyoung.co.kr/store/search/getSearchMain.do?query={requests.utils.quote(keyword)}"
-    try:
-        resp = requests.get(url, timeout=10, headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-        })
-        text = resp.text
 
-        # 검색 결과에서 브랜드명 출현 횟수 체크
-        brand_count = text.lower().count(target_brand.lower())
-        # 간단한 검증: 브랜드명이 여러 번 나오면 해당 브랜드 제품이 주로 나온다고 판단
-        return brand_count >= 3
-    except Exception:
-        return False
 
 
 # ================================================================
@@ -182,17 +182,19 @@ def generate_alternatives(keyword, source_type="naver"):
                 alternatives.append((s, "브랜드 자동완성"))
                 seen.add(s)
 
-    # 전략 5: 단어 축소 (연관검색어로 못 찾았을 때만, 올리브영 검증 후)
+    # 전략 5: 3단어 강제 축소 (4단어 이상일 때 올리브영 검증 없이 적용)
+    if len(keyword.split()) > 3:
+        for short_kw in shorten_to_3words(keyword):
+            if short_kw not in seen:
+                alternatives.append((short_kw, "3단어축소"))
+                seen.add(short_kw)
+
+    # 전략 6: 단어 축소 (연관검색어로 못 찾았을 때만)
     if not alternatives:
         for short_kw in shorten_keyword(keyword):
             if short_kw not in seen:
-                is_safe = verify_keyword_on_oliveyoung(short_kw, brand)
-                if is_safe:
-                    alternatives.append((short_kw, "단어축소(검증됨)"))
-                    seen.add(short_kw)
-                else:
-                    print(f"    [단어축소 거부] '{short_kw}' → 다른 제품이 섞임")
-                time.sleep(0.3)
+                alternatives.append((short_kw, "단어축소"))
+                seen.add(short_kw)
 
     return alternatives
 
@@ -285,6 +287,7 @@ def main():
                     item["search_volume_last_week"] = sv_lw
                     item["change_rate"] = cr
                     item["keyword_source"] = "retry"
+                    item["keyword_tier"] = "3word"
                     nv_updated += 1
 
             with open(nv_path, "w", encoding="utf-8") as f:

@@ -23,7 +23,7 @@ import sys
 from collections import OrderedDict
 from datetime import datetime, timedelta
 
-from config import make_affiliate_url
+from config import PERIOD_DAYS, make_affiliate_url
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 DAILY_DIR = os.path.join(DATA_DIR, "daily")
@@ -35,7 +35,6 @@ DEFAULT_WEIGHTS = {
 }
 
 TOP_N = 30
-PERIOD_DAYS = 3
 
 
 def calc_oliveyoung_score(rank, review_count):
@@ -49,14 +48,50 @@ def calc_oliveyoung_score(rank, review_count):
     return min(100, base + bonus)
 
 
-def rank_based_scoring(values):
-    """순위 기반 스코어링: 값을 내림차순 정렬하여 1위=100, 2위=98... (rank당 2점)."""
+def rank_based_scoring(values, tiers=None):
+    """순위 기반 스코어링: 값을 내림차순 정렬하여 1위=100, 2위=98... (rank당 2점).
+
+    tiers가 주어지면 2티어 구조 적용:
+    - '4word' 티어: 상위 그룹, 자체 검색량으로 순위
+    - '3word' 티어: 하위 그룹, 4word 다음부터 순위
+    - 'zero' 티어: 일괄 0점
+    """
     if not values:
         return []
-    indexed = sorted(enumerate(values), key=lambda x: x[1], reverse=True)
+
+    if tiers is None:
+        # 기존 로직
+        indexed = sorted(enumerate(values), key=lambda x: x[1], reverse=True)
+        scores = [0] * len(values)
+        for rank_idx, (orig_idx, _val) in enumerate(indexed):
+            scores[orig_idx] = max(0, 102 - (rank_idx + 1) * 2)
+        return scores
+
+    # 2티어 구조
     scores = [0] * len(values)
-    for rank_idx, (orig_idx, _val) in enumerate(indexed):
+
+    # Tier 1: 4word (검색량 > 0인 것만)
+    tier1 = [(i, values[i]) for i in range(len(values))
+             if tiers[i] == '4word' and values[i] > 0]
+    tier1.sort(key=lambda x: x[1], reverse=True)
+
+    # Tier 2: 3word (검색량 > 0인 것만)
+    tier2 = [(i, values[i]) for i in range(len(values))
+             if tiers[i] == '3word' and values[i] > 0]
+    tier2.sort(key=lambda x: x[1], reverse=True)
+
+    # 4word 그룹: 1위부터
+    rank_idx = 0
+    for orig_idx, _val in tier1:
         scores[orig_idx] = max(0, 102 - (rank_idx + 1) * 2)
+        rank_idx += 1
+
+    # 3word 그룹: 4word 다음부터 이어서
+    for orig_idx, _val in tier2:
+        scores[orig_idx] = max(0, 102 - (rank_idx + 1) * 2)
+        rank_idx += 1
+
+    # zero 티어 + 4word인데 검색량 0: 일괄 0점 (이미 0으로 초기화됨)
     return scores
 
 
@@ -156,7 +191,9 @@ def get_daily_dates():
 
 
 def compute_periods(dates):
-    """고정 3일 구간 계산. 첫 날짜 기준으로 겹치지 않는 구간."""
+    """고정 3일 구간 계산. 첫 날짜 기준으로 겹치지 않는 구간.
+    구간 내 3일 연속이 아니더라도, 구간 범위 내 3일이 있으면 인정.
+    마지막 구간이 불완전(2일)이면 최근 3일 데이터로 보충."""
     if not dates:
         return []
     start = dates[0]
@@ -172,6 +209,20 @@ def compute_periods(dates):
                 "dates": period_dates,
             })
         current_start = current_end + timedelta(days=1)
+
+    # 마지막 구간이 불완전하면 최근 3일 데이터로 추가 구간 생성
+    if periods:
+        last_end = periods[-1]["end"]
+        remaining = [d for d in dates if d > last_end]
+        if len(remaining) >= 2 and len(dates) >= PERIOD_DAYS:
+            # 최근 3일 데이터를 모아서 구간 생성
+            recent_3 = dates[-PERIOD_DAYS:]
+            if recent_3 != periods[-1]["dates"]:
+                periods.append({
+                    "start": recent_3[0],
+                    "end": recent_3[-1],
+                    "dates": recent_3,
+                })
     return periods
 
 
@@ -208,10 +259,10 @@ def compute_period_oy_scores(period):
             code = item["product_code"]
             score = calc_oliveyoung_score(item["rank"], item.get("review_count", 0))
 
-            # 오특 + 1+1 + 2입 패널티 (할인율 기반 단계적 적용)
-            penalty = get_promotion_penalty(item)
-            if penalty < 1.0:
-                score = score * penalty
+            # 프로모션 패널티 / 정가 보너스
+            modifier = get_promotion_penalty(item)
+            if modifier != 1.0:
+                score = min(100, score * modifier)
 
             if code not in product_scores:
                 product_scores[code] = []
@@ -301,7 +352,7 @@ def compute_consistency_bonus(consecutive_periods):
     return 0
 
 
-NON_COSMETIC_CATEGORIES = {"health", "food", "snack", "supplement", "medical", "other"}
+NON_COSMETIC_CATEGORIES = {"health", "food", "snack", "supplement", "medical", "device", "non_cosmetic", "other"}
 
 NON_COSMETIC_KEYWORDS = [
     "단백질", "쉐이크", "베이글", "Album", "앨범", "치아미백", "칫솔",
@@ -359,7 +410,7 @@ def get_promotion_penalty(item):
     if promo == "ambiguous":
         return 0.7  # 사용자 승인 전 기본값
     if promo == "none":
-        return 1.0
+        return 1.2  # 정가 판매 보너스: 프로모션 없이 팔리는 제품 우대
 
     # fallback: promotion_type 필드 없는 레거시 데이터
     name = item.get("name", "")
@@ -508,15 +559,17 @@ def compute_single_day_scores(date_obj, period_dates):
 
     # 정규화용 절대값 수집
     nv_volumes = []
+    nv_tiers = []
     yt_views = []
     for oy in cosmetic_items:
         code = oy["product_code"]
         nv = nv_map.get(code, {})
         yt = yt_map.get(code, {})
         nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
+        nv_tiers.append(nv.get("keyword_tier", "4word"))
         yt_views.append(yt.get("total_views", 0) or 0)
 
-    nv_norm = rank_based_scoring(nv_volumes) if nv_data else [0] * len(cosmetic_items)
+    nv_norm = rank_based_scoring(nv_volumes, tiers=nv_tiers) if nv_data else [0] * len(cosmetic_items)
     yt_norm = rank_based_scoring(yt_views) if yt_data else [0] * len(cosmetic_items)
 
     # data_status for weight computation
@@ -535,9 +588,9 @@ def compute_single_day_scores(date_obj, period_dates):
         yt = yt_map.get(code, {})
 
         oy_score = calc_oliveyoung_score(oy["rank"], oy.get("review_count", 0))
-        penalty = get_promotion_penalty(oy)
-        if penalty < 1.0:
-            oy_score = round(oy_score * penalty)
+        modifier = get_promotion_penalty(oy)
+        if modifier != 1.0:
+            oy_score = min(100, round(oy_score * modifier))
 
         nv_score = nv_norm[idx] if nv_data else 0
 
@@ -908,15 +961,17 @@ def main(use_period=True):
                           and not is_non_cosmetic_by_keyword(oy.get("name", ""))]
 
         nv_volumes = []
+        nv_tiers = []
         yt_views = []
         for oy in cosmetic_items:
             code = oy["product_code"]
             nv = nv_map.get(code, {})
             yt = yt_map.get(code, {})
             nv_volumes.append(nv.get("search_volume", nv.get("search_volume_this_week", 0)) or 0)
+            nv_tiers.append(nv.get("keyword_tier", "4word"))
             yt_views.append(yt.get("total_views", 0) or 0)
 
-        nv_norm = rank_based_scoring(nv_volumes) if nv_data else [0] * len(cosmetic_items)
+        nv_norm = rank_based_scoring(nv_volumes, tiers=nv_tiers) if nv_data else [0] * len(cosmetic_items)
         yt_norm = rank_based_scoring(yt_views) if yt_data else [0] * len(cosmetic_items)
 
         for idx, oy in enumerate(cosmetic_items):

@@ -1,6 +1,4 @@
 .env
 __pycache__/
 *.pyc
-_start_telegram.ps1
-_telegram_mcp.json
 data/_dom_extract_*.json

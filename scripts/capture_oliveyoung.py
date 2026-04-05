@@ -1,40 +1,43 @@
 """
-올리브영 랭킹 페이지 자동 캡처 스크립트
+올리브영 랭킹 페이지 자동 캡처 + DOM 추출 통합 스크립트
 Playwright chromium 사용.
 
 사용법: python scripts/capture_oliveyoung.py
 
-캡처 결과: Oliveyoung collection/oliveyoung_YYYYMMDD_1.png ~ 5.png
-5장 x 12제품(4열x3행) = 60제품
-device_scale_factor=2 로 고해상도 캡처 (리사이즈 없음)
+출력:
+  스크린샷: Oliveyoung collection/oliveyoung_YYYYMMDD_1.png ~ 5.png
+  DOM JSON: kbeauty-tracker/data/_dom_extract_YYYYMMDD.json
+
+동일 페이지 세션에서 스크린샷과 DOM을 동시에 추출하여 시점 불일치 방지.
 """
 
 from playwright.sync_api import sync_playwright
 from datetime import datetime
+import json
 import os
 import sys
 
 URL = 'https://www.oliveyoung.co.kr/store/main/getBestList.do'
 
-# 프로젝트 루트 (K-Beauty)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'Oliveyoung collection')
 ARCHIVE_DIR = os.path.join(OUTPUT_DIR, 'Archive')
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
 
 CAPTURE_COUNT = 5
-PRODUCTS_PER_CAPTURE = 12  # 4열 x 3행
 ROWS_PER_CAPTURE = 3
 
 
 def main():
     os.makedirs(ARCHIVE_DIR, exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
     today = datetime.now().strftime('%Y%m%d')
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(
             viewport={'width': 1400, 'height': 900},
-            device_scale_factor=2,
+            device_scale_factor=1,
             locale='ko-KR',
             user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
         )
@@ -43,7 +46,6 @@ def main():
         print('Navigating to Oliveyoung ranking page...')
         page.goto(URL, wait_until='domcontentloaded', timeout=60000)
         page.wait_for_timeout(5000)
-
         page.wait_for_selector('.prd_info', timeout=30000)
         print('Ranking list loaded.')
 
@@ -60,20 +62,82 @@ def main():
             if (header) header.style.position = 'absolute';
         }""")
 
-        # 전체 페이지 높이 확보를 위해 맨 아래까지 스크롤
+        # === DOM 추출 (스크린샷과 동일 시점) ===
+        products = page.evaluate("""() => {
+            var items = document.querySelectorAll('.cate_prd_list li');
+            var results = [];
+            items.forEach(function(item, idx) {
+                if (idx >= 60) return;
+
+                var link = item.querySelector('a');
+                var href = link ? link.getAttribute('href') : '';
+                var goodsNoMatch = href ? href.match(/goodsNo=([^&]+)/) : null;
+                var goodsNo = goodsNoMatch ? goodsNoMatch[1] : '';
+
+                var brandEl = item.querySelector('.tx_brand');
+                var brand = brandEl ? brandEl.textContent.trim() : '';
+
+                var nameEl = item.querySelector('.tx_name');
+                var name = nameEl ? nameEl.textContent.trim() : '';
+
+                var priceEl = item.querySelector('.tx_cur .tx_num');
+                var price = priceEl ? priceEl.textContent.trim().replace(/,/g, '') : '';
+
+                var orgPriceEl = item.querySelector('.tx_org .tx_num');
+                var orgPrice = orgPriceEl ? orgPriceEl.textContent.trim().replace(/,/g, '') : '';
+
+                var rankEl = item.querySelector('.num');
+                var rankText = rankEl ? rankEl.textContent.trim() : '';
+
+                var oteukEl = item.querySelector('.icon_flag.oteuk') ||
+                              item.querySelector('.badge_oteuk') ||
+                              item.querySelector('[class*="oteuk"]') ||
+                              item.querySelector('[class*="todayDeal"]');
+                var isOteuk = !!oteukEl;
+                if (!isOteuk && rankEl) {
+                    var rankClass = rankEl.className || '';
+                    if (rankClass.includes('oteuk') || rankClass.includes('deal')) {
+                        isOteuk = true;
+                    }
+                }
+                var rankNum = parseInt(rankText);
+                if (isNaN(rankNum) && rankText !== '') {
+                    isOteuk = true;
+                }
+
+                results.push({
+                    index: idx,
+                    brand: brand,
+                    name: name,
+                    price: price,
+                    original_price: orgPrice,
+                    product_code: goodsNo,
+                    rank_text: rankText,
+                    is_oteuk: isOteuk,
+                    url: href ? 'https://www.oliveyoung.co.kr' + href : ''
+                });
+            });
+            return results;
+        }""")
+
+        dom_path = os.path.join(DATA_DIR, f'_dom_extract_{today}.json')
+        with open(dom_path, 'w', encoding='utf-8') as f:
+            json.dump(products, f, ensure_ascii=False, indent=2)
+        print(f'[DOM] {len(products)}개 제품 추출 → {os.path.basename(dom_path)}')
+
+        # === 스크린샷 캡처 (DOM 추출과 동일 페이지) ===
+        # 스크롤로 전체 로딩 확보
         page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
         page.wait_for_timeout(2000)
         page.evaluate('window.scrollTo(0, 0)')
         page.wait_for_timeout(1000)
 
-        # 그리드 정보 수집: 각 행의 첫 아이템 y 좌표로 정확한 행 높이 계산
         grid_info = page.evaluate("""() => {
             var items = document.querySelectorAll('.cate_prd_list li');
             if (items.length === 0) return null;
             var listEl = items[0].closest('ul');
             var listRect = listEl.getBoundingClientRect();
 
-            // 4열 그리드 → 0,4,8번째 아이템이 각 행의 시작
             var rows = [];
             for (var i = 0; i < Math.min(items.length, 60); i += 4) {
                 var rect = items[i].getBoundingClientRect();
@@ -96,20 +160,17 @@ def main():
         row_height = grid_info['rowHeight']
 
         saved_files = []
-
         for i in range(CAPTURE_COUNT):
             filename = f'oliveyoung_{today}_{i + 1}.png'
             filepath = os.path.join(OUTPUT_DIR, filename)
 
-            # i번째 캡처: 행 i*3 ~ i*3+2 (3줄)
             start_row = i * ROWS_PER_CAPTURE
             if start_row >= len(rows):
                 break
 
             y_start = rows[start_row]
-            capture_height = row_height * ROWS_PER_CAPTURE + 20  # 약간 여유
+            capture_height = row_height * ROWS_PER_CAPTURE + 20
 
-            # full_page=True + clip으로 정확한 영역 캡처 (뷰포트 제약 없음)
             page.screenshot(
                 path=filepath,
                 full_page=True,
@@ -128,7 +189,7 @@ def main():
 
         browser.close()
 
-    print(f'\n캡처 완료, Oliveyoung collection에 {len(saved_files)}장 저장됨')
+    print(f'\n캡처+DOM 추출 완료: 스크린샷 {len(saved_files)}장, DOM {len(products)}개 제품')
     return saved_files
 
 

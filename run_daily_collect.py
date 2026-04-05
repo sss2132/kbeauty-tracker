@@ -33,6 +33,11 @@ import threading
 import time
 from datetime import datetime
 
+from config import (
+    PERIOD_DAYS, TIMEOUT_ENRICH, TIMEOUT_VERIFY, TIMEOUT_KEYWORD,
+    TIMEOUT_EN_VERIFY, TIMEOUT_CAPTURE, TIMEOUT_NAVER, TIMEOUT_YOUTUBE,
+)
+
 _print_lock = threading.Lock()
 
 
@@ -57,9 +62,29 @@ DAILY_DIR = os.path.join(DATA_DIR, "daily")
 SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
 SCREENSHOT_DIR = os.path.join(PROJECT_ROOT, "Oliveyoung collection")
-PERIOD_DAYS = 3
 CLAUDE_EXE = os.path.join(os.path.expanduser("~"), ".local", "bin", "claude.exe")
 AGENTS_DIR = os.path.join(BASE_DIR, "agents")
+
+
+def check_claude_auth():
+    """claude -p 인증 상태 사전 확인. 실패 시 False 반환."""
+    try:
+        result = subprocess.run(
+            [CLAUDE_EXE, "-p", "--no-session-persistence"],
+            input="reply OK",
+            capture_output=True, text=True, timeout=30,
+            encoding="utf-8", errors="replace",
+        )
+        if result.returncode == 0 and "OK" in result.stdout:
+            return True
+        safe_print(f"[AUTH] claude -p 인증 실패: returncode={result.returncode}")
+        return False
+    except subprocess.TimeoutExpired:
+        safe_print("[AUTH] claude -p 응답 없음 (30초 타임아웃) - 인증 만료 가능")
+        return False
+    except Exception as e:
+        safe_print(f"[AUTH] claude -p 확인 실패: {e}")
+        return False
 
 
 def load_agent_rules(filename):
@@ -78,10 +103,16 @@ def load_agent_rules(filename):
 VERIFICATION_SCHEMA = json.dumps({
     "type": "object",
     "properties": {
-        "passed": {"type": "boolean"},
+        "passed": {"type": "boolean", "description": "사용자 확인이 필요한 이슈가 없으면 true"},
+        "auto_fixed": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "agent가 직접 수정한 항목 목록 (수정 완료)"
+        },
         "issues": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {"type": "string"},
+            "description": "사용자 확인이 필요한 항목만 (agent가 판단 불가)"
         },
         "new_launches": {
             "type": "array",
@@ -141,9 +172,10 @@ def compute_file_hash(filepath):
     return h.hexdigest()
 
 
-def run_keyword_agent(oy_path, timeout=180):
+def run_keyword_agent(oy_path, timeout=TIMEOUT_KEYWORD, today_str=None):
     """claude -p로 최적 검색 키워드 생성 (배치 분할). 실패 시 None 반환."""
-    today_str = datetime.now().strftime("%Y%m%d")
+    if today_str is None:
+        today_str = datetime.now().strftime("%Y%m%d")
     gn_path = os.path.join(DATA_DIR, f"_global_names_{today_str}.json")
     if not os.path.exists(gn_path):
         safe_print("[KEYWORD] FAIL - 글로벌몰 영문명 파일 없음.")
@@ -154,28 +186,48 @@ def run_keyword_agent(oy_path, timeout=180):
     with open(oy_path, "r", encoding="utf-8") as f:
         products = json.load(f)
 
-    batch_size = 15
+    batch_size = 10
     batches = [products[i:i + batch_size] for i in range(0, len(products), batch_size)]
     rules = load_agent_rules("step3_keyword.md")
-    all_keywords = []
+    all_keywords = [None] * len(batches)  # 순서 보존용
 
-    for batch_idx, batch in enumerate(batches):
+    # 글로벌몰 영문명 데이터를 미리 로드 (배치별 필터링용)
+    with open(gn_path, "r", encoding="utf-8") as f:
+        global_names_data = json.load(f)
+    gn_products = global_names_data.get("products", global_names_data) if isinstance(global_names_data, dict) else global_names_data
+
+    def _run_keyword_batch(batch_idx, batch):
+        """단일 키워드 배치 처리 (병렬 실행용)."""
         codes = [p["product_code"] for p in batch]
+        codes_set = set(codes)
         rank_range = f"{batch[0].get('rank', '?')}~{batch[-1].get('rank', '?')}"
+
+        batch_oy_path = os.path.join(DATA_DIR, f"_kw_batch_oy_{batch_idx}.json")
+        with open(batch_oy_path, "w", encoding="utf-8") as f:
+            json.dump(batch, f, ensure_ascii=False, indent=2)
+
+        batch_gn_path = os.path.join(DATA_DIR, f"_kw_batch_gn_{batch_idx}.json")
+        if isinstance(gn_products, dict):
+            filtered_gn = {k: v for k, v in gn_products.items() if k in codes_set}
+        elif isinstance(gn_products, list):
+            filtered_gn = [p for p in gn_products if p.get("product_code") in codes_set]
+        else:
+            filtered_gn = gn_products
+        with open(batch_gn_path, "w", encoding="utf-8") as f:
+            json.dump(filtered_gn, f, ensure_ascii=False, indent=2)
 
         prompt = f"""{rules}
 
 ---
 
 ## 작업 (배치 {batch_idx + 1}/{len(batches)}: rank {rank_range})
-올리브영 제품 데이터를 읽고, 아래 product_code에 해당하는 제품의 키워드를 생성해.
+올리브영 제품 데이터를 읽고, 각 제품의 키워드를 생성해.
 
-파일: {os.path.abspath(oy_path)}
-대상 product_code: {', '.join(codes)}
+제품 데이터 ({len(batch)}개): {os.path.abspath(batch_oy_path)}
 
 ## 글로벌몰 영문명 참조 파일
-{global_names_ref}
-- products 객체에서 product_code로 검색, global_name 필드가 공식 영문명
+{os.path.abspath(batch_gn_path)}
+- product_code로 검색, global_name 필드가 공식 영문명
 - 매칭된 건은 용량/기획 텍스트만 제거하고 그대로 사용
 - 매칭 안 된 건은 한국어 name을 자연스러운 영어로 번역 (WebFetch 하지 않음)
 
@@ -184,23 +236,27 @@ def run_keyword_agent(oy_path, timeout=180):
 
         cmd = [
             CLAUDE_EXE, "-p",
+            "--model", "sonnet",
             "--output-format", "json",
             "--json-schema", KEYWORD_SCHEMA,
             "--allowed-tools", "Read",
             "--no-session-persistence",
-            prompt,
         ]
 
         safe_print(f"[KEYWORD] 배치 {batch_idx + 1}/{len(batches)}: rank {rank_range} ({len(codes)}개)...")
 
         try:
             result = subprocess.run(
-                cmd, capture_output=True, text=True, timeout=timeout,
+                cmd, input=prompt, capture_output=True, text=True, timeout=timeout,
                 encoding="utf-8", errors="replace", cwd=PROJECT_ROOT,
             )
         except (subprocess.TimeoutExpired, FileNotFoundError) as e:
             safe_print(f"[KEYWORD] 배치 {batch_idx + 1} 실패: {e}")
             return None
+        finally:
+            for p in (batch_oy_path, batch_gn_path):
+                if os.path.exists(p):
+                    os.remove(p)
 
         if result.returncode != 0:
             safe_print(f"[KEYWORD] 배치 {batch_idx + 1} 실행 실패")
@@ -220,16 +276,35 @@ def run_keyword_agent(oy_path, timeout=180):
                 return None
 
             batch_kws = inner.get("keywords", [])
-            all_keywords.extend(batch_kws)
             safe_print(f"[KEYWORD] 배치 {batch_idx + 1} OK - {len(batch_kws)}개 키워드")
+            return batch_kws
         except (json.JSONDecodeError, TypeError):
             safe_print(f"[KEYWORD] 배치 {batch_idx + 1} JSON 파싱 실패")
             return None
 
-    return {"keywords": all_keywords[:50]}
+    # 병렬 실행 (max_workers=3: API rate limit 고려)
+    safe_print(f"[KEYWORD] {len(batches)}개 배치 병렬 실행...")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        futures = {
+            executor.submit(_run_keyword_batch, idx, batch): idx
+            for idx, batch in enumerate(batches)
+        }
+        for future in concurrent.futures.as_completed(futures):
+            batch_idx = futures[future]
+            batch_result = future.result()
+            if batch_result is None:
+                return None
+            all_keywords[batch_idx] = batch_result
+
+    # 순서대로 합치기
+    merged = []
+    for kws in all_keywords:
+        if kws:
+            merged.extend(kws)
+    return {"keywords": merged[:50]}
 
 
-def verify_english_names(oy_path, keywords_path, timeout=600):
+def verify_english_names(oy_path, keywords_path, timeout=TIMEOUT_EN_VERIFY):
     """영문명과 한글 풀네임을 product-by-product로 대조 검증.
 
     키워드 생성 후, 결정된 english_name이 한글 제품명과 일치하는지 확인.
@@ -288,18 +363,18 @@ def verify_english_names(oy_path, keywords_path, timeout=600):
 
     cmd = [
         CLAUDE_EXE, "-p",
+        "--model", "sonnet",
         "--output-format", "json",
         "--json-schema", EN_VERIFY_SCHEMA,
         "--allowed-tools", "Read,WebFetch,WebSearch",
         "--no-session-persistence",
-        prompt,
     ]
 
     safe_print("[EN_VERIFY] 영문명 검증 Agent 호출 중...")
 
     try:
         result = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=timeout,
+            cmd, input=prompt, capture_output=True, text=True, timeout=timeout,
             encoding="utf-8", errors="replace", cwd=PROJECT_ROOT,
         )
     except (subprocess.TimeoutExpired, FileNotFoundError) as e:
@@ -335,7 +410,7 @@ def verify_english_names(oy_path, keywords_path, timeout=600):
 
     safe_print(f"[EN_VERIFY] 오매칭 {len(mismatches)}건, 확인필요 {len(needs_confirm)}건, 누락 {len(missing)}건")
 
-    # needs_confirm 목록을 파일로 저장 (orchestrator가 텔레그램으로 사용자에게 확인 요청)
+    # needs_confirm 목록을 파일로 저장 (orchestrator가 세션에서 사용자에게 확인 요청)
     if needs_confirm:
         confirm_path = os.path.join(DATA_DIR, "_en_needs_confirm.json")
         confirm_items = []
@@ -352,7 +427,7 @@ def verify_english_names(oy_path, keywords_path, timeout=600):
             safe_print(f"  확인필요: {oy_info.get('name', code)} → EN: {kw_entry.get('english_name', '?')} ({nc.get('reason', '')})")
         with open(confirm_path, "w", encoding="utf-8") as f:
             json.dump(confirm_items, f, ensure_ascii=False, indent=2)
-        safe_print(f"[EN_VERIFY] 확인 필요 {len(confirm_items)}건 → _en_needs_confirm.json (텔레그램으로 사용자 확인 요청 필요)")
+        safe_print(f"[EN_VERIFY] 확인 필요 {len(confirm_items)}건 → _en_needs_confirm.json (세션에서 사용자 확인 요청 필요)")
 
     # 키워드 파일의 english_name 수정 (mismatch만 자동 수정)
     kw_by_code = {kw["product_code"]: kw for kw in kw_data}
@@ -373,25 +448,27 @@ def verify_english_names(oy_path, keywords_path, timeout=600):
         safe_print(f"[EN_VERIFY] {fixed_count}건 영문명 수정 완료 → {os.path.basename(keywords_path)}")
 
 
-def run_verification_agent(prompt, timeout=1800, allowed_tools="Read,Glob"):
+def run_verification_agent(prompt, timeout=TIMEOUT_VERIFY, allowed_tools="Read,Write,Glob"):
     """
-    Claude Code CLI를 별도 프로세스로 띄워 검증 실행.
+    Claude Code CLI를 별도 프로세스(Opus)로 띄워 검증 실행.
 
-    새 프로세스 = 이전 수집/추출 대화 기억 없음 = unbiased 검증.
-    --json-schema로 구조화 응답, --allowed-tools로 허용 도구 제한.
+    - 새 프로세스 = 이전 수집/추출 대화 기억 없음 = unbiased 검증
+    - --model sonnet: 규칙 기반 검증
+    - --no-session-persistence: 세션 기록 남기지 않음
+    - Write 권한: 명확한 이슈는 agent가 직접 JSON 수정
 
     Returns:
-        dict: {"passed": bool, "issues": [...], "new_launches": [...]}
+        dict: {"passed": bool, "auto_fixed": [...], "issues": [...], "new_launches": [...]}
               파싱 실패 시 {"passed": False, "issues": ["파싱 실패: ..."]}
     """
     cmd = [
         CLAUDE_EXE,
         "-p",
+        "--model", "sonnet",
         "--output-format", "json",
         "--json-schema", VERIFICATION_SCHEMA,
         "--allowed-tools", allowed_tools,
         "--no-session-persistence",
-        prompt,
     ]
 
     safe_print(f"\n[VERIFY] 검증 Agent 호출 중...")
@@ -399,6 +476,7 @@ def run_verification_agent(prompt, timeout=1800, allowed_tools="Read,Glob"):
     try:
         result = subprocess.run(
             cmd,
+            input=prompt,
             capture_output=True,
             text=True,
             timeout=timeout,
@@ -448,6 +526,12 @@ def run_verification_agent(prompt, timeout=1800, allowed_tools="Read,Glob"):
 
 def handle_verification_result(result, step_name):
     """검증 결과 처리. 통과/실패에 따라 진행 여부 결정."""
+    auto_fixed = result.get("auto_fixed", [])
+    if auto_fixed:
+        safe_print(f"[VERIFY] {step_name} 자동 수정 {len(auto_fixed)}건:")
+        for fix in auto_fixed:
+            safe_print(f"    ✓ {fix}")
+
     if result["passed"]:
         safe_print(f"[VERIFY] {step_name} 검증 통과")
         if result["issues"]:
@@ -456,7 +540,7 @@ def handle_verification_result(result, step_name):
                 safe_print(f"    - {issue}")
         return True
 
-    safe_print(f"[VERIFY] {step_name} 검증 실패 - {len(result['issues'])}건 발견:")
+    safe_print(f"[VERIFY] {step_name} 검증 실패 - 사용자 확인 필요 {len(result['issues'])}건:")
     for i, issue in enumerate(result["issues"], 1):
         safe_print(f"  {i}. {issue}")
 
@@ -476,56 +560,60 @@ def handle_verification_result(result, step_name):
 #  Step 1: 올리브영 캡처 + 추출 안내
 # ================================================================
 
-def run_step1():
+def run_step1(today_str=None):
     """올리브영 랭킹 페이지 캡처 + DOM 추출 + 데이터 보강 Agent."""
-    today_str = datetime.now().strftime("%Y%m%d")
+    if today_str is None:
+        today_str = datetime.now().strftime("%Y%m%d")
+
+    # 멱등성: 당일 결과 파일이 이미 있으면 건너뜀
+    oy_check = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
+    if os.path.exists(oy_check) and os.path.getsize(oy_check) > 100:
+        safe_print(f"[STEP1] SKIP - {os.path.basename(oy_check)} 이미 존재")
+        return True
+
+    # claude -p 인증 사전 확인
+    if not check_claude_auth():
+        safe_print("[STEP1] ABORT - claude -p 인증 실패. 로그인 필요.")
+        return False
     safe_print(f"\n{'=' * 50}")
     safe_print(f"  Step 1: 올리브영 캡처 + 추출")
     safe_print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     safe_print(f"{'=' * 50}\n")
 
-    # Phase 1: 캡처 실행
-    capture_script = os.path.join(SCRIPTS_DIR, "capture_oliveyoung.py")
-    if not os.path.exists(capture_script):
-        safe_print("[CAPTURE] SKIP - capture_oliveyoung.py 없음")
+    # Phase 1: 캡처 실행 (스크린샷이 이미 있으면 건너뜀)
+    existing_ss = sorted(
+        glob.glob(os.path.join(SCREENSHOT_DIR, f"oliveyoung_{today_str}_*.png"))
+    )
+    if existing_ss:
+        safe_print(f"[CAPTURE] SKIP - 스크린샷 {len(existing_ss)}장 이미 존재")
     else:
-        try:
-            result = subprocess.run(
-                [sys.executable, capture_script],
-                capture_output=True, text=True, timeout=300,
-                encoding="utf-8", errors="replace"
-            )
-            if result.returncode == 0:
-                safe_print("[CAPTURE] OK")
-                for line in result.stdout.split("\n"):
-                    if line.strip():
-                        safe_print(f"  {line.strip()}")
-            else:
-                safe_print(f"[CAPTURE] FAIL - {result.stderr[:300]}")
+        capture_script = os.path.join(SCRIPTS_DIR, "capture_oliveyoung.py")
+        if not os.path.exists(capture_script):
+            safe_print("[CAPTURE] SKIP - capture_oliveyoung.py 없음")
+        else:
+            try:
+                result = subprocess.run(
+                    [sys.executable, capture_script],
+                    capture_output=True, text=True, timeout=TIMEOUT_CAPTURE,
+                    encoding="utf-8", errors="replace"
+                )
+                if result.returncode == 0:
+                    safe_print("[CAPTURE] OK")
+                    for line in result.stdout.split("\n"):
+                        if line.strip():
+                            safe_print(f"  {line.strip()}")
+                else:
+                    safe_print(f"[CAPTURE] FAIL - {result.stderr[:300]}")
+                    return False
+            except subprocess.TimeoutExpired:
+                safe_print("[CAPTURE] FAIL - 타임아웃 (300초)")
                 return False
-        except subprocess.TimeoutExpired:
-            safe_print("[CAPTURE] FAIL - 타임아웃 (300초)")
-            return False
 
-    # Phase 2: DOM 추출 실행
-    extract_script = os.path.join(SCRIPTS_DIR, "extract_dom.py")
-    if not os.path.exists(extract_script):
-        safe_print("[EXTRACT] SKIP - extract_dom.py 없음")
-    else:
-        try:
-            result = subprocess.run(
-                [sys.executable, extract_script],
-                capture_output=True, text=True, timeout=120,
-                encoding="utf-8", errors="replace"
-            )
-            if result.returncode == 0:
-                safe_print("[EXTRACT] OK")
-            else:
-                safe_print(f"[EXTRACT] FAIL - {result.stderr[:300]}")
-                return False
-        except subprocess.TimeoutExpired:
-            safe_print("[EXTRACT] FAIL - 타임아웃 (120초)")
-            return False
+    # Phase 2: DOM 추출 — capture_oliveyoung.py가 통합 수행 (별도 실행 불필요)
+    raw_path_check = os.path.join(DATA_DIR, f"_dom_extract_{today_str}.json")
+    if not os.path.exists(raw_path_check):
+        safe_print("[EXTRACT] WARN - DOM 파일 없음. 캡처 스크립트가 통합 추출했어야 함.")
+        return False
 
     # Phase 3: 데이터 보강 Agent (스크린샷 1장씩 배치 처리)
     raw_path = os.path.join(DATA_DIR, f"_dom_extract_{today_str}.json")
@@ -540,6 +628,10 @@ def run_step1():
         safe_print(f"[ERROR] {raw_path} 없음. DOM 추출 실패.")
         return False
 
+    # raw JSON을 미리 로드하여 배치별 슬라이싱 (agent가 60개 전체를 읽지 않도록)
+    with open(raw_path, "r", encoding="utf-8") as f:
+        raw_products = json.load(f)
+
     rules = load_agent_rules("step1_extract.md")
     all_products = []
 
@@ -550,14 +642,20 @@ def run_step1():
         if rank_start >= 50:
             return []
 
+        # 배치별 슬라이싱: 해당 rank 범위의 raw 데이터만 임시 파일로 저장
+        batch_raw = raw_products[rank_start:rank_end]
+        batch_raw_path = os.path.join(DATA_DIR, f"_dom_batch_{batch_idx}.json")
+        with open(batch_raw_path, "w", encoding="utf-8") as f:
+            json.dump(batch_raw, f, ensure_ascii=False, indent=2)
+
         batch_out = os.path.join(DATA_DIR, f"_enrich_batch_{batch_idx}.json")
         prompt = f"""{rules}
 
 ---
 
 ## 작업 대상 (배치 {batch_idx + 1}/{min(ss_count, 5)})
-- raw DOM 추출 결과: {os.path.abspath(raw_path)}
-  - 이 배치에서 처리할 범위: index {rank_start}~{rank_end - 1} (rank {rank_start + 1}~{rank_end})
+- raw DOM 추출 결과 (이 배치 분량만): {os.path.abspath(batch_raw_path)}
+  - {len(batch_raw)}개 제품 (rank {rank_start + 1}~{rank_end})
 - 스크린샷 (1장): {os.path.abspath(ss_path)}
 
 ## 출력
@@ -571,25 +669,30 @@ def run_step1():
 
         cmd = [
             CLAUDE_EXE, "-p",
+            "--model", "opus",
             "--allowed-tools", "Read,Write,Glob",
             "--no-session-persistence",
-            prompt,
         ]
 
         try:
             result = subprocess.run(
                 cmd,
-                capture_output=True, text=True, timeout=600,
+                input=prompt,
+                capture_output=True, text=True, timeout=TIMEOUT_ENRICH,
                 encoding="utf-8", errors="replace",
                 cwd=PROJECT_ROOT,
             )
         except subprocess.TimeoutExpired:
-            safe_print(f"[ENRICH] 배치 {batch_idx + 1} 타임아웃 (600초)")
+            safe_print(f"[ENRICH] 배치 {batch_idx + 1} 타임아웃 (900초)")
             return None
 
         if result.returncode != 0:
             safe_print(f"[ENRICH] 배치 {batch_idx + 1} 실패 - {(result.stderr or '')[:300]}")
             return None
+
+        # 배치 raw 임시 파일 정리
+        if os.path.exists(batch_raw_path):
+            os.remove(batch_raw_path)
 
         if not os.path.exists(batch_out):
             safe_print(f"[ENRICH] 배치 {batch_idx + 1} 결과 파일 미생성")
@@ -607,7 +710,7 @@ def run_step1():
     ]
     safe_print(f"\n[ENRICH] {len(batches_to_run)}개 배치 병렬 실행 시작...")
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         futures = {
             executor.submit(_run_enrich_batch, idx, ss): idx
             for idx, ss in batches_to_run
@@ -618,6 +721,30 @@ def run_step1():
             if batch_result is None:
                 return False
             all_products.extend(batch_result)
+
+    # promotion_type 후처리: 명확한 패턴은 파이썬에서 보정 (agent 판단 부담 경감)
+    for p in all_products:
+        nf = p.get("name_full", "")
+        pt = p.get("promotion_type", "none")
+        # 오특 제품은 oteuk으로 확정
+        if p.get("is_oteuk") and pt != "oteuk":
+            p["promotion_type"] = "oteuk"
+        # 1+1 패턴
+        elif re.search(r"1\+1|1\s*\+\s*1", nf) and pt != "bogo":
+            p["promotion_type"] = "bogo"
+        # 더블/듀오 기획
+        elif re.search(r"더블\s*기획|듀오\s*기획", nf) and pt not in ("double", "bogo"):
+            p["promotion_type"] = "double"
+        # 동일 용량 묶음 (50ml+50ml 등)
+        elif re.search(r"(\d+)\s*ml\s*\+\s*\1\s*ml", nf) and pt != "double":
+            p["promotion_type"] = "double"
+        # 리필 기획
+        elif re.search(r"리필\s*기획", nf) and pt != "refill":
+            p["promotion_type"] = "refill"
+        # 2입/2개 기획 (multi_pack)
+        elif re.search(r"[23]\s*입\s*기획|[23]\s*개\s*기획", nf) and pt != "multi_pack":
+            p["promotion_type"] = "multi_pack"
+        # 애매한 패턴(본품+미니, 추가증정 등)은 agent 판단 유지 — 여기서 건드리지 않음
 
     # is_duplicate 후처리: name 기준 중복 판정
     name_count = {}
@@ -643,14 +770,23 @@ def run_step1():
 #  Step 2: 올리브영 검증 (Verification Agent)
 # ================================================================
 
-def build_oy_verification_prompt_batch(today_str, ss_index, ss_path):
-    """올리브영 데이터 검증 프롬프트 생성 (스크린샷 1장 배치)."""
+def build_oy_verification_prompt_multi(today_str, ss_pairs):
+    """올리브영 데이터 검증 프롬프트 생성 (스크린샷 2장 배치).
+
+    Args:
+        ss_pairs: list of (ss_index, ss_path) tuples
+    """
     oy_path = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
     if not os.path.exists(oy_path):
         return None
 
-    rank_start = ss_index * 12 + 1
-    rank_end = min((ss_index + 1) * 12, 50)
+    rank_start = ss_pairs[0][0] * 12 + 1
+    rank_end = min((ss_pairs[-1][0] + 1) * 12, 50)
+
+    ss_section = "\n".join(
+        f"  - 스크린샷 {idx + 1} (rank {idx * 12 + 1}~{min((idx + 1) * 12, 50)}): {os.path.abspath(path)}"
+        for idx, path in ss_pairs
+    )
 
     rules = load_agent_rules("step2_oy_verify.md")
 
@@ -663,15 +799,16 @@ def build_oy_verification_prompt_batch(today_str, ss_index, ss_path):
 다른 agent가 올리브영 베스트 랭킹 페이지에서 추출한 데이터를 처음 보는 상태에서 검증해.
 
 ## 검증 대상 (배치: rank {rank_start}~{rank_end})
-스크린샷 파일 (1장):
-{os.path.abspath(ss_path)}
+스크린샷 파일 ({len(ss_pairs)}장):
+{ss_section}
 
 JSON 파일:
 {os.path.abspath(oy_path)}
 → rank {rank_start}~{rank_end} 범위 제품만 검증하라.
 
-## 검증 항목
-1. 스크린샷의 각 제품 순위 번호가 JSON rank와 일치하는지 (이 범위 전수 확인)
+## 검증 항목 (우선순위 순)
+0. **총 제품 수 확인 (최우선)**: JSON에 정확히 50개 제품이 있는지 먼저 확인. 50개 미만이면 즉시 issues에 보고.
+1. **스크린샷 rank 배지 1:1 대조**: 스크린샷의 각 제품 위치에 표시된 순위 번호 배지(01, 02, ...)를 읽고, 해당 위치의 제품이 JSON의 같은 rank에 있는지 전수 대조. rank가 1이라도 밀려있으면 보고.
 2. 제품명 변조 여부 (가장 중요): JSON name이 스크린샷 실제 제품명과 일치하는지 엄격 대조
 3. 오특 제품이 is_oteuk: true로 올바르게 태그되었는지
 4. 스크린샷에 있는데 JSON에 빠진 제품이 없는지
@@ -680,13 +817,26 @@ JSON 파일:
 7. 비화장품: 위 규칙 기준으로 감지하여 보고
 8. 기획상품 유형: 1+1, 더블, 리필, 2입 등 기획 유형 식별하여 보고
 
-## 출력 형식
-반드시 아래 JSON 형식으로만 응답해:
-- 모두 정상이면: {{"passed": true, "issues": []}}
-- 문제 있으면: {{"passed": false, "issues": ["문제1 설명", "문제2 설명", ...]}}
+## 수정 및 보고 규칙
+**명확한 오류는 직접 JSON 파일을 수정하고 auto_fixed에 기록해라:**
+- 가격 불일치 (스크린샷 vs JSON) → JSON 수정
+- brand_en 불일치 → 통일
+- promotion_type 오류 (1+1인데 double 등) → 수정
+- is_oteuk 누락/오류 → 수정
+- is_duplicate 오류 → 수정
 
-issues에는 구체적으로 어떤 rank의 어떤 제품에 무슨 문제가 있는지 적어.
-사소한 표기 차이(띄어쓰기, 약어)는 무시하고, 실질적 오류만 보고해."""
+**사용자 확인이 필요한 것만 issues에 넣어라:**
+- 비화장품 감지 (제거 여부는 사용자 판단)
+- 새 번들 키워드 (확정 테이블에 없는 것)
+- 애매한 기획상품 패널티 (본품+미니 등)
+- 스크린샷이 불명확해서 판단 불가한 경우
+
+## 출력 형식
+{{"passed": true/false, "auto_fixed": ["Rank N: 수정 내용", ...], "issues": ["사용자 확인 필요 항목", ...]}}
+
+passed는 사용자 확인이 필요한 issues가 없을 때만 true.
+auto_fixed가 있어도 issues가 없으면 passed=true.
+사소한 표기 차이(띄어쓰기, 약어)는 무시하고, 실질적 오류만 수정/보고해."""
 
 
 def run_step2(today_str=None):
@@ -716,23 +866,36 @@ def run_step2(today_str=None):
     all_issues = []
     all_passed = True
 
-    for ss_idx, ss_path in enumerate(screenshots):
-        if ss_idx * 12 >= 50:
-            break
-        rank_start = ss_idx * 12 + 1
-        rank_end = min((ss_idx + 1) * 12, 50)
-        safe_print(f"\n[VERIFY] 배치 {ss_idx + 1}: rank {rank_start}~{rank_end} 검증 중...")
+    # 스크린샷 2장씩 묶어서 배치 구성 (5→3 프로세스, 토큰 절약)
+    valid_ss = [(idx, ss) for idx, ss in enumerate(screenshots) if idx * 12 < 50]
+    multi_batches = []
+    for i in range(0, len(valid_ss), 2):
+        multi_batches.append(valid_ss[i:i + 2])
 
-        prompt = build_oy_verification_prompt_batch(today_str, ss_idx, ss_path)
+    def _run_verify_multi(batch_idx, ss_pairs):
+        rank_start = ss_pairs[0][0] * 12 + 1
+        rank_end = min((ss_pairs[-1][0] + 1) * 12, 50)
+        safe_print(f"\n[VERIFY] 배치 {batch_idx + 1}/{len(multi_batches)}: rank {rank_start}~{rank_end} ({len(ss_pairs)}장) 검증 중...")
+        prompt = build_oy_verification_prompt_multi(today_str, ss_pairs)
         if not prompt:
             safe_print("[ERROR] 검증 프롬프트 생성 실패")
-            return False
+            return None
+        result = run_verification_agent(prompt, timeout=600)
+        safe_print(f"[VERIFY] 배치 {batch_idx + 1}: {'PASS' if result['passed'] else 'FAIL'} ({len(result.get('issues', []))}건)")
+        return result
 
-        result = run_verification_agent(prompt, timeout=300)
-        if not result["passed"]:
-            all_passed = False
-        all_issues.extend(result.get("issues", []))
-        safe_print(f"[VERIFY] 배치 {ss_idx + 1}: {'PASS' if result['passed'] else 'FAIL'} ({len(result.get('issues', []))}건)")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        futures = {
+            executor.submit(_run_verify_multi, bi, pairs): bi
+            for bi, pairs in enumerate(multi_batches)
+        }
+        for future in concurrent.futures.as_completed(futures):
+            result = future.result()
+            if result is None:
+                return False
+            if not result["passed"]:
+                all_passed = False
+            all_issues.extend(result.get("issues", []))
 
     merged = {"passed": all_passed, "issues": all_issues}
     return handle_verification_result(merged, "올리브영")
@@ -742,14 +905,37 @@ def run_step2(today_str=None):
 #  Step 3: 네이버 + 유튜브 API 수집
 # ================================================================
 
-def run_step3():
+def run_step3(today_str=None):
     """네이버/유튜브 API 수집 — Claude가 키워드 결정."""
-    today_str = datetime.now().strftime("%Y%m%d")
+    if today_str is None:
+        today_str = datetime.now().strftime("%Y%m%d")
 
     safe_print(f"\n{'=' * 50}")
     safe_print(f"  Step 3: API 수집 (키워드 생성 + 네이버 + 유튜브)")
     safe_print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     safe_print(f"{'=' * 50}\n")
+
+    # claude -p 인증 사전 확인
+    if not check_claude_auth():
+        safe_print("[STEP3] ABORT - claude -p 인증 실패. 로그인 필요.")
+        return False
+
+    # YouTube OAuth 토큰 사전 확인
+    try:
+        from scripts.youtube_oauth import is_oauth_configured, is_token_expired, refresh_credentials
+        if is_oauth_configured():
+            expired = is_token_expired()
+            if expired:
+                safe_print("[OAuth] YouTube 토큰 만료됨 → 갱신 시도")
+                _, status = refresh_credentials()
+                if status == "reauth_needed":
+                    safe_print("[OAuth] 브라우저 재인증 필요! 터미널에서: python scripts/youtube_oauth.py")
+                elif status == "refreshed":
+                    safe_print("[OAuth] 토큰 갱신 완료")
+            else:
+                safe_print("[OAuth] YouTube 토큰 유효")
+    except ImportError:
+        pass  # OAuth 미설정 시 무시
 
     # 올리브영 JSON 확인
     oy_path = os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json")
@@ -763,12 +949,15 @@ def run_step3():
             return False
     safe_print(f"[OY] {os.path.basename(oy_path)}")
 
-    # Phase 0: 올리브영 글로벌 몰에서 공식 영문명 수집 (필수 - 건너뛰기 금지)
+    # Phase 0: 올리브영 글로벌 몰에서 공식 영문명 수집 (이미 있으면 재사용)
     global_script = os.path.join(SCRIPTS_DIR, "fetch_global_names.py")
     global_names_path = os.path.join(DATA_DIR, f"_global_names_{today_str}.json")
     global_ok = False
+    if os.path.exists(global_names_path) and os.path.getsize(global_names_path) > 100:
+        safe_print(f"[GLOBAL] SKIP - {os.path.basename(global_names_path)} 이미 존재")
+        global_ok = True
     max_global_retries = 3
-    for attempt in range(1, max_global_retries + 1):
+    for attempt in range(1, max_global_retries + 1) if not global_ok else []:
         if not os.path.exists(global_script):
             safe_print("[GLOBAL ERROR] fetch_global_names.py 스크립트 없음 - Step 3 중단")
             return False
@@ -776,7 +965,7 @@ def run_step3():
             safe_print(f"[GLOBAL] 영문명 수집 시도 {attempt}/{max_global_retries}")
             r = subprocess.run(
                 [sys.executable, global_script],
-                capture_output=True, text=True, timeout=300,
+                capture_output=True, text=True, timeout=TIMEOUT_CAPTURE,
                 encoding="utf-8", errors="replace"
             )
             if r.returncode == 0 and os.path.exists(global_names_path):
@@ -792,67 +981,13 @@ def run_step3():
             time.sleep(5)
 
     if not global_ok:
-        safe_print("[GLOBAL ERROR] 글로벌몰 영문명 수집 실패 (3회 재시도 후). Step 3 중단. 텔레그램으로 알림 필요.")
-        return False
-
-    # Phase 1: Claude가 최적 키워드 생성
-    keywords_path = os.path.join(DATA_DIR, f"_keywords_{today_str}.json")
-    kw_result = run_keyword_agent(oy_path)
-    if kw_result and "keywords" in kw_result:
-        # 50개 하드컷 (에이전트가 초과 반환해도 상위 50개만 저장)
-        kw_list = kw_result["keywords"][:50]
-        with open(keywords_path, "w", encoding="utf-8") as f:
-            json.dump(kw_list, f, ensure_ascii=False, indent=2)
-        safe_print(f"[KEYWORD] {len(kw_list)}개 키워드 생성 완료")
-    else:
-        safe_print("[KEYWORD] 키워드 생성 실패 - Step 3 중단")
+        safe_print("[GLOBAL ERROR] 글로벌몰 영문명 수집 실패 (3회 재시도 후). Step 3 중단. 세션에서 알림 필요.")
         return False
 
     results = {}
     retry_script = os.path.join(SCRIPTS_DIR, "keyword_retry.py")
 
-    # Phase 1.5+2+3: 영문명 검증 + 네이버 + 유튜브 병렬 수집
-    def _run_naver_pipeline():
-        """네이버 수집 + retry."""
-        nv_script = os.path.join(SCRIPTS_DIR, "naver_trend.py")
-        if not os.path.exists(nv_script):
-            safe_print("[NAVER] SKIP - naver_trend.py 없음")
-            return None
-        try:
-            r = subprocess.run(
-                [sys.executable, nv_script],
-                capture_output=True, text=True, timeout=180,
-                encoding="utf-8", errors="replace"
-            )
-            if r.returncode != 0:
-                safe_print(f"[NAVER] FAIL - {r.stderr[:200]}")
-                return None
-            safe_print("[NAVER] OK")
-        except Exception as e:
-            safe_print(f"[NAVER] FAIL - {e}")
-            return None
-
-        # 네이버 retry
-        if os.path.exists(retry_script):
-            try:
-                r = subprocess.run(
-                    [sys.executable, retry_script, "naver"],
-                    capture_output=True, text=True, timeout=180,
-                    encoding="utf-8", errors="replace"
-                )
-                if r.returncode == 0:
-                    for line in r.stdout.split("\n"):
-                        if line.strip() and ("성공" in line or "개선" in line):
-                            safe_print(f"  [NAVER RETRY] {line.strip()}")
-            except Exception:
-                pass
-
-        nv_files = sorted(glob.glob(os.path.join(DATA_DIR, "naver_*.json")))
-        nv_files = [f for f in nv_files
-                    if "sample" not in os.path.basename(f)
-                    and "rank" not in os.path.basename(f)]
-        return nv_files[-1] if nv_files else None
-
+    # 유튜브는 키워드/영문명 불필요 (풀네임 검색) → 키워드 생성 전에 바로 시작
     def _run_youtube_pipeline():
         """유튜브 수집 + retry."""
         yt_script = os.path.join(SCRIPTS_DIR, "youtube_trend.py")
@@ -862,7 +997,7 @@ def run_step3():
         try:
             r = subprocess.run(
                 [sys.executable, yt_script],
-                capture_output=True, text=True, timeout=300,
+                capture_output=True, text=True, timeout=TIMEOUT_YOUTUBE,
                 encoding="utf-8", errors="replace"
             )
             if r.returncode != 0:
@@ -884,7 +1019,7 @@ def run_step3():
             try:
                 r = subprocess.run(
                     [sys.executable, retry_script, "youtube"],
-                    capture_output=True, text=True, timeout=180,
+                    capture_output=True, text=True, timeout=TIMEOUT_NAVER,
                     encoding="utf-8", errors="replace"
                 )
                 if r.returncode == 0:
@@ -899,19 +1034,83 @@ def run_step3():
                     if "sample" not in os.path.basename(f)]
         return yt_files[-1] if yt_files else None
 
+    yt_executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    yt_future = yt_executor.submit(_run_youtube_pipeline)
+    safe_print("[YOUTUBE] 선행 시작 (키워드 생성과 병렬)")
+
+    # Phase 1: Claude가 최적 키워드 생성 (당일 파일 있으면 건너뜀)
+    keywords_path = os.path.join(DATA_DIR, f"_keywords_{today_str}.json")
+    if os.path.exists(keywords_path) and os.path.getsize(keywords_path) > 100:
+        safe_print(f"[KEYWORD] SKIP - {os.path.basename(keywords_path)} 이미 존재")
+        kw_result = None  # skip
+    else:
+        kw_result = run_keyword_agent(oy_path, today_str=today_str)
+    if kw_result and "keywords" in kw_result:
+        # 50개 하드컷 (에이전트가 초과 반환해도 상위 50개만 저장)
+        kw_list = kw_result["keywords"][:50]
+        with open(keywords_path, "w", encoding="utf-8") as f:
+            json.dump(kw_list, f, ensure_ascii=False, indent=2)
+        safe_print(f"[KEYWORD] {len(kw_list)}개 키워드 생성 완료")
+    else:
+        safe_print("[KEYWORD] 키워드 생성 실패 - Step 3 중단")
+        yt_executor.shutdown(wait=False)
+        return False
+
+    # Phase 1.5+2+3: 영문명 검증 + 네이버 + 유튜브 병렬 수집
+    def _run_naver_pipeline():
+        """네이버 수집 + retry."""
+        nv_script = os.path.join(SCRIPTS_DIR, "naver_trend.py")
+        if not os.path.exists(nv_script):
+            safe_print("[NAVER] SKIP - naver_trend.py 없음")
+            return None
+        try:
+            r = subprocess.run(
+                [sys.executable, nv_script],
+                capture_output=True, text=True, timeout=TIMEOUT_NAVER,
+                encoding="utf-8", errors="replace"
+            )
+            if r.returncode != 0:
+                safe_print(f"[NAVER] FAIL - {r.stderr[:200]}")
+                return None
+            safe_print("[NAVER] OK")
+        except Exception as e:
+            safe_print(f"[NAVER] FAIL - {e}")
+            return None
+
+        # 네이버 retry
+        if os.path.exists(retry_script):
+            try:
+                r = subprocess.run(
+                    [sys.executable, retry_script, "naver"],
+                    capture_output=True, text=True, timeout=TIMEOUT_NAVER,
+                    encoding="utf-8", errors="replace"
+                )
+                if r.returncode == 0:
+                    for line in r.stdout.split("\n"):
+                        if line.strip() and ("성공" in line or "개선" in line):
+                            safe_print(f"  [NAVER RETRY] {line.strip()}")
+            except Exception:
+                pass
+
+        nv_files = sorted(glob.glob(os.path.join(DATA_DIR, "naver_*.json")))
+        nv_files = [f for f in nv_files
+                    if "sample" not in os.path.basename(f)
+                    and "rank" not in os.path.basename(f)]
+        return nv_files[-1] if nv_files else None
+
     def _run_en_verify():
         """영문명 검증 (한글 풀네임과 대조)."""
         if os.path.exists(keywords_path):
             verify_english_names(oy_path, keywords_path)
 
-    safe_print("\n[API] 영문명 검증 + 네이버 + 유튜브 병렬 시작...")
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+    safe_print("\n[API] 영문명 검증 + 네이버 병렬 시작 (유튜브는 이미 실행 중)...")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         en_future = executor.submit(_run_en_verify)
         nv_future = executor.submit(_run_naver_pipeline)
-        yt_future = executor.submit(_run_youtube_pipeline)
         en_future.result()
         results["naver"] = nv_future.result()
-        results["youtube"] = yt_future.result()
+    results["youtube"] = yt_future.result()
+    yt_executor.shutdown(wait=False)
 
     # 결과 보고
     zero_report = []
@@ -955,9 +1154,84 @@ def run_step3():
 #  Step 4: API 데이터 검증 (Verification Agent)
 # ================================================================
 
+def _precheck_api_anomalies(oy_path, nv_path, yt_path):
+    """API 데이터의 수치 이상치를 파이썬으로 선검사. agent에게 넘길 요약 반환."""
+    anomalies = []
+    nv_ok = nv_path and os.path.exists(nv_path)
+    yt_ok = yt_path and os.path.exists(yt_path)
+
+    if not nv_ok and not yt_ok:
+        anomalies.append("네이버/유튜브 데이터 모두 없음 — passed: false 처리 필요")
+        return anomalies, []
+
+    # --- 네이버 이상치 ---
+    if nv_ok:
+        with open(nv_path, "r", encoding="utf-8") as f:
+            nv_data = json.load(f)
+        total = len(nv_data)
+        zero_count = sum(1 for p in nv_data if p.get("search_volume", 0) == 0)
+        if total > 0 and zero_count / total >= 0.9:
+            anomalies.append(f"네이버 API 이상: {zero_count}/{total} ({zero_count*100//total}%) 제품 검색량 0")
+
+        # 직전 데이터 대비 10배 변동 체크
+        prev_nv = _find_previous_daily_path("naver")
+        if prev_nv:
+            with open(prev_nv, "r", encoding="utf-8") as f:
+                prev_data = json.load(f)
+            prev_map = {p.get("product_code", p.get("keyword", "")): p.get("search_volume", 0) for p in prev_data}
+            spikes = []
+            for p in nv_data:
+                code = p.get("product_code", p.get("keyword", ""))
+                cur = p.get("search_volume", 0)
+                prev = prev_map.get(code, 0)
+                if prev > 0 and cur > 0 and (cur / prev >= 10 or prev / cur >= 10):
+                    spikes.append(f"{code}: {prev}→{cur}")
+            if spikes:
+                anomalies.append(f"네이버 10배 변동 {len(spikes)}건: {', '.join(spikes[:5])}")
+
+    # --- 유튜브 이상치 ---
+    yt_flagged = []
+    if yt_ok:
+        with open(yt_path, "r", encoding="utf-8") as f:
+            yt_data = json.load(f)
+        for p in yt_data:
+            code = p.get("product_code", "")
+            issues = []
+            if p.get("api_error", False):
+                issues.append("api_error")
+            vc3m = p.get("video_count_3month", 0)
+            vc2w = p.get("video_count", 0)
+            if vc3m != -1 and vc3m < vc2w:
+                issues.append(f"3개월({vc3m}) < 2주({vc2w})")
+            if vc3m >= 1000:
+                issues.append(f"3개월 영상 {vc3m}개 — 키워드 과범위 의심")
+            if issues:
+                yt_flagged.append(f"{code}: {', '.join(issues)}")
+        if yt_flagged:
+            anomalies.append(f"유튜브 이상 {len(yt_flagged)}건: {'; '.join(yt_flagged[:5])}")
+
+    # --- 신제품 후보 추출 (agent가 웹검색으로 최종 판단) ---
+    new_candidates = []
+    with open(oy_path, "r", encoding="utf-8") as f:
+        oy_data = json.load(f)
+    for p in oy_data:
+        name_full = p.get("name_full", "")
+        if any(tag in name_full for tag in ["[NEW", "선런칭", "런칭"]):
+            new_candidates.append(p.get("product_code", ""))
+    if yt_ok:
+        for p in yt_data:
+            if p.get("is_new_product_candidate") and p.get("product_code") not in new_candidates:
+                new_candidates.append(p["product_code"])
+
+    return anomalies, new_candidates
+
+
 def build_api_verification_prompt(oy_path, nv_path, yt_path):
-    """API 데이터 검증 프롬프트 생성."""
+    """API 데이터 검증 프롬프트 생성 — 수치 이상치는 선처리 결과를 전달."""
     rules = load_agent_rules("step4_api_verify.md")
+
+    # 파이썬 선처리: 수치 이상치 + 신제품 후보
+    anomalies, new_candidates = _precheck_api_anomalies(oy_path, nv_path, yt_path)
 
     parts = [f"""{rules}
 
@@ -967,8 +1241,31 @@ def build_api_verification_prompt(oy_path, nv_path, yt_path):
 너는 K-Beauty Trend Tracker의 데이터 검증자야.
 수집 과정을 전혀 모르는 상태에서, 결과 파일만 보고 검증해.
 
-## 검증 대상 파일
-올리브영: {os.path.abspath(oy_path)}"""]
+## 파이썬 선처리 결과 (수치 이상치)"""]
+
+    if anomalies:
+        for a in anomalies:
+            parts.append(f"- ⚠ {a}")
+        parts.append("위 이상치가 실제 문제인지 확인하고 issues에 포함 여부를 판단해.")
+    else:
+        parts.append("- 수치 이상치 없음 (네이버 0값 비율, 10배 변동, 유튜브 3개월<2주 등 모두 정상)")
+
+    # 신제품 후보는 agent가 웹검색으로 최종 확인 — 브랜드+제품명도 함께 전달
+    if new_candidates:
+        parts.append(f"\n## 신제품 후보 (웹검색으로 출시일 확인 필요)")
+        with open(oy_path, "r", encoding="utf-8") as f:
+            oy_for_new = json.load(f)
+        oy_map = {p["product_code"]: p for p in oy_for_new}
+        for code in new_candidates:
+            p = oy_map.get(code, {})
+            parts.append(f"- {code}: {p.get('brand', '')} {p.get('name', '')}")
+        parts.append("각 후보의 출시일을 웹검색('[브랜드] [제품명] 출시일')으로 확인하여 1주 이내면 new_launches에 추가.")
+    else:
+        parts.append("\n## 신제품 후보: 없음")
+
+    # 키워드 잔여물 검사는 여전히 agent가 전수 확인 (유튜브 JSON 직접 읽기 필요)
+    parts.append(f"\n## 검증 대상 파일 (키워드 잔여물 전수 검사용)")
+    parts.append(f"올리브영: {os.path.abspath(oy_path)}")
 
     if nv_path and os.path.exists(nv_path):
         parts.append(f"네이버: {os.path.abspath(nv_path)}")
@@ -980,14 +1277,12 @@ def build_api_verification_prompt(oy_path, nv_path, yt_path):
     else:
         parts.append("유튜브: (수집 실패 또는 없음)")
 
-    # 직전 날짜 데이터 경로 (변동 비교용)
-    prev_nv = _find_previous_daily_path("naver")
-    if prev_nv:
-        parts.append(f"\n직전 네이버 데이터 (변동 비교용): {prev_nv}")
-
     parts.append(f"""
-## 검증 항목
-위 규칙 파일의 기준에 따라 네이버/유튜브 데이터를 검증하고, 신제품을 감지해.
+## 남은 검증 항목
+1. 유튜브 keyword 필드 전수 검사 (용량/기획/잔여물 체크 — 규칙 참조)
+2. 비화장품 필터 확인
+3. 위 선처리 결과의 이상치 판단
+4. 신제품 후보 웹검색 확인
 
 ## 출력 형식
 반드시 아래 JSON 형식으로만 응답해:
@@ -1001,7 +1296,7 @@ new_launches는 검증 통과 여부와 무관하게 항상 포함.
     return "\n".join(parts)
 
 
-def run_step4():
+def run_step4(today_str=None):
     """API 데이터 검증 - 독립 Verification Agent 호출 + 결과 저장.
 
     검증 Agent는 별도 프로세스(claude -p)로 실행되며:
@@ -1010,6 +1305,9 @@ def run_step4():
     - 결과는 _verification_result.json에 파일 해시와 함께 저장
     - Step 5가 이 파일을 하드체크 → 검증 없이 진행 불가
     """
+    if today_str is None:
+        today_str = datetime.now().strftime("%Y%m%d")
+
     safe_print(f"\n{'=' * 50}")
     safe_print(f"  Step 4: API 데이터 검증 (독립 검증 Agent)")
     safe_print(f"{'=' * 50}")
@@ -1020,7 +1318,6 @@ def run_step4():
         with open(state_path, "r", encoding="utf-8") as f:
             state = json.load(f)
     else:
-        today_str = datetime.now().strftime("%Y%m%d")
         state = {
             "oy_path": os.path.join(DATA_DIR, f"oliveyoung_{today_str}.json"),
             "naver_path": None,
@@ -1037,7 +1334,7 @@ def run_step4():
         return False
 
     prompt = build_api_verification_prompt(oy_path, nv_path, yt_path)
-    result = run_verification_agent(prompt, allowed_tools="Read,Glob,WebFetch,WebSearch")
+    result = run_verification_agent(prompt, allowed_tools="Read,Write,Glob,WebFetch,WebSearch")
 
     # === 검증 결과를 파일로 저장 (Step 5에서 강제 확인) ===
     file_hashes = {}
@@ -1050,7 +1347,7 @@ def run_step4():
         "issues": result["issues"],
         "new_launches": result.get("new_launches", []),
         "verified_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "verified_date": datetime.now().strftime("%Y%m%d"),
+        "verified_date": today_str,
         "file_hashes": file_hashes,
         "verified_by": "claude -p verification agent (independent process)",
     }
@@ -1111,10 +1408,11 @@ def _verify_thai_batch(batch, batch_idx):
 
     try:
         result = subprocess.run(
-            [CLAUDE_EXE, "-p", prompt, "--output-format", "json",
+            [CLAUDE_EXE, "-p", "--model", "sonnet",
+             "--output-format", "json",
              "--max-turns", "8", "--allowed-tools", "WebFetch",
              "--json-schema", schema],
-            capture_output=True, text=True, timeout=240,
+            input=prompt, capture_output=True, text=True, timeout=600,
             encoding="utf-8", errors="replace",
             cwd=BASE_DIR
         )
@@ -1211,10 +1509,11 @@ def generate_thai_names():
 
     try:
         result = subprocess.run(
-            [CLAUDE_EXE, "-p", translate_prompt, "--output-format", "json",
+            [CLAUDE_EXE, "-p", "--model", "sonnet",
+             "--output-format", "json",
              "--max-turns", "2", "--allowed-tools", "",
              "--json-schema", translate_schema],
-            capture_output=True, text=True, timeout=120,
+            input=translate_prompt, capture_output=True, text=True, timeout=120,
             encoding="utf-8", errors="replace",
             cwd=BASE_DIR
         )
@@ -1343,10 +1642,11 @@ def generate_thai_names():
 #  Step 5: daily 저장 + 3일치 확인 + 갱신
 # ================================================================
 
-def run_step5():
+def run_step5(today_str=None):
     """daily 폴더 저장 + 3일치 확인 + score 계산 + 사이트 갱신."""
-    today = datetime.now()
-    today_str = today.strftime("%Y%m%d")
+    if today_str is None:
+        today_str = datetime.now().strftime("%Y%m%d")
+    today = datetime.strptime(today_str, "%Y%m%d")
     start = time.time()
 
     safe_print(f"\n{'=' * 50}")
@@ -1444,7 +1744,7 @@ def run_step5():
         with open(final_check_path, "w", encoding="utf-8") as f:
             json.dump(final_check, f, ensure_ascii=False, indent=2)
         safe_print(f"\n[FINAL CHECK] daily 저장 전 최종 확인 필요")
-        safe_print("  orchestrator가 스크린샷 대조 후 텔레그램으로 승인 요청합니다.")
+        safe_print("  orchestrator가 스크린샷 대조 후 세션에서 승인 요청합니다.")
         safe_print("  승인 후 step5를 다시 실행하면 저장이 진행됩니다.")
         return "WAITING_APPROVAL"
 
@@ -1800,6 +2100,11 @@ def cleanup_stale_state_files(today_str):
         if today_str not in os.path.basename(f):
             safe_print(f"  [정리] 이전 글로벌몰 파일 삭제: {os.path.basename(f)}")
             os.remove(f)
+    # 이전 날짜 DOM 추출 파일 정리
+    for f in glob.glob(os.path.join(DATA_DIR, "_dom_extract_*.json")):
+        if today_str not in os.path.basename(f):
+            safe_print(f"  [정리] 이전 DOM 추출 파일 삭제: {os.path.basename(f)}")
+            os.remove(f)
     # 이전 날짜 영문명 확인 파일 정리
     en_confirm = os.path.join(DATA_DIR, "_en_needs_confirm.json")
     if os.path.exists(en_confirm):
@@ -1849,37 +2154,36 @@ def _find_previous_daily_path(source_prefix):
 
 def run_full_pipeline():
     """전체 파이프라인 실행: Step 1 -> 2 -> 3 -> 4 -> 5."""
+    # 파이프라인 시작 시 날짜 고정 (자정 넘김 방지)
+    today_str = datetime.now().strftime("%Y%m%d")
+
     safe_print("=" * 50)
     safe_print("  K-Beauty Trend Tracker - Daily Pipeline")
-    safe_print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    safe_print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')} (date locked: {today_str})")
     safe_print("=" * 50)
 
     # 이전 날짜 좀비 파일 정리
-    today_str = datetime.now().strftime("%Y%m%d")
     cleanup_stale_state_files(today_str)
     cleanup_incomplete_daily(today_str)
 
     # Step 1: 캡처
-    if not run_step1():
+    if not run_step1(today_str):
         return False
-
-    # Step 1이 캡처 + 추출 + 보강까지 완료함
-    today_str = datetime.now().strftime("%Y%m%d")
 
     # Step 2: 올리브영 검증
     if not run_step2(today_str):
         return False
 
     # Step 3: API 수집
-    if not run_step3():
+    if not run_step3(today_str):
         return False
 
     # Step 4: API 검증
-    if not run_step4():
+    if not run_step4(today_str):
         return False
 
     # Step 5: 저장 + 갱신
-    step5_result = run_step5()
+    step5_result = run_step5(today_str)
     if step5_result == "WAITING_APPROVAL":
         safe_print("\n[PAUSE] 최종 확인 대기 중 — orchestrator가 처리합니다.")
         return "WAITING_APPROVAL"
@@ -1899,18 +2203,19 @@ def main():
         sys.exit(0 if ok else 1)
 
     mode = sys.argv[1].lower()
+    # 개별 step 실행 시에도 날짜 지정 가능 (예: step2 20260402)
+    today_str = sys.argv[2] if len(sys.argv) > 2 else None
 
     if mode == "step1":
-        ok = run_step1()
+        ok = run_step1(today_str)
     elif mode == "step2":
-        today_str = sys.argv[2] if len(sys.argv) > 2 else None
         ok = run_step2(today_str)
     elif mode == "step3":
-        ok = run_step3()
+        ok = run_step3(today_str)
     elif mode == "step4":
-        ok = run_step4()
+        ok = run_step4(today_str)
     elif mode == "step5":
-        ok = run_step5()
+        ok = run_step5(today_str)
     elif mode == "all":
         ok = run_full_pipeline()
     elif mode == "status":

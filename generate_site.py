@@ -30,6 +30,7 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 CAT_COLORS = {
     "skincare": "#e8547a", "makeup": "#6c5ce7", "suncare": "#fdcb6e",
     "maskpack": "#00b894", "haircare": "#0984e3", "bodycare": "#a29bfe",
+    "cleansing": "#e8547a",  # skincare 계열
 }
 
 CAT_EMOJIS = {
@@ -39,6 +40,7 @@ CAT_EMOJIS = {
     "maskpack": "&#129526;",   # 🧖
     "haircare": "&#128135;",   # 💇
     "bodycare": "&#129524;",   # 🧴
+    "cleansing": "&#128167;",  # 💧 (skincare 계열)
 }
 
 

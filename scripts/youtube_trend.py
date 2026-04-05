@@ -13,6 +13,12 @@ import requests
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import YOUTUBE_API_KEY, YOUTUBE_API_KEYS
+from scripts.youtube_oauth import (
+    diagnose_403,
+    is_oauth_configured,
+    is_token_expired,
+    refresh_credentials,
+)
 
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
@@ -20,6 +26,8 @@ SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 
 # 키 로테이션: 할당량 초과(403) 시 다음 키로 전환
 _current_key_idx = 0
+# OAuth 세션 캐시 (갱신 후 재사용)
+_oauth_session = None
 
 
 def _get_key():
@@ -36,18 +44,81 @@ def _rotate_key():
         return False
     _current_key_idx += 1
     if _current_key_idx >= len(YOUTUBE_API_KEYS):
-        return False  # 모든 키 소진
+        _current_key_idx = 0  # 순환 리셋
+        return False  # 모든 키 시도 완료
     print(f"    [KEY ROTATE] 키 #{_current_key_idx + 1}로 전환")
     return True
 
 
+def _try_oauth_refresh():
+    """OAuth 토큰이 만료되었으면 갱신을 시도한다.
+    Returns: 갱신 성공 시 True, 아니면 False
+    """
+    global _oauth_session
+    if not is_oauth_configured():
+        return False
+    expired = is_token_expired()
+    if expired is None:
+        return False  # OAuth 미설정
+    if not expired:
+        return False  # 아직 유효 → 갱신 불필요 (진짜 할당량 초과)
+
+    print("    [OAuth] 토큰 만료 감지 → 갱신 시도...")
+    creds, status = refresh_credentials()
+    if status in ("refreshed", "valid"):
+        try:
+            from google.auth.transport.requests import AuthorizedSession
+            _oauth_session = AuthorizedSession(creds)
+        except ImportError:
+            pass
+        return True
+    if status == "reauth_needed":
+        print("    [OAuth] 브라우저 재인증 필요! 터미널에서 실행:")
+        print(f"           python scripts/youtube_oauth.py")
+    return False
+
+
 def _api_get(url, params):
-    """API 호출 + 403 시 키 로테이션 후 재시도."""
-    params["key"] = _get_key()
-    resp = requests.get(url, params=params, timeout=10)
-    if resp.status_code == 403 and _rotate_key():
+    """API 호출 + 403 시 원인 진단 후 적절히 대응.
+
+    403 처리 순서:
+    1. 키 로테이션으로 모든 API 키 시도
+    2. 모든 키 소진 → OAuth 토큰 만료 여부 확인 (quota로 보여도 실제 만료일 수 있음)
+    3. 토큰 만료 → 갱신 후 재시도
+    4. 갱신 실패/진짜 quota → raise
+    """
+    tried = 0
+    max_tries = len(YOUTUBE_API_KEYS) if YOUTUBE_API_KEYS else 1
+
+    while tried < max_tries:
         params["key"] = _get_key()
         resp = requests.get(url, params=params, timeout=10)
+        if resp.status_code != 403:
+            resp.raise_for_status()
+            return resp.json()
+
+        # 403 → 다음 키로 로테이션
+        tried += 1
+        if tried < max_tries and _rotate_key():
+            continue
+        break
+
+    # 모든 키 소진 → quota로 보여도 토큰 만료일 수 있으니 확인
+    if is_oauth_configured() and is_token_expired():
+        print("    [!] 모든 키 403 — OAuth 토큰 만료 감지. 갱신 시도...")
+        if _try_oauth_refresh():
+            # 갱신 성공 → 첫 번째 키로 리셋 후 1회 재시도
+            global _current_key_idx
+            _current_key_idx = 0
+            params["key"] = _get_key()
+            resp = requests.get(url, params=params, timeout=10)
+            if resp.status_code != 403:
+                resp.raise_for_status()
+                return resp.json()
+            print("    [!] 갱신 후에도 403 → 진짜 할당량 초과")
+    elif is_oauth_configured():
+        print("    [!] 모든 키 403 — OAuth 토큰은 유효 → 진짜 할당량 초과")
+
     resp.raise_for_status()
     return resp.json()
 
@@ -325,6 +396,17 @@ def main():
     with open(oy_path, "r", encoding="utf-8") as f:
         products = json.load(f)
     print(f"[유튜브] OY 데이터: {os.path.basename(oy_path)}")
+
+    # OAuth 토큰 상태 확인
+    if is_oauth_configured():
+        expired = is_token_expired()
+        if expired:
+            print("[유튜브] OAuth 토큰 만료됨 → 갱신 시도")
+            _try_oauth_refresh()
+        else:
+            print("[유튜브] OAuth 토큰 유효")
+    else:
+        print("[유튜브] OAuth 미설정 (API 키 모드)")
 
     if YOUTUBE_API_KEY:
         print("[유튜브] API 키 확인됨")
