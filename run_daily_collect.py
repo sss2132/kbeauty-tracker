@@ -1883,6 +1883,21 @@ def run_step5(today_str=None):
             # 태국어 이름 생성 (최종 30위 제품 중 누락분)
             generate_thai_names()
 
+            # 태국어 이름 검증 (사이트 생성 전 게이트)
+            th_check = os.path.join(SCRIPTS_DIR, "check_thai_names.py")
+            if os.path.exists(th_check):
+                th_result = subprocess.run(
+                    [sys.executable, th_check],
+                    capture_output=True, text=True, timeout=10,
+                    encoding="utf-8", errors="replace"
+                )
+                for line in th_result.stdout.strip().split("\n"):
+                    if line.strip():
+                        safe_print(f"  {line.strip()}")
+                if th_result.returncode != 0:
+                    safe_print("[TH_CHECK] 태국어 이름 문제 발견 — 사이트 생성 중단")
+                    return False
+
             # generate_site
             site_script = os.path.join(BASE_DIR, "generate_site.py")
             if os.path.exists(site_script):
